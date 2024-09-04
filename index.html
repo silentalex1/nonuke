@@ -7,17 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #5E6AD2;
-            --secondary-color: #F5F7FF;
-            --text-color: #1A1A1A;
-            --background-color: #FFFFFF;
-            --accent-color: #FF7262;
+            --bg-color: #0f0f0f;
+            --text-color: #ffffff;
+            --accent-color: #7289DA;
+            --secondary-color: #1f1f1f;
+            --hover-color: #5469A7;
         }
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--background-color);
+            background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
         }
@@ -27,8 +27,8 @@
             padding: 0 20px;
         }
         .navbar {
-            background-color: var(--background-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: rgba(31, 31, 31, 0.8);
+            backdrop-filter: blur(10px);
             padding: 15px 0;
             position: fixed;
             width: 100%;
@@ -43,7 +43,7 @@
         .logo {
             font-weight: 700;
             font-size: 24px;
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
         .nav-links a {
             color: var(--text-color);
@@ -54,79 +54,67 @@
             transition: color 0.3s ease;
         }
         .nav-links a:hover {
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
         .content {
             margin-top: 80px;
         }
         .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 80px 0;
+            text-align: center;
+            padding: 120px 0;
         }
-        .hero-text {
-            flex: 1;
-            padding-right: 50px;
-        }
-        .hero-text h1 {
-            font-size: 48px;
+        .hero h1 {
+            font-size: 56px;
             font-weight: 700;
             margin-bottom: 20px;
-            color: var(--primary-color);
+            background: linear-gradient(45deg, var(--accent-color), #A3B8FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .hero-text p {
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-        .hero-image {
-            flex: 1;
-            text-align: right;
-        }
-        .hero-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .features {
+            padding: 100px 0;
             background-color: var(--secondary-color);
-            padding: 80px 0;
-            border-radius: 20px;
-            margin: 40px 0;
         }
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            gap: 40px;
         }
         .feature-item {
-            background-color: var(--background-color);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .feature-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         .feature-item h3 {
-            font-size: 20px;
+            font-size: 24px;
             margin-bottom: 15px;
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
         .button {
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            padding: 12px 30px;
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 30px;
             display: inline-block;
             font-weight: 600;
             transition: background-color 0.3s ease;
         }
         .button:hover {
-            background-color: var(--accent-color);
+            background-color: var(--hover-color);
         }
     </style>
 </head>
@@ -137,44 +125,38 @@
             <div class="nav-links">
                 <a href="#home">Home</a>
                 <a href="#features">Features</a>
-                <a href="#faq">FAQ</a>
-                <a href="#tos">TOS</a>
-                <a href="create-account.html" class="button">Create Account</a>
+                <a href="https://nonuke.me/account" class="button">Create Account</a>
             </div>
         </div>
     </nav>
 
     <div class="content">
-        <div class="container">
-            <section id="home" class="hero">
-                <div class="hero-text">
-                    <h1>Protect Your Discord Server</h1>
-                    <p>Nonuke v1.0 offers advanced protection against server nuking attempts, ensuring your community stays safe and secure.</p>
-                    <a href="#" class="button">Add to Discord</a>
-                </div>
-                <div class="hero-image">
-                    <img src="hero-image.png" alt="Nonuke Bot Illustration">
-                </div>
-            </section>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>Secure Your Discord, Effortlessly</h1>
+                <p>Nonuke provides top-tier protection and seamless server setup, all in one powerful bot.</p>
+                <a href="#" class="button">Add to Discord</a>
+            </div>
+        </section>
 
-            <section id="features" class="features">
-                <h2>Key Features</h2>
+        <section id="features" class="features">
+            <div class="container">
                 <div class="features-grid">
                     <div class="feature-item">
-                        <h3>Intelligent Protection</h3>
-                        <p>Advanced algorithms detect and prevent nuking attempts in real-time.</p>
+                        <h3>Advanced Security</h3>
+                        <p>Cutting-edge algorithms to detect and prevent server attacks in real-time.</p>
                     </div>
                     <div class="feature-item">
-                        <h3>User Management</h3>
-                        <p>Easily manage user permissions and roles with intuitive commands.</p>
+                        <h3>Custom Welcome</h3>
+                        <p>Create personalized welcome messages to greet new members in style.</p>
                     </div>
                     <div class="feature-item">
-                        <h3>Customizable Settings</h3>
-                        <p>Tailor Nonuke's behavior to perfectly fit your server's unique needs.</p>
+                        <h3>Easy Configuration</h3>
+                        <p>Intuitive commands to set up and customize Nonuke to your server's needs.</p>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </div>
 </body>
 </html>
