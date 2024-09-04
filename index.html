@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nonuke - v1.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f0f0f;
@@ -12,14 +12,16 @@
             --accent-color: #7289DA;
             --secondary-color: #1f1f1f;
             --hover-color: #5469A7;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
+            overflow-x: hidden;
         }
         .container {
             max-width: 1200px;
@@ -61,15 +63,29 @@
         }
         .hero {
             text-align: center;
-            padding: 120px 0;
+            padding: 120px 20px;
+            background: url('https://source.unsplash.com/1600x900/?discord,technology') no-repeat center center/cover;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            color: var(--text-color);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 0 0 40px 40px;
+            z-index: 1;
         }
         .hero h1 {
             font-size: 56px;
             font-weight: 700;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--accent-color), #A3B8FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            z-index: 2;
+            position: relative;
         }
         .hero p {
             font-size: 20px;
@@ -77,10 +93,15 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            z-index: 2;
+            position: relative;
         }
         .features {
             padding: 100px 0;
             background-color: var(--secondary-color);
+            border-radius: 40px;
+            box-shadow: var(--box-shadow);
+            margin: 40px 0;
         }
         .features-grid {
             display: grid;
@@ -93,10 +114,11 @@
             border-radius: 15px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--box-shadow);
         }
         .feature-item:hover {
             transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
         .feature-item h3 {
             font-size: 24px;
@@ -112,6 +134,7 @@
             display: inline-block;
             font-weight: 600;
             transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
         .button:hover {
             background-color: var(--hover-color);
@@ -132,15 +155,14 @@
 
     <div class="content">
         <section id="home" class="hero">
-            <div class="container">
-                <h1>Secure Your Discord, Effortlessly</h1>
-                <p>Nonuke provides top-tier protection and seamless server setup, all in one powerful bot.</p>
-                <a href="#" class="button">Add to Discord</a>
-            </div>
+            <h1>Secure Your Discord, Effortlessly</h1>
+            <p>Nonuke provides top-tier protection and seamless server setup, all in one powerful bot.</p>
+            <a href="#" class="button">Add to Discord</a>
         </section>
 
         <section id="features" class="features">
             <div class="container">
+                <h2 style="text-align:center; color: var(--text-color); margin-bottom: 40px;">Key Features</h2>
                 <div class="features-grid">
                     <div class="feature-item">
                         <h3>Advanced Security</h3>
