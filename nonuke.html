@@ -1,1 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoNuke - v1.0</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            height: 100%;
+            background: linear-gradient(to top, darkred 0%, darkblue 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            position: absolute;
+            top: 20px;
+            width: 90%;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-section {
+            margin-top: 150px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .hero-section h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            background: -webkit-linear-gradient(#fff, #ff4500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 2s ease;
+        }
+
+        .hero-section p {
+            font-size: 22px;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .hero-section button {
+            background-color: #ff4500;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .hero-section button:hover {
+            background-color: #1d4ed8;
+            transform: scale(1.05);
+        }
+
+        .faq-section {
+            background: rgba(0, 0, 0, 0.85);
+            margin-top: 60px;
+            padding: 40px;
+            border-radius: 20px;
+            width: 80%;
+            text-align: left;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .faq-section h2 {
+            font-size: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .faq {
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .faq h3 {
+            font-size: 28px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .faq p {
+            font-size: 18px;
+            display: none;
+            margin-top: 10px;
+            opacity: 0.85;
+        }
+
+        .faq.active p {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="nonuke/tos">TOS</a>
+        <a href="nonuke/create-account">Create an Account</a>
+        <a href="nonuke/dashboard">Dashboard</a>
+    </div>
+
+    <div class="hero-section">
+        <h1>Welcome to NoNuke Bot</h1>
+        <p>Manage your Discord servers like a pro with NoNuke’s powerful features.</p>
+        <button onclick="addBot()">Add NoNuke to Your Server</button>
+    </div>
+
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq">
+            <h3>What is NoNuke Bot?</h3>
+            <p>NoNuke Bot is a next-gen Discord bot with advanced moderation, automation, and security features to enhance server management.</p>
+        </div>
+
+        <div class="faq">
+            <h3>How do I add NoNuke Bot to my server?</h3>
+            <p>Simply click on the "Add NoNuke to Your Server" button and follow the authorization steps.</p>
+        </div>
+
+        <div class="faq">
+            <h3>Is NoNuke Bot free?</h3>
+            <p>NoNuke Bot offers both free and premium features, allowing you to choose based on your server's needs.</p>
+        </div>
+    </div>
+
+    <script>
+        function addBot() {
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=YOUR_BOT_ID&scope=bot";
+        }
+
+        document.querySelectorAll('.faq h3').forEach(faqTitle => {
+            faqTitle.addEventListener('click', () => {
+                const faq = faqTitle.parentNode;
+                faq.classList.toggle('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
