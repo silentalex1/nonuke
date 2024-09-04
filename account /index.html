@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - NoNuke</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to top, #0a0a0a, #1e1e1e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(20, 20, 20, 0.95);
+            padding: 50px;
+            border-radius: 25px;
+            width: 380px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            bottom: -20px;
+            left: -20px;
+            background: linear-gradient(135deg, #ff4500, #1d4ed8);
+            z-index: -1;
+            border-radius: 30px;
+            filter: blur(20px);
+        }
+
+        .container h1 {
+            margin-bottom: 30px;
+            font-size: 36px;
+            font-weight: 600;
+        }
+
+        .container input[type="email"], 
+        .container input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 20px 0;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .container input[type="email"]:focus, 
+        .container input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .container button {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff4500;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            transition: background 0.3s ease;
+            margin-top: 25px;
+        }
+
+        .container button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .container p {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .container a {
+            color: #ff4500;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create an Account</h1>
+        <form id="createAccountForm">
+            <input type="email" placeholder="Enter your email" required>
+            <input type="text" placeholder="Enter verification code" required>
+            <button type="submit">Create Account</button>
+        </form>
+        <p>Already have an account? <a href="nonuke/login">Login here</a></p>
+    </div>
+
+    <script>
+        document.getElementById('createAccountForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            window.location.href = "nonuke/dashboard";
+        });
+    </script>
+</body>
+</html>
