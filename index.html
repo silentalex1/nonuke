@@ -2,350 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoNuke - v1.0</title>
+    <title>Nonuke - v1.0</title>
     <style>
-        body, html {
+        :root {
+            --primary-color: #7289DA;
+            --secondary-color: #2C2F33;
+            --text-color: #FFFFFF;
+            --background-color: #23272A;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
-            height: 100%;
-            background: linear-gradient(to top, #111 0%, #333 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-
         .navbar {
-            background: rgba(20, 20, 20, 0.9);
-            padding: 10px 50px;
-            position: absolute;
-            top: 20px;
-            border-radius: 25px;
+            background-color: var(--secondary-color);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .navbar a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .navbar a:hover {
+            color: var(--primary-color);
+        }
+        .content {
+            margin-top: 60px;
+            padding: 40px 20px;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .bot-showcase {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            width: auto;
+            flex-wrap: wrap;
+            margin: 60px 0;
         }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 10px 20px;
-            transition: all 0.3s ease;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .navbar a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .hero-section {
-            margin-top: 140px;
+        .showcase-item {
             text-align: center;
-            width: 100%;
-        }
-
-        .hero-section h1 {
-            font-size: 50px;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #ff4500, #ff9800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-section p {
-            font-size: 18px;
+            flex-basis: 30%;
             margin-bottom: 30px;
         }
-
-        .hero-section button {
-            background-color: #ff4500;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s;
-        }
-
-        .hero-section button:hover {
-            background-color: #ff9800;
-            transform: scale(1.05);
-        }
-
-        .faq-section {
-            background: rgba(20, 20, 20, 0.95);
-            margin-top: 50px;
+        .faq {
+            background-color: var(--secondary-color);
             padding: 40px;
-            border-radius: 15px;
-            width: 75%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            overflow-y: scroll;
-            scrollbar-width: none;
+            border-radius: 10px;
         }
-
-        .faq-section::-webkit-scrollbar {
-            display: none;
-        }
-
-        .faq-section h2 {
-            font-size: 36px;
-            margin-bottom: 25px;
+        .faq h2 {
             text-align: center;
+            margin-bottom: 30px;
         }
-
-        .faq {
-            margin-bottom: 20px;
-        }
-
-        .faq h3 {
-            font-size: 24px;
-            cursor: pointer;
-            margin: 0;
-        }
-
-        .faq p {
-            font-size: 16px;
-            display: none;
-            margin-top: 8px;
-            opacity: 0.85;
-        }
-
-        .faq.active p {
-            display: block;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="navbar">
-        <a href="nonuke/tos">TOS</a>
-        <a href="nonuke/create-account">Create an Account</a>
-        <a href="nonuke/dashboard">Dashboard</a>
-    </div>
-
-    <div class="hero-section">
-        <h1>Welcome to NoNuke Bot</h1>
-        <p>Manage your Discord servers with ease and powerful tools.</p>
-        <button onclick="addBot()">Add NoNuke to Your Server</button>
-    </div>
-
-    <div class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-
-        <div class="faq">
-            <h3>What is NoNuke Bot?</h3>
-            <p>NoNuke Bot helps manage and secure your Discord server with advanced moderation tools.</p>
-        </div>
-
-        <div class="faq">
-            <h3>How do I add NoNuke Bot to my server?</h3>
-            <p>Click the "Add NoNuke to Your Server" button and follow the instructions.</p>
-        </div>
-
-        <div class="faq">
-            <h3>Is NoNuke Bot free?</h3>
-            <p>Yes, NoNuke Bot offers free features, but premium options are available for advanced management.</p>
-        </div>
-    </div>
-
-    <script>
-        function addBot() {
-            window.location.href = "https://discord.com/oauth2/authorize?client_id=YOUR_BOT_ID&scope=bot";
-        }
-
-        document.querySelectorAll('.faq h3').forEach(faqTitle => {
-            faqTitle.addEventListener('click', () => {
-                const faq = faqTitle.parentNode;
-                faq.classList.toggle('active');
-            });
-        });
-    </script>
-
-</body>
-</html>
-
-    <title>NoNuke - v1.0</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            height: 100%;
-            background: linear-gradient(to top, #111 0%, #333 100%);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
-
-        .navbar {
-            background: rgba(20, 20, 20, 0.9);
-            padding: 10px 20px;
-            position: absolute;
-            top: 20px;
-            width: 85%;
-            border-radius: 40px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-        }
-
-        .navbar a {
-            color: white;
+        .button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 12px 24px;
             text-decoration: none;
-            font-size: 16px;
-            padding: 8px 15px;
-            border-radius: 20px;
-            transition: background 0.3s ease;
-            font-weight: bold;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
-
-        .navbar a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .hero-section {
-            margin-top: 160px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .hero-section h1 {
-            font-size: 50px;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #ff4500, #ff9800);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeIn 1.5s ease;
-        }
-
-        .hero-section p {
-            font-size: 20px;
-            margin-bottom: 25px;
-            opacity: 0.9;
-        }
-
-        .hero-section button {
-            background-color: #ff4500;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 40px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s;
-        }
-
-        .hero-section button:hover {
-            background-color: #ff9800;
-            transform: scale(1.05);
-        }
-
-        .faq-section {
-            background: rgba(20, 20, 20, 0.95);
-            margin-top: 50px;
-            padding: 35px;
-            border-radius: 15px;
-            width: 75%;
-            text-align: left;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-        }
-
-        .faq-section h2 {
-            font-size: 36px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .faq {
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .faq h3 {
-            font-size: 26px;
-            cursor: pointer;
-            margin: 0;
-        }
-
-        .faq p {
-            font-size: 16px;
-            display: none;
-            margin-top: 8px;
-            opacity: 0.85;
-        }
-
-        .faq.active p {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .button:hover {
+            background-color: #5b6eae;
         }
     </style>
 </head>
 <body>
-
-    <div class="navbar">
-        <a href="nonuke/tos">TOS</a>
-        <a href="nonuke/create-account">Create an Account</a>
-        <a href="nonuke/dashboard">Dashboard</a>
-    </div>
-
-    <div class="hero-section">
-        <h1>Welcome to NoNuke Bot</h1>
-        <p>Manage your Discord servers like a pro with NoNuke’s powerful features.</p>
-        <button onclick="addBot()">Add NoNuke to Your Server</button>
-    </div>
-
-    <div class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-
-        <div class="faq">
-            <h3>What is NoNuke Bot?</h3>
-            <p>NoNuke Bot is a next-gen Discord bot with advanced moderation, automation, and security features to enhance server management.</p>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#faq">FAQ</a>
+            <a href="#tos">TOS</a>
+            <a href="create-account.html">Create Account</a>
         </div>
+    </nav>
 
-        <div class="faq">
-            <h3>How do I add NoNuke Bot to my server?</h3>
-            <p>Simply click on the "Add NoNuke to Your Server" button and follow the authorization steps.</p>
-        </div>
+    <div class="content">
+        <section id="home" class="hero">
+            <h1>Welcome to Nonuke - v1.0</h1>
+            <p>Protect your Discord server with our advanced anti-nuke bot.</p>
+            <a href="#" class="button">Add to Discord</a>
+        </section>
 
-        <div class="faq">
-            <h3>Is NoNuke Bot free?</h3>
-            <p>NoNuke Bot offers both free and premium features, allowing you to choose based on your server's needs.</p>
-        </div>
+        <section id="features" class="bot-showcase">
+            <div class="showcase-item">
+                <h3>Server Protection</h3>
+                <p>Advanced algorithms to detect and prevent nuking attempts.</p>
+            </div>
+            <div class="showcase-item">
+                <h3>User Management</h3>
+                <p>Easily manage user permissions and roles.</p>
+            </div>
+            <div class="showcase-item">
+                <h3>Customizable Settings</h3>
+                <p>Tailor the bot's behavior to your server's needs.</p>
+            </div>
+        </section>
+
+        <section id="faq" class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <h3>How does Nonuke protect my server?</h3>
+            <p>Nonuke uses advanced algorithms to detect suspicious activities and prevent potential nuking attempts.</p>
+            <h3>Is Nonuke free to use?</h3>
+            <p>Yes, Nonuke has a free tier with essential features. Premium plans are available for advanced protection.</p>
+            <h3>How do I set up Nonuke on my server?</h3>
+            <p>Simply click the "Add to Discord" button and follow the easy setup instructions.</p>
+        </section>
     </div>
-
-    <script>
-        function addBot() {
-            window.location.href = "https://discord.com/oauth2/authorize?client_id=YOUR_BOT_ID&scope=bot";
-        }
-
-        document.querySelectorAll('.faq h3').forEach(faqTitle => {
-            faqTitle.addEventListener('click', () => {
-                const faq = faqTitle.parentNode;
-                faq.classList.toggle('active');
-            });
-        });
-    </script>
-
 </body>
 </html>
