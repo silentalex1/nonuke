@@ -7,12 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0e0e0e;
-            --text-color: #ffffff;
+            --bg-color: #0d0d0d;
+            --text-color: #eaeaea;
             --accent-color: #7289DA;
-            --secondary-color: #1a1a1a;
-            --hover-color: #4b67a1;
-            --box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            --secondary-color: #161616;
+            --hover-color: #3a5ba0;
+            --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -25,31 +25,25 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
+            line-height: 1.7;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1150px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Navbar */
         .navbar {
-            background-color: rgba(31, 31, 31, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 20px 0;
+            background-color: rgba(22, 22, 22, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 15px 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             box-shadow: var(--box-shadow);
             transition: background-color 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            background-color: rgba(0, 0, 0, 0.8);
         }
 
         .nav-container {
@@ -62,7 +56,6 @@
             font-weight: 700;
             font-size: 26px;
             color: var(--accent-color);
-            letter-spacing: 1.5px;
         }
 
         .nav-links a {
@@ -78,71 +71,49 @@
             color: var(--accent-color);
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 160px 20px;
-            background: url('https://source.unsplash.com/1600x900/?cybersecurity,technology') no-repeat center center/cover;
+            padding: 170px 20px;
+            background: linear-gradient(135deg, #141414 0%, #1a1a1a 100%);
             border-radius: 0 0 40px 40px;
-            position: relative;
             color: var(--text-color);
-            margin-top: 80px;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 0 0 40px 40px;
-            z-index: 1;
+            position: relative;
         }
 
         .hero h1 {
-            font-size: 58px;
+            font-size: 62px;
             font-weight: 700;
-            margin-bottom: 25px;
-            z-index: 2;
-            position: relative;
+            margin-bottom: 20px;
         }
 
         .hero p {
             font-size: 22px;
-            margin-bottom: 50px;
+            margin-bottom: 45px;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            z-index: 2;
-            position: relative;
         }
 
         .hero .button {
             background-color: var(--accent-color);
             color: var(--text-color);
-            padding: 14px 35px;
-            text-decoration: none;
+            padding: 14px 36px;
             border-radius: 30px;
             display: inline-block;
             font-weight: 600;
             transition: background-color 0.3s ease;
-            z-index: 2;
-            position: relative;
         }
 
         .hero .button:hover {
             background-color: var(--hover-color);
         }
 
-        /* Features Section */
         .features {
-            padding: 120px 0;
+            padding: 100px 0;
             background-color: var(--secondary-color);
             border-radius: 40px;
             box-shadow: var(--box-shadow);
-            margin: 40px 0;
+            margin: 50px 0;
         }
 
         .features-grid {
@@ -166,17 +137,16 @@
         }
 
         .feature-item h3 {
-            font-size: 26px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
             color: var(--accent-color);
         }
 
         .feature-item p {
             font-size: 18px;
-            color: #bdbdbd;
+            color: #c0c0c0;
         }
 
-        /* Button */
         .button {
             background-color: var(--accent-color);
             color: var(--text-color);
@@ -186,14 +156,12 @@
             display: inline-block;
             font-weight: 600;
             transition: background-color 0.3s ease;
-            margin-top: 20px;
         }
 
         .button:hover {
             background-color: var(--hover-color);
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 30px;
@@ -272,7 +240,6 @@
     </footer>
 
     <script>
-        // Navbar Scroll Effect
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
             navbar.classList.toggle('scrolled', window.scrollY > 100);
