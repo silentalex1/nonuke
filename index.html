@@ -4,23 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nonuke - v1.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #7289DA;
-            --secondary-color: #2C2F33;
-            --text-color: #FFFFFF;
-            --background-color: #23272A;
+            --primary-color: #5E6AD2;
+            --secondary-color: #F5F7FF;
+            --text-color: #1A1A1A;
+            --background-color: #FFFFFF;
+            --accent-color: #FF7262;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
         }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
         .navbar {
-            background-color: var(--secondary-color);
+            background-color: var(--background-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 15px 0;
             position: fixed;
             width: 100%;
@@ -29,115 +37,144 @@
         }
         .nav-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
         }
-        .navbar a {
+        .logo {
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        .nav-links a {
             color: var(--text-color);
             text-decoration: none;
-            margin: 0 20px;
-            font-size: 14px;
+            margin-left: 30px;
+            font-size: 16px;
             font-weight: 500;
             transition: color 0.3s ease;
         }
-        .navbar a:hover {
+        .nav-links a:hover {
             color: var(--primary-color);
         }
         .content {
-            margin-top: 60px;
-            padding: 40px 20px;
+            margin-top: 80px;
         }
         .hero {
-            text-align: center;
-            padding: 80px 20px;
-            background-color: var(--secondary-color);
-            border-radius: 10px;
-            margin-bottom: 40px;
-        }
-        .hero h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        .bot-showcase {
             display: flex;
-            justify-content: space-around;
             align-items: center;
-            flex-wrap: wrap;
-            margin: 60px 0;
+            justify-content: space-between;
+            padding: 80px 0;
         }
-        .showcase-item {
-            text-align: center;
-            flex-basis: 30%;
+        .hero-text {
+            flex: 1;
+            padding-right: 50px;
+        }
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        .hero-text p {
+            font-size: 18px;
             margin-bottom: 30px;
         }
-        .faq {
-            background-color: var(--secondary-color);
-            padding: 40px;
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
             border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .faq h2 {
-            text-align: center;
-            margin-bottom: 30px;
+        .features {
+            background-color: var(--secondary-color);
+            padding: 80px 0;
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .feature-item {
+            background-color: var(--background-color);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        .feature-item h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
         }
         .button {
             background-color: var(--primary-color);
-            color: var(--text-color);
+            color: var(--background-color);
             padding: 12px 24px;
             text-decoration: none;
             border-radius: 25px;
             display: inline-block;
-            margin-top: 20px;
+            font-weight: 600;
             transition: background-color 0.3s ease;
         }
         .button:hover {
-            background-color: #5b6eae;
+            background-color: var(--accent-color);
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home">Home</a>
-            <a href="#features">Features</a>
-            <a href="#faq">FAQ</a>
-            <a href="#tos">TOS</a>
-            <a href="create-account.html">Create Account</a>
+        <div class="container nav-container">
+            <div class="logo">Nonuke</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#faq">FAQ</a>
+                <a href="#tos">TOS</a>
+                <a href="create-account.html" class="button">Create Account</a>
+            </div>
         </div>
     </nav>
 
     <div class="content">
-        <section id="home" class="hero">
-            <h1>Welcome to Nonuke - v1.0</h1>
-            <p>Protect your Discord server with our advanced anti-nuke bot.</p>
-            <a href="#" class="button">Add to Discord</a>
-        </section>
+        <div class="container">
+            <section id="home" class="hero">
+                <div class="hero-text">
+                    <h1>Protect Your Discord Server</h1>
+                    <p>Nonuke v1.0 offers advanced protection against server nuking attempts, ensuring your community stays safe and secure.</p>
+                    <a href="#" class="button">Add to Discord</a>
+                </div>
+                <div class="hero-image">
+                    <img src="hero-image.png" alt="Nonuke Bot Illustration">
+                </div>
+            </section>
 
-        <section id="features" class="bot-showcase">
-            <div class="showcase-item">
-                <h3>Server Protection</h3>
-                <p>Advanced algorithms to detect and prevent nuking attempts.</p>
-            </div>
-            <div class="showcase-item">
-                <h3>User Management</h3>
-                <p>Easily manage user permissions and roles.</p>
-            </div>
-            <div class="showcase-item">
-                <h3>Customizable Settings</h3>
-                <p>Tailor the bot's behavior to your server's needs.</p>
-            </div>
-        </section>
-
-        <section id="faq" class="faq">
-            <h2>Frequently Asked Questions</h2>
-            <h3>How does Nonuke protect my server?</h3>
-            <p>Nonuke uses advanced algorithms to detect suspicious activities and prevent potential nuking attempts.</p>
-            <h3>Is Nonuke free to use?</h3>
-            <p>Yes, Nonuke has a free tier with essential features. Premium plans are available for advanced protection.</p>
-            <h3>How do I set up Nonuke on my server?</h3>
-            <p>Simply click the "Add to Discord" button and follow the easy setup instructions.</p>
-        </section>
+            <section id="features" class="features">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3>Intelligent Protection</h3>
+                        <p>Advanced algorithms detect and prevent nuking attempts in real-time.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>User Management</h3>
+                        <p>Easily manage user permissions and roles with intuitive commands.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Customizable Settings</h3>
+                        <p>Tailor Nonuke's behavior to perfectly fit your server's unique needs.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 </body>
 </html>
