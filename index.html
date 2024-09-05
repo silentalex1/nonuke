@@ -114,6 +114,7 @@
             justify-content: center;
             align-items: center;
             background-color: #000000;
+            position: relative;
         }
         .url-prompt {
             font-size: 24px;
@@ -151,6 +152,23 @@
             height: 100%;
             border: none;
         }
+        .signout-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+        }
+        .signout-message {
+            color: white;
+            font-size: 24px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -167,6 +185,9 @@
             </div>
             <div class="browser-content" id="browserContent">
                 <div class="url-prompt" contenteditable="true" id="urlPrompt">Enter an URL</div>
+                <div class="signout-overlay">
+                    <div class="signout-message">You are signed out. Please sign in to use the proxy.</div>
+                </div>
             </div>
         </div>
     </div>
@@ -175,6 +196,7 @@
         const urlInput = document.getElementById('urlInput');
         const urlPrompt = document.getElementById('urlPrompt');
         const browserContent = document.getElementById('browserContent');
+        let animationPlayed = false;
 
         urlPrompt.addEventListener('input', function() {
             let text = this.textContent;
@@ -213,17 +235,27 @@
                 url = 'https://' + url;
             }
 
-            urlPrompt.classList.add('vanish');
+            if (!animationPlayed) {
+                urlPrompt.classList.add('vanish');
+                setTimeout(() => {
+                    urlPrompt.classList.remove('vanish');
+                    urlPrompt.classList.add('bottom');
+                    document.body.appendChild(urlPrompt);
+                    animationPlayed = true;
+                }, 500);
+            }
 
-            setTimeout(() => {
-                const iframe = document.createElement('iframe');
-                iframe.src = url;
-                browserContent.appendChild(iframe);
-
-                urlPrompt.classList.remove('vanish');
-                urlPrompt.classList.add('bottom');
-                document.body.appendChild(urlPrompt);
-            }, 500);
+            // Simulate proxy functionality (in a real scenario, you'd implement actual proxy logic here)
+            const iframe = document.createElement('iframe');
+            iframe.src = 'about:blank';
+            browserContent.innerHTML = '';
+            browserContent.appendChild(iframe);
+            
+            // Display "signed out" message
+            const signoutOverlay = document.createElement('div');
+            signoutOverlay.className = 'signout-overlay';
+            signoutOverlay.innerHTML = '<div class="signout-message">You are signed out. Please sign in to use the proxy.</div>';
+            browserContent.appendChild(signoutOverlay);
         }
 
         urlInput.addEventListener('keydown', function(e) {
