@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Nuke</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
             background-color: #0a0a0a;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         #background {
             width: 100%;
@@ -57,72 +59,35 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
-        .ui-element {
-            position: absolute;
-            width: 600px;
-            height: 300px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 20px;
-        }
-        .ui-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6e45e2, #88d3ce);
-            opacity: 0.7;
-        }
-        .ui-bar {
-            width: 120px;
-            height: 200px;
-            border-radius: 20px;
-            background: linear-gradient(to bottom, #d4fc79, #96e6a1);
-            opacity: 0.6;
-        }
-        .ui-square {
-            width: 100px;
-            height: 100px;
-            border-radius: 20px;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-            opacity: 0.7;
-        }
         .navbar {
             position: absolute;
-            top: 20px;
+            top: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 50px;
-            padding: 10px 20px;
+            padding: 5px;
             display: flex;
-            gap: 20px;
+            gap: 5px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .nav-button {
             color: #ffffff;
             text-decoration: none;
-            font-size: 16px;
+            font-size: 14px;
+            font-weight: 300;
             padding: 10px 20px;
             border-radius: 25px;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.5px;
         }
         .nav-button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -134,12 +99,6 @@
         <div class="shape circle" style="width: 150px; height: 150px; top: 80%; left: 20%;"></div>
         <div class="shape square" style="width: 100px; height: 100px; top: 30%; left: 70%;"></div>
         <div class="shape rectangle" style="width: 300px; height: 100px; top: 70%; left: 50%; transform: rotate(-30deg);"></div>
-        
-        <div class="ui-element">
-            <div class="ui-circle"></div>
-            <div class="ui-bar"></div>
-            <div class="ui-square"></div>
-        </div>
 
         <nav class="navbar">
             <a href="#" class="nav-button">Movies</a>
