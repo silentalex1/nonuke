@@ -8,40 +8,54 @@
         :root {
             --primary-color: #8a2be2;
             --secondary-color: #4a0082;
-            --background-color: #0f0f1a;
+            --background-gradient: linear-gradient(135deg, #1c1c1c, #2e2e2e);
             --text-color: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.3);
+            --input-background: rgba(255, 255, 255, 0.1);
         }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
+            background: var(--background-gradient);
             color: var(--text-color);
             overflow: hidden;
         }
+
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             height: 100%;
-            padding-top: 50px;
+            text-align: center;
+            padding: 20px;
         }
+
         .logo {
             font-size: 3em;
             margin-bottom: 30px;
             text-shadow: 0 0 20px var(--primary-color);
             font-weight: bold;
             letter-spacing: 2px;
+            transition: transform 0.3s ease;
         }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
         .search-container {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 30px;
         }
+
         .search-box {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--input-background);
             border: 2px solid var(--primary-color);
             border-radius: 30px;
             padding: 12px 20px;
@@ -51,9 +65,11 @@
             outline: none;
             transition: all 0.3s ease;
         }
+
         .search-box:focus {
             box-shadow: 0 0 15px var(--primary-color);
         }
+
         .search-button {
             background-color: var(--primary-color);
             color: var(--text-color);
@@ -65,99 +81,67 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .search-button:hover {
             background-color: var(--secondary-color);
             box-shadow: 0 0 15px var(--primary-color);
         }
+
         .mini-browser {
             width: 80%;
             max-width: 1000px;
-            height: 60%;
-            background-color: #ffffff;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--border-color);
             border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
         }
-        .browser-header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .browser-actions {
-            display: flex;
-            margin-right: 15px;
-        }
-        .browser-action {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        .close { background-color: #ff5f56; }
-        .minimize { background-color: #ffbd2e; }
-        .maximize { background-color: #27c93f; }
-        .browser-address-bar {
-            flex-grow: 1;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 15px;
-            padding: 5px 15px;
-            font-size: 0.9em;
-            color: #333;
-        }
-        .browser-content {
-            height: calc(100% - 50px);
-            background-color: #ffffff;
-        }
-        .particles {
+
+        .mini-browser::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: -1;
+            background: url('https://via.placeholder.com/1000x400/000000/555555?text=Your+Content') center/cover no-repeat;
+            opacity: 0.2;
         }
-        .particle {
-            position: absolute;
-            background-color: rgba(138, 43, 226, 0.2);
-            border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
+
+        .mini-browser-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            font-size: 1.5em;
         }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(50px, -50px); }
-            50% { transform: translate(-50px, -100px); }
-            75% { transform: translate(-100px, 50px); }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-    <div class="particles">
-        <div class="particle" style="width: 15px; height: 15px; left: 10%; top: 20%; animation-delay: 0s;"></div>
-        <div class="particle" style="width: 20px; height: 20px; left: 20%; top: 80%; animation-delay: 2s;"></div>
-        <div class="particle" style="width: 12px; height: 12px; left: 60%; top: 40%; animation-delay: 4s;"></div>
-        <div class="particle" style="width: 18px; height: 18px; left: 80%; top: 10%; animation-delay: 6s;"></div>
-        <div class="particle" style="width: 10px; height: 10px; left: 45%; top: 70%; animation-delay: 8s;"></div>
-    </div>
     <div class="container">
         <div class="logo">No Nuke</div>
         <div class="search-container">
-            <input type="text" class="search-box" placeholder="Enter URL">
-            <button class="search-button">Go</button>
+            <input type="text" class="search-box" placeholder="Enter URL to unblock...">
+            <button class="search-button">Unblock</button>
         </div>
         <div class="mini-browser">
-            <div class="browser-header">
-                <div class="browser-actions">
-                    <div class="browser-action close"></div>
-                    <div class="browser-action minimize"></div>
-                    <div class="browser-action maximize"></div>
-                </div>
-                <input type="text" class="browser-address-bar" value="https://example.com" readonly>
+            <div class="mini-browser-content">
+                Your Content Goes Here
             </div>
-            <div class="browser-content"></div>
         </div>
+        <footer>
+            &copy; 2024 No Nuke. All rights reserved.
+        </footer>
     </div>
 </body>
 </html>
