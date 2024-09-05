@@ -3,247 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nonuke - v1.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>No Nuke</title>
     <style>
-        :root {
-            --bg-color: #0d0d0d;
-            --text-color: #eaeaea;
-            --accent-color: #7289DA;
-            --secondary-color: #161616;
-            --hover-color: #3a5ba0;
-            --box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.7;
-        }
-
         .container {
-            max-width: 1150px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .navbar {
-            background-color: rgba(22, 22, 22, 0.95);
-            backdrop-filter: blur(12px);
-            padding: 15px 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--box-shadow);
-            transition: background-color 0.3s ease;
-        }
-
-        .nav-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 26px;
-            color: var(--accent-color);
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin-left: 35px;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 170px 20px;
-            background: linear-gradient(135deg, #141414 0%, #1a1a1a 100%);
-            border-radius: 0 0 40px 40px;
-            color: var(--text-color);
+            justify-content: center;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #0a0a0a 70%);
             position: relative;
         }
-
-        .hero h1 {
-            font-size: 62px;
-            font-weight: 700;
-            margin-bottom: 20px;
+        .logo {
+            font-size: 4em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #8a2be2;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
-
-        .hero p {
-            font-size: 22px;
-            margin-bottom: 45px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero .button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
-            padding: 14px 36px;
+        .search-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #8a2be2;
             border-radius: 30px;
-            display: inline-block;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
+            padding: 15px 25px;
+            width: 350px;
+            color: #ffffff;
+            font-size: 1.1em;
+            outline: none;
+            transition: all 0.3s ease;
         }
-
-        .hero .button:hover {
-            background-color: var(--hover-color);
+        .search-box:focus {
+            box-shadow: 0 0 15px #8a2be2;
         }
-
-        .features {
-            padding: 100px 0;
-            background-color: var(--secondary-color);
-            border-radius: 40px;
-            box-shadow: var(--box-shadow);
-            margin: 50px 0;
+        .search-box::placeholder {
+            color: #cccccc;
         }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-        }
-
-        .feature-item {
-            background-color: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: var(--box-shadow);
-        }
-
-        .feature-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-item h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: var(--accent-color);
-        }
-
-        .feature-item p {
-            font-size: 18px;
-            color: #c0c0c0;
-        }
-
         .button {
-            background-color: var(--accent-color);
-            color: var(--text-color);
+            margin-top: 25px;
             padding: 12px 30px;
-            text-decoration: none;
+            background-color: #8a2be2;
+            color: #ffffff;
+            border: none;
             border-radius: 30px;
-            display: inline-block;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
         .button:hover {
-            background-color: var(--hover-color);
+            background-color: #9b4dff;
+            box-shadow: 0 0 15px #8a2be2;
+            transform: translateY(-2px);
         }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-color);
-            background-color: var(--secondary-color);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: var(--box-shadow);
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
         }
-
-        footer p {
-            font-size: 14px;
-            margin: 0;
+        .particle {
+            position: absolute;
+            background-color: rgba(138, 43, 226, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
         }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 40px;
-            }
-
-            .hero p {
-                font-size: 18px;
-            }
-
-            .nav-links a {
-                font-size: 14px;
-            }
-
-            .features {
-                padding: 60px 0;
-            }
+        @keyframes float {
+            0%, 100% {transform: translate(0, 0);}
+            25% {transform: translate(50px, -50px);}
+            50% {transform: translate(-50px, -100px);}
+            75% {transform: translate(-100px, 50px);}
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">Nonuke</div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#features">Features</a>
-                <a href="/account" class="button">Create Account</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="content">
-        <section id="home" class="hero">
-            <h1>Secure Your Discord, Effortlessly</h1>
-            <p>Nonuke provides top-tier protection and seamless server setup, all in one powerful bot.</p>
-            <a href="#" class="button">Add to Discord</a>
-        </section>
-
-        <section id="features" class="features">
-            <div class="container">
-                <h2 style="text-align:center; color: var(--text-color); margin-bottom: 40px;">Key Features</h2>
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <h3>Advanced Security</h3>
-                        <p>Cutting-edge algorithms to detect and prevent server attacks in real-time.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Custom Welcome</h3>
-                        <p>Create personalized welcome messages to greet new members in style.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h3>Easy Configuration</h3>
-                        <p>Intuitive commands to set up and customize Nonuke to your server's needs.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="particles">
+        <div class="particle" style="width: 15px; height: 15px; left: 10%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 20px; height: 20px; left: 20%; top: 80%; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 12px; height: 12px; left: 60%; top: 40%; animation-delay: 4s;"></div>
+        <div class="particle" style="width: 18px; height: 18px; left: 80%; top: 10%; animation-delay: 6s;"></div>
+        <div class="particle" style="width: 10px; height: 10px; left: 45%; top: 70%; animation-delay: 8s;"></div>
+        <div class="particle" style="width: 16px; height: 16px; left: 30%; top: 50%; animation-delay: 10s;"></div>
+        <div class="particle" style="width: 14px; height: 14px; left: 70%; top: 30%; animation-delay: 12s;"></div>
     </div>
-
-    <footer>
-        <p>&copy; 2024 Nonuke. All rights reserved.</p>
-    </footer>
-
-    <script>
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            navbar.classList.toggle('scrolled', window.scrollY > 100);
-        });
-    </script>
+    <div class="container">
+        <div class="logo">No Nuke</div>
+        <input type="text" class="search-box" placeholder="Enter URL">
+        <button class="button">Go</button>
+    </div>
 </body>
 </html>
