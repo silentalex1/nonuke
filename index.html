@@ -3,39 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Nuke</title>
+    <title>Advanced No Nuke Browser</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-        }
-        #background {
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(103, 58, 183, 0.1) 0%, rgba(103, 58, 183, 0) 40%),
-                radial-gradient(circle at 100% 100%, rgba(131, 58, 180, 0.1) 0%, rgba(131, 58, 180, 0) 40%),
-                linear-gradient(135deg, #000000 0%, #1a0033 30%, #2d0054 60%, #3b0066 100%);
-            position: relative;
-            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a0033 30%, #2d0054 60%, #3b0066 100%);
         }
         .navbar {
             position: absolute;
-            top: 40px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 80px;
-            padding: 8px;
+            border-radius: 50px;
+            padding: 10px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 10;
@@ -43,152 +33,107 @@
         .nav-button {
             color: #ffffff;
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 400;
-            padding: 16px 32px;
-            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 25px;
             transition: all 0.3s ease;
             letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-        .nav-button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            transition: 0.6s;
-        }
-        .nav-button:hover:before {
-            transform: translateX(100%);
         }
         .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
         }
         .mini-browser {
             position: absolute;
-            top: 120px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80%;
-            height: 70%;
+            width: 90%;
+            height: 80%;
             background-color: #0a0a0a;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         .browser-bar {
-            height: 60px;
+            height: 50px;
             background-color: #1a0033;
             display: flex;
             align-items: center;
             padding: 0 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 10px;
+        }
+        .browser-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ff5f56;
+        }
+        .browser-button:nth-child(2) {
+            background-color: #ffbd2e;
+        }
+        .browser-button:nth-child(3) {
+            background-color: #27c93f;
         }
         .url-input {
             flex-grow: 1;
-            height: 40px;
+            height: 30px;
             background-color: #2d0054;
             border: none;
-            border-radius: 20px;
+            border-radius: 15px;
             color: white;
-            padding: 0 20px;
-            font-size: 16px;
+            padding: 0 15px;
+            font-size: 14px;
             outline: none;
-            transition: all 0.3s ease;
-        }
-        .url-input:focus {
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
         }
         .browser-content {
             flex-grow: 1;
+            background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000000;
-            position: relative;
+            font-size: 18px;
+            color: #333;
         }
         .url-prompt {
             font-size: 24px;
             color: #ffffff;
-            opacity: 0.7;
             text-align: center;
             padding: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             transition: all 0.5s ease;
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             z-index: 2;
         }
         .url-prompt:focus {
-            opacity: 1;
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             outline: none;
-        }
-        .url-prompt.vanish {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-        .url-prompt.bottom {
-            top: calc(100% - 80px);
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-            padding: 10px 20px;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .signout-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 3;
-        }
-        .signout-message {
-            color: white;
-            font-size: 24px;
-            text-align: center;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
 <body>
-    <div id="background">
-        <nav class="navbar">
-            <a href="#" class="nav-button">Movies</a>
-            <a href="#" class="nav-button">Games</a>
-            <a href="#" class="nav-button">ToS</a>
-            <a href="#" class="nav-button">Settings</a>
-        </nav>
-        <div class="mini-browser">
-            <div class="browser-bar">
-                <input type="text" class="url-input" placeholder="Enter URL" id="urlInput">
-            </div>
-            <div class="browser-content" id="browserContent">
-                <div class="url-prompt" contenteditable="true" id="urlPrompt">Enter an URL</div>
-                <div class="signout-overlay">
-                    <div class="signout-message">You are signed out. Please sign in to use the proxy.</div>
-                </div>
-            </div>
+    <nav class="navbar">
+        <a href="#" class="nav-button">Movies</a>
+        <a href="#" class="nav-button">Games</a>
+        <a href="#" class="nav-button">ToS</a>
+        <a href="#" class="nav-button">Settings</a>
+    </nav>
+    <div class="mini-browser">
+        <div class="browser-bar">
+            <div class="browser-button"></div>
+            <div class="browser-button"></div>
+            <div class="browser-button"></div>
+            <input type="text" class="url-input" placeholder="Enter URL" id="urlInput">
+        </div>
+        <div class="browser-content" id="browserContent">
+            <div class="url-prompt" contenteditable="true" id="urlPrompt">Enter an URL</div>
         </div>
     </div>
 
@@ -196,36 +141,21 @@
         const urlInput = document.getElementById('urlInput');
         const urlPrompt = document.getElementById('urlPrompt');
         const browserContent = document.getElementById('browserContent');
-        let animationPlayed = false;
 
         urlPrompt.addEventListener('input', function() {
-            let text = this.textContent;
-            if (text.includes('://')) {
-                text = text.split('://')[1];
-            }
-            if (text.includes('/')) {
-                text = text.split('/')[0];
-            }
-            urlInput.value = text;
+            urlInput.value = this.textContent;
         });
 
         urlPrompt.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                this.blur();
                 loadURL();
             }
         });
 
-        urlPrompt.addEventListener('focus', function() {
-            if (this.textContent === 'Enter an URL') {
-                this.textContent = '';
-            }
-        });
-
-        urlPrompt.addEventListener('blur', function() {
-            if (this.textContent.trim() === '') {
-                this.textContent = 'Enter an URL';
+        urlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                loadURL();
             }
         });
 
@@ -235,34 +165,14 @@
                 url = 'https://' + url;
             }
 
-            if (!animationPlayed) {
-                urlPrompt.classList.add('vanish');
-                setTimeout(() => {
-                    urlPrompt.classList.remove('vanish');
-                    urlPrompt.classList.add('bottom');
-                    document.body.appendChild(urlPrompt);
-                    animationPlayed = true;
-                }, 500);
-            }
+            browserContent.innerHTML = `<div style="text-align: center;">
+                <p>Simulating loading of: ${url}</p>
+                <p>Account sign-out process initiated.</p>
+                <p>For security reasons, actual sign-out cannot be performed.</p>
+            </div>`;
 
-            // Simulate proxy functionality (in a real scenario, you'd implement actual proxy logic here)
-            const iframe = document.createElement('iframe');
-            iframe.src = 'about:blank';
-            browserContent.innerHTML = '';
-            browserContent.appendChild(iframe);
-            
-            // Display "signed out" message
-            const signoutOverlay = document.createElement('div');
-            signoutOverlay.className = 'signout-overlay';
-            signoutOverlay.innerHTML = '<div class="signout-message">You are signed out. Please sign in to use the proxy.</div>';
-            browserContent.appendChild(signoutOverlay);
+            urlPrompt.style.display = 'none';
         }
-
-        urlInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                loadURL();
-            }
-        });
     </script>
 </body>
 </html>
