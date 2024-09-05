@@ -125,13 +125,31 @@
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
+            position: absolute;
+            z-index: 2;
         }
         .url-prompt:focus {
             opacity: 1;
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             outline: none;
+        }
+        .url-prompt.vanish {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .url-prompt.bottom {
+            top: calc(100% - 80px);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            padding: 10px 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -147,7 +165,7 @@
             <div class="browser-bar">
                 <input type="text" class="url-input" placeholder="Enter URL" id="urlInput">
             </div>
-            <div class="browser-content">
+            <div class="browser-content" id="browserContent">
                 <div class="url-prompt" contenteditable="true" id="urlPrompt">Enter an URL</div>
             </div>
         </div>
@@ -156,6 +174,7 @@
     <script>
         const urlInput = document.getElementById('urlInput');
         const urlPrompt = document.getElementById('urlPrompt');
+        const browserContent = document.getElementById('browserContent');
 
         urlPrompt.addEventListener('input', function() {
             let text = this.textContent;
@@ -172,6 +191,7 @@
             if (e.key === 'Enter') {
                 e.preventDefault();
                 this.blur();
+                loadURL();
             }
         });
 
@@ -184,6 +204,31 @@
         urlPrompt.addEventListener('blur', function() {
             if (this.textContent.trim() === '') {
                 this.textContent = 'Enter an URL';
+            }
+        });
+
+        function loadURL() {
+            let url = urlInput.value;
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            urlPrompt.classList.add('vanish');
+
+            setTimeout(() => {
+                const iframe = document.createElement('iframe');
+                iframe.src = url;
+                browserContent.appendChild(iframe);
+
+                urlPrompt.classList.remove('vanish');
+                urlPrompt.classList.add('bottom');
+                document.body.appendChild(urlPrompt);
+            }, 500);
+        }
+
+        urlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                loadURL();
             }
         });
     </script>
