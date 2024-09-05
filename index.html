@@ -29,7 +29,7 @@
             top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.07);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 80px;
@@ -37,7 +37,7 @@
             display: flex;
             gap: 8px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 10;
         }
         .nav-button {
@@ -59,7 +59,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transform: translateX(-100%);
             transition: 0.6s;
         }
@@ -69,7 +69,7 @@
         .nav-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
         }
         .mini-browser {
             position: absolute;
@@ -78,7 +78,7 @@
             transform: translateX(-50%);
             width: 80%;
             height: 70%;
-            background-color: #000000;
+            background-color: #0a0a0a;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow: hidden;
@@ -91,6 +91,7 @@
             display: flex;
             align-items: center;
             padding: 0 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         .url-input {
             flex-grow: 1;
@@ -102,12 +103,17 @@
             padding: 0 20px;
             font-size: 16px;
             outline: none;
+            transition: all 0.3s ease;
+        }
+        .url-input:focus {
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
         }
         .browser-content {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #000000;
         }
         .url-prompt {
             font-size: 24px;
@@ -121,10 +127,11 @@
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
-        .url-prompt:hover {
+        .url-prompt:focus {
             opacity: 1;
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            outline: none;
         }
     </style>
 </head>
@@ -134,15 +141,51 @@
             <a href="#" class="nav-button">Movies</a>
             <a href="#" class="nav-button">Games</a>
             <a href="#" class="nav-button">ToS</a>
+            <a href="#" class="nav-button">Settings</a>
         </nav>
         <div class="mini-browser">
             <div class="browser-bar">
-                <input type="text" class="url-input" placeholder="Enter URL" readonly>
+                <input type="text" class="url-input" placeholder="Enter URL" id="urlInput">
             </div>
             <div class="browser-content">
-                <div class="url-prompt">Enter an URL</div>
+                <div class="url-prompt" contenteditable="true" id="urlPrompt">Enter an URL</div>
             </div>
         </div>
     </div>
+
+    <script>
+        const urlInput = document.getElementById('urlInput');
+        const urlPrompt = document.getElementById('urlPrompt');
+
+        urlPrompt.addEventListener('input', function() {
+            let text = this.textContent;
+            if (text.includes('://')) {
+                text = text.split('://')[1];
+            }
+            if (text.includes('/')) {
+                text = text.split('/')[0];
+            }
+            urlInput.value = text;
+        });
+
+        urlPrompt.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.blur();
+            }
+        });
+
+        urlPrompt.addEventListener('focus', function() {
+            if (this.textContent === 'Enter an URL') {
+                this.textContent = '';
+            }
+        });
+
+        urlPrompt.addEventListener('blur', function() {
+            if (this.textContent.trim() === '') {
+                this.textContent = 'Enter an URL';
+            }
+        });
+    </script>
 </body>
 </html>
