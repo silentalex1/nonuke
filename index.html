@@ -3,30 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nonuke</title>
+    <title>No Nuke</title>
     <style>
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #2E003E, #000000);
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-        .background {
-            background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9));
             height: 100%;
+            overflow: hidden;
+        }
+        #background {
             width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+            height: 100%;
+            background: linear-gradient(135deg, 
+                #000000 0%, 
+                #2e003e 40%, 
+                #5c007f 100%);
+            background-size: cover;
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
+    <div id="background"></div>
 </body>
 </html>
