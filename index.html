@@ -18,11 +18,36 @@
                 #000000 0%, 
                 #2e003e 40%, 
                 #5c007f 100%);
-            background-size: cover;
+            position: relative;
+        }
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+        }
+        .circle {
+            border-radius: 50%;
+            background: #ffffff;
+        }
+        .square {
+            background: #ffffff;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 86.6px solid #ffffff;
         }
     </style>
 </head>
 <body>
-    <div id="background"></div>
+    <div id="background">
+        <div class="shape circle" style="width: 200px; height: 200px; top: 10%; left: 5%;"></div>
+        <div class="shape square" style="width: 150px; height: 150px; top: 60%; left: 80%;"></div>
+        <div class="shape triangle" style="top: 40%; left: 70%;"></div>
+        <div class="shape circle" style="width: 100px; height: 100px; top: 80%; left: 20%;"></div>
+        <div class="shape square" style="width: 80px; height: 80px; top: 30%; left: 40%;"></div>
+        <div class="shape triangle" style="top: 70%; left: 50%; transform: scale(0.6);"></div>
+    </div>
 </body>
 </html>
