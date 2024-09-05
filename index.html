@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Nuke</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
         body, html {
             margin: 0;
@@ -13,43 +13,43 @@
             height: 100%;
             overflow: hidden;
             background-color: #0a0a0a;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         #background {
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 10% 10%, rgba(103, 58, 183, 0.05) 0%, rgba(103, 58, 183, 0) 50%),
-                radial-gradient(circle at 90% 90%, rgba(131, 58, 180, 0.05) 0%, rgba(131, 58, 180, 0) 50%),
+                radial-gradient(circle at 10% 10%, rgba(103, 58, 183, 0.03) 0%, rgba(103, 58, 183, 0) 40%),
+                radial-gradient(circle at 90% 90%, rgba(131, 58, 180, 0.03) 0%, rgba(131, 58, 180, 0) 40%),
                 linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
             position: relative;
             overflow: hidden;
         }
         .shape {
             position: absolute;
-            opacity: 0.03;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            opacity: 0.02;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.5s ease;
         }
         .circle {
             border-radius: 50%;
-            animation: float 20s infinite ease-in-out;
+            animation: float 25s infinite ease-in-out;
         }
         .square {
-            border-radius: 15px;
-            animation: rotate 30s infinite linear;
+            border-radius: 20px;
+            animation: rotate 35s infinite linear;
         }
         .rectangle {
-            border-radius: 20px;
-            animation: pulse 15s infinite ease-in-out;
+            border-radius: 25px;
+            animation: pulse 20s infinite ease-in-out;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
         @keyframes rotate {
             0% { transform: rotate(0deg); }
@@ -57,48 +57,63 @@
         }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
         }
         .navbar {
             position: absolute;
-            top: 30px;
+            top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 5px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 60px;
+            padding: 8px;
             display: flex;
-            gap: 5px;
+            gap: 8px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .nav-button {
             color: #ffffff;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 300;
-            padding: 10px 20px;
-            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 12px 24px;
+            border-radius: 30px;
             transition: all 0.3s ease;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        .nav-button:hover:before {
+            width: 100%;
         }
         .nav-button:hover {
-            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
     <div id="background">
-        <div class="shape circle" style="width: 300px; height: 300px; top: 10%; left: 5%;"></div>
-        <div class="shape square" style="width: 200px; height: 200px; top: 60%; left: 80%;"></div>
-        <div class="shape rectangle" style="width: 400px; height: 200px; top: 40%; left: 30%; transform: rotate(45deg);"></div>
-        <div class="shape circle" style="width: 150px; height: 150px; top: 80%; left: 20%;"></div>
-        <div class="shape square" style="width: 100px; height: 100px; top: 30%; left: 70%;"></div>
-        <div class="shape rectangle" style="width: 300px; height: 100px; top: 70%; left: 50%; transform: rotate(-30deg);"></div>
+        <div class="shape circle" style="width: 400px; height: 400px; top: 5%; left: 2%;"></div>
+        <div class="shape square" style="width: 250px; height: 250px; top: 65%; left: 85%;"></div>
+        <div class="shape rectangle" style="width: 500px; height: 250px; top: 45%; left: 25%; transform: rotate(45deg);"></div>
+        <div class="shape circle" style="width: 200px; height: 200px; top: 75%; left: 15%;"></div>
+        <div class="shape square" style="width: 150px; height: 150px; top: 25%; left: 75%;"></div>
+        <div class="shape rectangle" style="width: 350px; height: 120px; top: 60%; left: 55%; transform: rotate(-30deg);"></div>
 
         <nav class="navbar">
             <a href="#" class="nav-button">Movies</a>
