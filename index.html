@@ -12,7 +12,6 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
-            background-color: #1a0033;
             font-family: 'Poppins', sans-serif;
         }
         #background {
@@ -21,35 +20,16 @@
             background: 
                 radial-gradient(circle at 0% 0%, rgba(103, 58, 183, 0.1) 0%, rgba(103, 58, 183, 0) 40%),
                 radial-gradient(circle at 100% 100%, rgba(131, 58, 180, 0.1) 0%, rgba(131, 58, 180, 0) 40%),
-                linear-gradient(135deg, #1a0033 0%, #2d0054 50%, #3b0066 100%);
+                linear-gradient(135deg, #000000 0%, #1a0033 30%, #2d0054 60%, #3b0066 100%);
             position: relative;
             overflow: hidden;
-        }
-        .shape {
-            position: absolute;
-            opacity: 0.03;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.5s ease;
-        }
-        .circle {
-            border-radius: 50%;
-        }
-        .square {
-            border-radius: 30px;
-        }
-        .rectangle {
-            border-radius: 40px;
         }
         .navbar {
             position: absolute;
             top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 80px;
@@ -58,6 +38,7 @@
             gap: 8px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 10;
         }
         .nav-button {
             color: #ffffff;
@@ -90,22 +71,78 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             background: rgba(255, 255, 255, 0.05);
         }
+        .mini-browser {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 70%;
+            background-color: #000000;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .browser-bar {
+            height: 60px;
+            background-color: #1a0033;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .url-input {
+            flex-grow: 1;
+            height: 40px;
+            background-color: #2d0054;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            padding: 0 20px;
+            font-size: 16px;
+            outline: none;
+        }
+        .browser-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .url-prompt {
+            font-size: 24px;
+            color: #ffffff;
+            opacity: 0.7;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .url-prompt:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
     <div id="background">
-        <div class="shape circle" style="width: 600px; height: 600px; top: -10%; left: -10%;"></div>
-        <div class="shape square" style="width: 350px; height: 350px; top: 60%; left: 80%;"></div>
-        <div class="shape rectangle" style="width: 700px; height: 350px; top: 40%; left: 20%; transform: rotate(45deg);"></div>
-        <div class="shape circle" style="width: 300px; height: 300px; top: 70%; left: 10%;"></div>
-        <div class="shape square" style="width: 250px; height: 250px; top: 20%; left: 70%;"></div>
-        <div class="shape rectangle" style="width: 450px; height: 180px; top: 55%; left: 50%; transform: rotate(-30deg);"></div>
-
         <nav class="navbar">
             <a href="#" class="nav-button">Movies</a>
             <a href="#" class="nav-button">Games</a>
             <a href="#" class="nav-button">ToS</a>
         </nav>
+        <div class="mini-browser">
+            <div class="browser-bar">
+                <input type="text" class="url-input" placeholder="Enter URL" readonly>
+            </div>
+            <div class="browser-content">
+                <div class="url-prompt">Enter an URL</div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
