@@ -18,24 +18,46 @@
             background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             color: #fff;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             height: 100vh;
             overflow-x: hidden;
         }
 
+        .navbar {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 0;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar a {
+            margin: 0 15px;
+            color: #ffb6c1;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             width: 90%;
-            max-width: 1200px;
+            max-width: 800px;
             text-align: center;
             padding: 30px;
+            margin-top: 60px;
             background: rgba(0, 0, 0, 0.8);
             border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #ffb6c1;
             margin-bottom: 20px;
         }
@@ -50,7 +72,7 @@
         }
 
         #text-output {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #ddd;
             min-height: 150px;
             text-align: left;
@@ -64,7 +86,7 @@
             border-radius: 10px;
             background-color: #222;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1rem;
             outline: none;
             transition: border-color 0.3s ease;
         }
@@ -125,7 +147,7 @@
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .stats {
@@ -137,17 +159,23 @@
             }
 
             #user-input {
-                font-size: 1rem;
+                font-size: 0.9rem;
                 padding: 15px;
             }
 
             #text-output {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="nonuke.me/createaccount">Create Account</a>
+        <a href="nonuke.me/leaderboard">Leaderboard</a>
+        <a href="nonuke.me/multiplayer.index">Multiplayer</a>
+    </div>
+
     <div class="container">
         <h1>NoNuke - Type Fast</h1>
 
