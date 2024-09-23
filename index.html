@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NoNuke - Type Fast</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
@@ -16,34 +15,38 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
 
         .navbar {
-            width: 90%;
+            width: 100%;
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px 0;
+            padding: 10px 0;
             text-align: center;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            transition: background 0.3s;
         }
 
         .navbar a {
             margin: 0 15px;
             color: #ffb6c1;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            transition: color 0.3s, transform 0.2s;
         }
 
         .navbar a:hover {
-            text-decoration: underline;
+            color: #4a00e0;
+            transform: scale(1.1);
         }
 
         .container {
@@ -51,25 +54,38 @@
             max-width: 800px;
             text-align: center;
             padding: 40px;
-            margin-top: 20px;
+            margin-top: 70px;
             background: rgba(0, 0, 0, 0.8);
             border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 60px rgba(0, 0, 0, 0.7);
         }
 
         h1 {
             font-size: 2.5rem;
             color: #ffb6c1;
             margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
         .typing-box {
             position: relative;
             margin: 20px 0;
             padding: 25px;
-            background: #333;
+            background: #222;
             border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .typing-box:hover {
+            transform: scale(1.02);
         }
 
         #text-output {
@@ -83,14 +99,18 @@
         #user-input {
             width: 100%;
             padding: 15px;
-            margin-top: 20px;
-            border: 2px solid #4a00e0;
+            margin-top: 15px;
+            border: none;
             border-radius: 10px;
-            background-color: #222;
+            background-color: #444;
             color: #fff;
-            font-size: 1rem;
+            font-size: 1.1rem;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: background-color 0.3s;
+        }
+
+        #user-input:focus {
+            background-color: #555;
         }
 
         .progress {
@@ -98,7 +118,7 @@
             height: 10px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
-            margin-top: 15px;
+            margin-top: 10px;
             overflow: hidden;
         }
 
@@ -111,40 +131,29 @@
         .stats {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .stats div {
             flex: 1;
             text-align: center;
-            margin: 10px;
+            margin: 0 10px;
+            transition: transform 0.2s;
+        }
+
+        .stats div:hover {
+            transform: scale(1.05);
         }
 
         .footer {
             margin-top: 40px;
-            font-size: 1rem;
-            opacity: 0.6;
+            font-size: 0.9rem;
+            opacity: 0.7;
         }
 
         .footer a {
             color: #6e3cbc;
             text-decoration: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background-color: #ffb6c1;
-            border-radius: 50%;
-            animation: fly 1.2s ease-in-out forwards;
-        }
-
-        @keyframes fly {
-            to {
-                transform: translateY(-150px) translateX(90px);
-                opacity: 0;
-            }
         }
 
         @media (max-width: 768px) {
@@ -157,24 +166,47 @@
             }
 
             .stats div {
-                margin: 15px 0;
+                margin: 10px 0;
             }
 
             #user-input {
                 font-size: 0.9rem;
-                padding: 15px;
+                padding: 12px;
             }
 
             #text-output {
                 font-size: 1.2rem;
             }
         }
+
+        /* Additional Styles for Animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #4a00e0;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pulse 1s infinite;
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a href="https://nonuke.me/createaccount">Create Account</a>
-        <a href="https://nonuke.me/leaderboard">Leaderboard</a>
+        <a href="https://nonuke.me/createaccount/account">Create Account</a>
+        <a href="https://nonuke.me/leaderboard/leader">Leaderboard</a>
         <a href="https://nonuke.me/multiplayer">Multiplayer</a>
     </div>
 
@@ -259,38 +291,43 @@
             const elapsedTime = (new Date() - startTime) / 1000;
             wordCount = inputText.split(' ').length;
 
-            const wpm = Math.round((wordCount / elapsedTime) * 60);
+            const wpm = Math.floor((wordCount / elapsedTime) * 60);
+            const accuracy = ((correctCharacters / totalCharacters) * 100) || 0;
+
             wpmDisplay.textContent = wpm;
+            accuracyDisplay.textContent = accuracy.toFixed(2) + '%';
+            timeDisplay.textContent = Math.floor(elapsedTime);
 
-            const accuracy = ((correctCharacters / totalCharacters) * 100).toFixed(2);
-            accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
-
-            timeDisplay.textContent = Math.round(elapsedTime);
-            progressBar.style.width = `${(inputText.length / displayedText.length) * 100}%`;
-
-            if (inputText === displayedText) {
-                setTimeout(() => {
-                    alert('Great job! Starting a new round!');
-                    generateRandomWords();
-                    userInput.value = '';
-                    startTime = null;
-                    progressBar.style.width = '0%';
-                }, 1000);
-            }
+            updateProgressBar(elapsedTime);
         });
 
-        function generateParticle() {
-            let particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = `${Math.random() * 100}%`;
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1200);
+        function updateProgressBar(elapsedTime) {
+            const maxTime = 60; // 60 seconds
+            const width = Math.min((elapsedTime / maxTime) * 100, 100);
+            progressBar.style.width = width + '%';
         }
 
         function shakeScreen() {
             document.body.classList.add('shake');
-            setTimeout(() => document.body.classList.remove('shake'), 500);
+            setTimeout(() => {
+                document.body.classList.remove('shake');
+            }, 500);
         }
+
+        function generateParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.top = Math.random() * window.innerHeight + 'px';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(particle);
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
+
+        window.onload = () => {
+            userInput.focus();
+        };
     </script>
 </body>
 </html>
