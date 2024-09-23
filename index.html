@@ -20,23 +20,23 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
             transition: background 0.5s ease;
+            overflow-x: hidden;
         }
 
         .container {
-            width: 85%;
-            max-width: 1300px;
+            width: 90%;
+            max-width: 1200px;
             text-align: center;
             padding: 30px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 20px;
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(15px);
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: #ffb6c1;
             background: linear-gradient(90deg, #8e2de2, #4a00e0);
             -webkit-background-clip: text;
@@ -51,10 +51,11 @@
             background: #333;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
         #text-output {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-family: 'Courier New', Courier, monospace;
             color: #ddd;
             min-height: 150px;
@@ -64,53 +65,41 @@
         #user-input {
             width: 100%;
             padding: 18px;
-            margin-top: 25px;
+            margin-top: 20px;
             border: 2px solid #4a00e0;
             border-radius: 10px;
             background-color: #222;
             color: #fff;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             outline: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background-color: #ffb6c1;
-            border-radius: 50%;
-            animation: fly 1.2s ease-in-out forwards;
-        }
-
-        @keyframes fly {
-            to {
-                transform: translateY(-200px) translateX(120px);
-                opacity: 0;
-            }
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         }
 
         .stats {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             margin-top: 30px;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
+            flex-wrap: wrap;
         }
 
         .stats div {
+            flex: 1;
             text-align: center;
+            margin: 10px;
         }
 
         .stats h2 {
-            font-size: 2.3rem;
+            font-size: 2rem;
             background: linear-gradient(45deg, #ff6f61, #ff9478);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .footer {
-            margin-top: 50px;
+            margin-top: 40px;
             font-size: 1rem;
             opacity: 0.6;
         }
@@ -118,6 +107,45 @@
         .footer a {
             color: #6e3cbc;
             text-decoration: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #ffb6c1;
+            border-radius: 50%;
+            animation: fly 1.2s ease-in-out forwards;
+        }
+
+        @keyframes fly {
+            to {
+                transform: translateY(-150px) translateX(90px);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .stats div {
+                margin: 15px 0;
+            }
+
+            #user-input {
+                font-size: 1rem;
+                padding: 15px;
+            }
+
+            #text-output {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -166,6 +194,7 @@
         let totalCharacters = 0;
 
         function generateRandomWords() {
+            randomizedWords = '';
             for (let i = 0; i < 15; i++) {
                 const randomWord = wordsArray[Math.floor(Math.random() * wordsArray.length)];
                 randomizedWords += randomWord + ' ';
@@ -189,7 +218,7 @@
             for (let i = 0; i < inputText.length; i++) {
                 if (inputText[i] === displayedText[i]) {
                     correctCharacters++;
-                    generateParticle();
+                    if (i % 5 === 0) generateParticle(); // Generate fewer particles to reduce lag
                 } else {
                     shakeScreen();
                 }
@@ -213,20 +242,16 @@
             particle.style.left = `${Math.random() * window.innerWidth}px`;
             particle.style.top = `${Math.random() * window.innerHeight}px`;
             document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1000);
+            setTimeout(() => particle.remove(), 600); // Reduce lifetime to improve performance
         }
 
         function shakeScreen() {
-            document.body.style.transition = 'transform 0.1s';
-            document.body.style.transform = 'translateX(5px)';
-            setTimeout(() => {
-                document.body.style.transform = 'translateX(-5px)';
-                setTimeout(() => document.body.style.transform = 'translateX(0)', 50);
-            }, 50);
+            document.body.classList.add('shaking');
+            setTimeout(() => document.body.classList.remove('shaking'), 300);
         }
 
+        // Placeholder for future advanced features
         function adaptiveDifficulty() {
-            // Placeholder logic for adaptive difficulty using basic rules.
             if (wpmDisplay.textContent > 80) {
                 generateRandomWords();
                 alert('Level Up: Increasing difficulty!');
@@ -234,24 +259,54 @@
         }
 
         function multiplayerRaces() {
-            // Placeholder logic for future multiplayer races.
-            alert('Multiplayer feature coming soon! Compete with others in real-time.');
+            alert('Multiplayer feature coming soon!');
+        }
+           // Placeholder for future advanced features
+        function adaptiveDifficulty() {
+            if (wpmDisplay.textContent > 80) {
+                generateRandomWords();
+                alert('Level Up: Increasing difficulty!');
+            }
+        }
+
+        function multiplayerRaces() {
+            alert('Multiplayer feature coming soon!');
         }
 
         function aiDrivenFeedback() {
-            // Placeholder logic for AI-based feedback and suggestions.
-            alert('AI-driven feedback will analyze your performance and give tips.');
+            const wpm = parseInt(wpmDisplay.textContent);
+            if (wpm < 30) {
+                alert("AI Feedback: You're typing a bit slow, focus on improving your accuracy first.");
+            } else if (wpm >= 30 && wpm < 60) {
+                alert("AI Feedback: Nice job! You're improving, but there's room for more speed.");
+            } else {
+                alert("AI Feedback: Excellent speed! You're doing great, keep it up!");
+            }
         }
 
-        function achievementsSystem() {
-            // Placeholder logic for achievements and badges.
-            alert('Unlock achievements and earn badges for your typing milestones.');
+        function achievementsAndBadges() {
+            const wpm = parseInt(wpmDisplay.textContent);
+            if (wpm > 60 && !localStorage.getItem('fastBadge')) {
+                alert('Achievement Unlocked: Speed Demon - WPM 60+');
+                localStorage.setItem('fastBadge', true);
+            }
         }
 
         function typingLessons() {
-            // Placeholder logic for skill development.
-            alert('Interactive lessons will help you improve typing accuracy and speed.');
+            const lessonContent = [
+                "Focus on accuracy first, then speed will follow.",
+                "Break long words into smaller parts.",
+                "Avoid looking at your keyboard!"
+            ];
+            const randomLesson = lessonContent[Math.floor(Math.random() * lessonContent.length)];
+            alert(`Typing Lesson: ${randomLesson}`);
         }
+
+        setInterval(() => {
+            adaptiveDifficulty();
+            aiDrivenFeedback();
+            achievementsAndBadges();
+        }, 10000); // Check every 10 seconds for performance feedback and achievements
     </script>
 </body>
 </html>
