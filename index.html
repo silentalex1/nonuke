@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NoNuke - Type Fast</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <style>
         * {
             margin: 0;
@@ -31,6 +32,7 @@
             text-align: center;
             border-radius: 10px;
             margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .navbar a {
@@ -71,10 +73,11 @@
         }
 
         #text-output {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #ddd;
             min-height: 150px;
             text-align: left;
+            line-height: 1.5;
         }
 
         #user-input {
@@ -130,8 +133,8 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 6px;
+            height: 6px;
             background-color: #ffb6c1;
             border-radius: 50%;
             animation: fly 1.2s ease-in-out forwards;
@@ -163,7 +166,7 @@
             }
 
             #text-output {
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -264,32 +267,30 @@
 
             timeDisplay.textContent = Math.round(elapsedTime);
             progressBar.style.width = `${(inputText.length / displayedText.length) * 100}%`;
+
+            if (inputText === displayedText) {
+                setTimeout(() => {
+                    alert('Great job! Starting a new round!');
+                    generateRandomWords();
+                    userInput.value = '';
+                    startTime = null;
+                    progressBar.style.width = '0%';
+                }, 1000);
+            }
         });
 
         function generateParticle() {
             let particle = document.createElement('div');
             particle.className = 'particle';
-            particle.style.left = `${Math.random() * window.innerWidth}px`;
-            particle.style.top = `${Math.random() * window.innerHeight}px`;
+            particle.style.left = `${Math.random() * 100}%`;
             document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 600);
+            setTimeout(() => particle.remove(), 1200);
         }
 
         function shakeScreen() {
-            document.body.classList.add('shaking');
-            setTimeout(() => document.body.classList.remove('shaking'), 300);
+            document.body.classList.add('shake');
+            setTimeout(() => document.body.classList.remove('shake'), 500);
         }
-
-        function adaptiveDifficulty() {
-            if (parseInt(wpmDisplay.textContent) > 80) {
-                generateRandomWords();
-                alert('Level Up: Increasing difficulty!');
-            }
-        }
-
-        setInterval(() => {
-            adaptiveDifficulty();
-        }, 10000);
     </script>
 </body>
 </html>
