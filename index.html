@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NoNuke - Type Fast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -20,7 +21,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: background 0.5s ease;
             overflow-x: hidden;
         }
 
@@ -29,18 +29,14 @@
             max-width: 1200px;
             text-align: center;
             padding: 30px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 20px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
             font-size: 3rem;
             color: #ffb6c1;
-            background: linear-gradient(90deg, #8e2de2, #4a00e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
         }
 
@@ -50,13 +46,11 @@
             padding: 25px;
             background: #333;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
 
         #text-output {
             font-size: 1.5rem;
-            font-family: 'Courier New', Courier, monospace;
             color: #ddd;
             min-height: 150px;
             text-align: left;
@@ -72,30 +66,34 @@
             color: #fff;
             font-size: 1.2rem;
             outline: none;
-            transition: border-color 0.3s ease, background-color 0.3s ease;
+            transition: border-color 0.3s ease;
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4a00e0;
+            transition: width 0.5s ease;
         }
 
         .stats {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            flex-wrap: wrap;
         }
 
         .stats div {
             flex: 1;
             text-align: center;
             margin: 10px;
-        }
-
-        .stats h2 {
-            font-size: 2rem;
-            background: linear-gradient(45deg, #ff6f61, #ff9478);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .footer {
@@ -155,6 +153,9 @@
 
         <div class="typing-box">
             <div id="text-output"></div>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar" style="width: 0;"></div>
+            </div>
         </div>
 
         <input type="text" id="user-input" placeholder="Start typing here..." autofocus>
@@ -187,6 +188,7 @@
         let wpmDisplay = document.getElementById('wpm');
         let accuracyDisplay = document.getElementById('accuracy');
         let timeDisplay = document.getElementById('time');
+        let progressBar = document.getElementById('progress-bar');
 
         let startTime;
         let wordCount = 0;
@@ -218,7 +220,7 @@
             for (let i = 0; i < inputText.length; i++) {
                 if (inputText[i] === displayedText[i]) {
                     correctCharacters++;
-                    if (i % 5 === 0) generateParticle(); // Generate fewer particles to reduce lag
+                    if (i % 5 === 0) generateParticle();
                 } else {
                     shakeScreen();
                 }
@@ -234,6 +236,7 @@
             accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
 
             timeDisplay.textContent = Math.round(elapsedTime);
+            progressBar.style.width = `${(inputText.length / displayedText.length) * 100}%`;
         });
 
         function generateParticle() {
@@ -242,7 +245,7 @@
             particle.style.left = `${Math.random() * window.innerWidth}px`;
             particle.style.top = `${Math.random() * window.innerHeight}px`;
             document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 600); // Reduce lifetime to improve performance
+            setTimeout(() => particle.remove(), 600);
         }
 
         function shakeScreen() {
@@ -250,63 +253,16 @@
             setTimeout(() => document.body.classList.remove('shaking'), 300);
         }
 
-        // Placeholder for future advanced features
         function adaptiveDifficulty() {
-            if (wpmDisplay.textContent > 80) {
+            if (parseInt(wpmDisplay.textContent) > 80) {
                 generateRandomWords();
                 alert('Level Up: Increasing difficulty!');
             }
-        }
-
-        function multiplayerRaces() {
-            alert('Multiplayer feature coming soon!');
-        }
-           // Placeholder for future advanced features
-        function adaptiveDifficulty() {
-            if (wpmDisplay.textContent > 80) {
-                generateRandomWords();
-                alert('Level Up: Increasing difficulty!');
-            }
-        }
-
-        function multiplayerRaces() {
-            alert('Multiplayer feature coming soon!');
-        }
-
-        function aiDrivenFeedback() {
-            const wpm = parseInt(wpmDisplay.textContent);
-            if (wpm < 30) {
-                alert("AI Feedback: You're typing a bit slow, focus on improving your accuracy first.");
-            } else if (wpm >= 30 && wpm < 60) {
-                alert("AI Feedback: Nice job! You're improving, but there's room for more speed.");
-            } else {
-                alert("AI Feedback: Excellent speed! You're doing great, keep it up!");
-            }
-        }
-
-        function achievementsAndBadges() {
-            const wpm = parseInt(wpmDisplay.textContent);
-            if (wpm > 60 && !localStorage.getItem('fastBadge')) {
-                alert('Achievement Unlocked: Speed Demon - WPM 60+');
-                localStorage.setItem('fastBadge', true);
-            }
-        }
-
-        function typingLessons() {
-            const lessonContent = [
-                "Focus on accuracy first, then speed will follow.",
-                "Break long words into smaller parts.",
-                "Avoid looking at your keyboard!"
-            ];
-            const randomLesson = lessonContent[Math.floor(Math.random() * lessonContent.length)];
-            alert(`Typing Lesson: ${randomLesson}`);
         }
 
         setInterval(() => {
             adaptiveDifficulty();
-            aiDrivenFeedback();
-            achievementsAndBadges();
-        }, 10000); // Check every 10 seconds for performance feedback and achievements
+        }, 10000);
     </script>
 </body>
 </html>
