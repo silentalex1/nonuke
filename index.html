@@ -1,231 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>NoNuke - Type Fast</title>
-  <style>
-    /* Global Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NoNuke - Type Fast</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-    body {
-      background: linear-gradient(135deg, #1A1A2E, #16213E);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      transition: background 0.5s ease;
-    }
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
 
-    .container {
-      width: 80%;
-      max-width: 1200px;
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
-    }
+        .container {
+            width: 85%;
+            max-width: 1300px;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+        }
 
-    h1 {
-      font-size: 3rem;
-      color: #ffb6c1;
-      background: linear-gradient(90deg, #8E2DE2, #4A00E0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 20px;
-    }
+        h1 {
+            font-size: 3.5rem;
+            color: #ffb6c1;
+            background: linear-gradient(90deg, #8e2de2, #4a00e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
 
-    .typing-box {
-      position: relative;
-      margin: 20px 0;
-      padding: 20px;
-      background: #333;
-      border-radius: 12px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    }
+        .typing-box {
+            position: relative;
+            margin: 20px 0;
+            padding: 25px;
+            background: #333;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
 
-    #text-output {
-      font-size: 1.5rem;
-      font-family: 'Courier New', Courier, monospace;
-      color: #ddd;
-      min-height: 150px;
-      text-align: left;
-    }
+        #text-output {
+            font-size: 1.6rem;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ddd;
+            min-height: 150px;
+            text-align: left;
+        }
 
-    #user-input {
-      width: 100%;
-      padding: 15px;
-      margin-top: 20px;
-      border: 2px solid #4A00E0;
-      border-radius: 8px;
-      background-color: #222;
-      color: #fff;
-      font-size: 1.2rem;
-      outline: none;
-    }
+        #user-input {
+            width: 100%;
+            padding: 18px;
+            margin-top: 25px;
+            border: 2px solid #4a00e0;
+            border-radius: 10px;
+            background-color: #222;
+            color: #fff;
+            font-size: 1.3rem;
+            outline: none;
+        }
 
-    .particle {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background-color: #ffb6c1;
-      border-radius: 50%;
-      animation: fly 1s ease-in-out forwards;
-    }
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #ffb6c1;
+            border-radius: 50%;
+            animation: fly 1.2s ease-in-out forwards;
+        }
 
-    @keyframes fly {
-      to {
-        transform: translateY(-200px) translateX(100px);
-        opacity: 0;
-      }
-    }
+        @keyframes fly {
+            to {
+                transform: translateY(-200px) translateX(120px);
+                opacity: 0;
+            }
+        }
 
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 30px;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-    }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
 
-    .stats div {
-      text-align: center;
-    }
+        .stats div {
+            text-align: center;
+        }
 
-    .stats h2 {
-      font-size: 2rem;
-      background: linear-gradient(45deg, #FF6F61, #FF9478);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        .stats h2 {
+            font-size: 2.3rem;
+            background: linear-gradient(45deg, #ff6f61, #ff9478);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .footer {
-      margin-top: 50px;
-      font-size: 1rem;
-      opacity: 0.6;
-    }
+        .footer {
+            margin-top: 50px;
+            font-size: 1rem;
+            opacity: 0.6;
+        }
 
-    .footer a {
-      color: #6E3CBC;
-      text-decoration: none;
-    }
-  </style>
+        .footer a {
+            color: #6e3cbc;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>NoNuke - Type Fast</h1>
+    <div class="container">
+        <h1>NoNuke - Type Fast</h1>
 
-    <div class="typing-box">
-      <div id="text-output">
-        The quick brown fox jumps over the lazy dog. Start typing to test your skills.
-      </div>
+        <div class="typing-box">
+            <div id="text-output"></div>
+        </div>
+
+        <input type="text" id="user-input" placeholder="Start typing here..." autofocus>
+
+        <div class="stats">
+            <div>
+                <h2 id="wpm">0</h2>
+                <p>Words per Minute</p>
+            </div>
+            <div>
+                <h2 id="accuracy">100%</h2>
+                <p>Accuracy</p>
+            </div>
+            <div>
+                <h2 id="time">0</h2>
+                <p>Time (s)</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Created by NoNuke Dev Team | <a href="#">Privacy Policy</a></p>
+        </div>
     </div>
 
-    <input type="text" id="user-input" placeholder="Start typing here..." autofocus>
+    <script>
+        const wordsArray = ['hello', 'world', 'fast', 'type', 'keyboard', 'speed', 'accuracy', 'random', 'challenge', 'skill', 'practice', 'improve', 'complexity', 'multiplayer', 'adaptive', 'AI', 'streak', 'lesson', 'performance', 'leaderboard'];
+        let randomizedWords = '';
+        let textOutput = document.getElementById('text-output');
+        let userInput = document.getElementById('user-input');
+        let wpmDisplay = document.getElementById('wpm');
+        let accuracyDisplay = document.getElementById('accuracy');
+        let timeDisplay = document.getElementById('time');
 
-    <div class="stats">
-      <div>
-        <h2 id="wpm">0</h2>
-        <p>Words per Minute</p>
-      </div>
-      <div>
-        <h2 id="accuracy">100%</h2>
-        <p>Accuracy</p>
-      </div>
-      <div>
-        <h2 id="time">0</h2>
-        <p>Time (s)</p>
-      </div>
-    </div>
+        let startTime;
+        let wordCount = 0;
+        let correctCharacters = 0;
+        let totalCharacters = 0;
 
-    <div class="footer">
-      <p>Created by NoNuke Dev Team | <a href="#">Privacy Policy</a></p>
-    </div>
-  </div>
-
-  <script>
-    let textOutput = document.getElementById('text-output');
-    let userInput = document.getElementById('user-input');
-    let wpmDisplay = document.getElementById('wpm');
-    let accuracyDisplay = document.getElementById('accuracy');
-    let timeDisplay = document.getElementById('time');
-
-    let startTime;
-    let wordCount = 0;
-    let correctCharacters = 0;
-    let totalCharacters = 0;
-    let particles = [];
-
-    userInput.addEventListener('input', function() {
-      const inputText = userInput.value;
-      const displayedText = textOutput.textContent;
-
-      if (!startTime) {
-        startTime = new Date();
-      }
-
-      totalCharacters = inputText.length;
-      correctCharacters = 0;
-
-      for (let i = 0; i < inputText.length; i++) {
-        if (inputText[i] === displayedText[i]) {
-          correctCharacters++;
-          generateParticle();
-        } else {
-          shakeScreen();
+        function generateRandomWords() {
+            for (let i = 0; i < 15; i++) {
+                const randomWord = wordsArray[Math.floor(Math.random() * wordsArray.length)];
+                randomizedWords += randomWord + ' ';
+            }
+            textOutput.textContent = randomizedWords.trim();
         }
-      }
 
-      const elapsedTime = (new Date() - startTime) / 1000;
-      wordCount = inputText.split(' ').length;
+        generateRandomWords();
 
-      // Calculate WPM
-      const wpm = Math.round((wordCount / elapsedTime) * 60);
-      wpmDisplay.textContent = wpm;
+        userInput.addEventListener('input', function () {
+            const inputText = userInput.value;
+            const displayedText = textOutput.textContent;
 
-      // Calculate Accuracy
-      const accuracy = ((correctCharacters / totalCharacters) * 100).toFixed(2);
-      accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
+            if (!startTime) {
+                startTime = new Date();
+            }
 
-      // Update Time
-      timeDisplay.textContent = Math.round(elapsedTime);
-    });
+            totalCharacters = inputText.length;
+            correctCharacters = 0;
 
-    function generateParticle() {
-      let particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = `${Math.random() * window.innerWidth}px`;
-      particle.style.top = `${Math.random() * window.innerHeight}px`;
-      document.body.appendChild(particle);
-      setTimeout(() => particle.remove(), 1000);
-    }
+            for (let i = 0; i < inputText.length; i++) {
+                if (inputText[i] === displayedText[i]) {
+                    correctCharacters++;
+                    generateParticle();
+                } else {
+                    shakeScreen();
+                }
+            }
 
-    function shakeScreen() {
-      document.body.style.transition = 'transform 0.1s';
-      document.body.style.transform = 'translateX(5px)';
-      setTimeout(() => {
-        document.body.style.transform = 'translateX(-5px)';
-        setTimeout(() => document.body.style.transform = 'translateX(0)', 50);
-      }, 50);
-    }
+            const elapsedTime = (new Date() - startTime) / 1000;
+            wordCount = inputText.split(' ').length;
 
-    // Placeholder for future advanced features
-    // - Adaptive Difficulty
-    // - Multiplayer Races
-    // - AI-Driven Feedback
-    // - Achievements & Badges System
-    // - Typing Lessons with Skill Development
-  </script>
+            const wpm = Math.round((wordCount / elapsedTime) * 60);
+            wpmDisplay.textContent = wpm;
+
+            const accuracy = ((correctCharacters / totalCharacters) * 100).toFixed(2);
+            accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
+
+            timeDisplay.textContent = Math.round(elapsedTime);
+        });
+
+        function generateParticle() {
+            let particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * window.innerWidth}px`;
+            particle.style.top = `${Math.random() * window.innerHeight}px`;
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 1000);
+        }
+
+        function shakeScreen() {
+            document.body.style.transition = 'transform 0.1s';
+            document.body.style.transform = 'translateX(5px)';
+            setTimeout(() => {
+                document.body.style.transform = 'translateX(-5px)';
+                setTimeout(() => document.body.style.transform = 'translateX(0)', 50);
+            }, 50);
+        }
+
+        function adaptiveDifficulty() {
+            // Placeholder logic for adaptive difficulty using basic rules.
+            if (wpmDisplay.textContent > 80) {
+                generateRandomWords();
+                alert('Level Up: Increasing difficulty!');
+            }
+        }
+
+        function multiplayerRaces() {
+            // Placeholder logic for future multiplayer races.
+            alert('Multiplayer feature coming soon! Compete with others in real-time.');
+        }
+
+        function aiDrivenFeedback() {
+            // Placeholder logic for AI-based feedback and suggestions.
+            alert('AI-driven feedback will analyze your performance and give tips.');
+        }
+
+        function achievementsSystem() {
+            // Placeholder logic for achievements and badges.
+            alert('Unlock achievements and earn badges for your typing milestones.');
+        }
+
+        function typingLessons() {
+            // Placeholder logic for skill development.
+            alert('Interactive lessons will help you improve typing accuracy and speed.');
+        }
+    </script>
 </body>
 </html>
