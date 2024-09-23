@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaderboard</title>
+    <title>NoNuke - Type Fast</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
     <style>
@@ -20,47 +20,109 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             overflow-x: hidden;
         }
 
-        .container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 40px;
-            border-radius: 20px;
+        .navbar {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
             text-align: center;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar a {
+            margin: 0 20px;
+            color: #ffb6c1;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #4a00e0;
+            text-decoration: underline;
+        }
+
+        .container {
             width: 90%;
-            max-width: 600px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            margin-top: 40px;
+            max-width: 800px;
+            text-align: center;
+            padding: 40px;
+            margin-top: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            margin-bottom: 20px;
+            font-size: 2.5rem;
             color: #ffb6c1;
+            margin-bottom: 20px;
         }
 
-        table {
+        .typing-box {
+            position: relative;
+            margin: 20px 0;
+            padding: 25px;
+            background: #333;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #text-output {
+            font-size: 1.2rem;
+            color: #ddd;
+            min-height: 150px;
+            text-align: left;
+        }
+
+        #user-input {
             width: 100%;
-            border-collapse: collapse;
+            padding: 18px;
             margin-top: 20px;
+            border: 2px solid #4a00e0;
+            border-radius: 10px;
+            background-color: #222;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
 
-        th, td {
-            padding: 10px;
-            border: 1px solid #fff;
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
         }
 
-        th {
-            background-color: rgba(74, 0, 224, 0.7);
+        .progress-bar {
+            height: 100%;
+            background: #4a00e0;
+            transition: width 0.5s ease;
         }
 
-        td {
-            background-color: rgba(255, 255, 255, 0.1);
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .stats div {
+            flex: 1;
+            text-align: center;
+            margin: 10px;
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 40px;
+            font-size: 1rem;
             opacity: 0.6;
         }
 
@@ -68,29 +130,164 @@
             color: #6e3cbc;
             text-decoration: none;
         }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #ffb6c1;
+            border-radius: 50%;
+            animation: fly 1.2s ease-in-out forwards;
+        }
+
+        @keyframes fly {
+            to {
+                transform: translateY(-150px) translateX(90px);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .stats div {
+                margin: 15px 0;
+            }
+
+            #user-input {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+
+            #text-output {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="https://nonuke.me/createaccount/account">Create Account</a>
+        <a href="https://nonuke.me/leaderboard/leader">Leaderboard</a>
+        <a href="https://nonuke.me/multiplayer">Multiplayer</a>
+    </div>
+
     <div class="container">
-        <h1>Leaderboard</h1>
-        <table>
-            <tr>
-                <th>Username</th>
-                <th>WPM</th>
-            </tr>
-            <tr>
-                <td>User1</td>
-                <td>80</td>
-            </tr>
-            <tr>
-                <td>User2</td>
-                <td>75</td>
-            </tr>
-            <!-- More rows as needed -->
-        </table>
+        <h1>NoNuke - Type Fast</h1>
+
+        <div class="typing-box">
+            <div id="text-output"></div>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar" style="width: 0;"></div>
+            </div>
+        </div>
+
+        <input type="text" id="user-input" placeholder="Start typing here..." autofocus>
+
+        <div class="stats">
+            <div>
+                <h2 id="wpm">0</h2>
+                <p>Words per Minute</p>
+            </div>
+            <div>
+                <h2 id="accuracy">100%</h2>
+                <p>Accuracy</p>
+            </div>
+            <div>
+                <h2 id="time">0</h2>
+                <p>Time (s)</p>
+            </div>
+        </div>
+
         <div class="footer">
-            <p>Back to <a href="index.html">Home</a></p>
+            <p>Created by NoNuke Dev Team | <a href="#">Privacy Policy</a></p>
         </div>
     </div>
+
+    <script>
+        const wordsArray = ['hello', 'world', 'fast', 'type', 'keyboard', 'speed', 'accuracy', 'random', 'challenge', 'skill', 'practice', 'improve', 'complexity', 'multiplayer', 'adaptive', 'AI', 'streak', 'lesson', 'performance', 'leaderboard'];
+        let randomizedWords = '';
+        let textOutput = document.getElementById('text-output');
+        let userInput = document.getElementById('user-input');
+        let wpmDisplay = document.getElementById('wpm');
+        let accuracyDisplay = document.getElementById('accuracy');
+        let timeDisplay = document.getElementById('time');
+        let progressBar = document.getElementById('progress-bar');
+
+        let startTime;
+        let wordCount = 0;
+        let correctCharacters = 0;
+        let totalCharacters = 0;
+
+        function generateRandomWords() {
+            randomizedWords = '';
+            for (let i = 0; i < 15; i++) {
+                const randomWord = wordsArray[Math.floor(Math.random() * wordsArray.length)];
+                randomizedWords += randomWord + ' ';
+            }
+            textOutput.textContent = randomizedWords.trim();
+        }
+
+        generateRandomWords();
+
+        userInput.addEventListener('input', function () {
+            const inputText = userInput.value;
+            const displayedText = textOutput.textContent;
+
+            if (!startTime) {
+                startTime = new Date();
+            }
+
+            totalCharacters = inputText.length;
+            correctCharacters = 0;
+
+            for (let i = 0; i < inputText.length; i++) {
+                if (inputText[i] === displayedText[i]) {
+                    correctCharacters++;
+                    if (i % 5 === 0) generateParticle();
+                } else {
+                    shakeScreen();
+                }
+            }
+
+            const elapsedTime = (new Date() - startTime) / 1000;
+            wordCount = inputText.split(' ').length;
+
+            const wpm = Math.round((wordCount / elapsedTime) * 60);
+            wpmDisplay.textContent = wpm;
+
+            const accuracy = ((correctCharacters / totalCharacters) * 100).toFixed(2);
+            accuracyDisplay.textContent = isNaN(accuracy) ? '100%' : `${accuracy}%`;
+
+            timeDisplay.textContent = Math.round(elapsedTime);
+            progressBar.style.width = `${(inputText.length / displayedText.length) * 100}%`;
+        });
+
+        function generateParticle() {
+            let particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * window.innerWidth}px`;
+            particle.style.top = `${Math.random() * window.innerHeight}px`;
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 600);
+        }
+
+        function shakeScreen() {
+            document.body.classList.add('shaking');
+            setTimeout(() => document.body.classList.remove('shaking'), 300);
+        }
+
+        function adaptiveDifficulty() {
+            if (parseInt(wpmDisplay.textContent) > 60) {
+                // Logic to increase complexity
+            }
+        }
+    </script>
 </body>
 </html>
