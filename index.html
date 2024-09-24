@@ -8,76 +8,85 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         :root {
-            --primary-color: #6366F1;
-            --secondary-color: #4F46E5;
-            --background-color: #F9FAFB;
-            --text-color: #111827;
+            --primary-color: #0D6EFD;
+            --secondary-color: #198754;
+            --background-color: #F1F3F4;
+            --text-color: #202124;
             --card-bg: #FFFFFF;
-            --input-bg: #F3F4F6;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --input-bg: #E9ECEF;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
         }
+
         .dark-mode {
-            --primary-color: #818CF8;
-            --secondary-color: #6366F1;
-            --background-color: #111827;
-            --text-color: #F9FAFB;
-            --card-bg: #1F2937;
-            --input-bg: #374151;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --primary-color: #8AB4F8;
+            --secondary-color: #81C995;
+            --background-color: #121212;
+            --text-color: #E8EAED;
+            --card-bg: #1E1E1E;
+            --input-bg: #303134;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            transition: var(--transition);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            transition: var(--transition);
             padding: 20px;
         }
+
         .container {
             background-color: var(--card-bg);
-            border-radius: 20px;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 2.5rem;
+            padding: 2rem;
             width: 100%;
-            max-width: 500px;
+            max-width: 700px;
             transition: var(--transition);
         }
+
         h1 {
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 2.25rem;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
         }
+
         .input-group {
             position: relative;
             margin-bottom: 1.5rem;
         }
+
         #extensionInput {
             width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            font-size: 1rem;
-            border: 2px solid var(--input-bg);
-            border-radius: 12px;
+            padding: 1.2rem 1rem 1.2rem 3rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
             background-color: var(--input-bg);
             color: var(--text-color);
             transition: var(--transition);
         }
+
         #extensionInput:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
         }
+
         .input-icon {
             position: absolute;
             left: 1rem;
@@ -85,63 +94,74 @@
             transform: translateY(-50%);
             color: var(--primary-color);
         }
+
         #downloadButton {
             background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 1rem 2rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             transition: var(--transition);
             width: 100%;
-            font-weight: 600;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-weight: 600;
         }
+
         #downloadButton:hover {
-            background-color: var(--secondary-color);
+            background-color: #0056b3;
             transform: translateY(-2px);
         }
+
         #downloadButton:active {
             transform: translateY(0);
         }
+
         #status {
             margin-top: 1.5rem;
             text-align: center;
-            font-weight: 400;
+            font-size: 1.1rem;
+            font-weight: 500;
         }
+
         .loader {
-            border: 3px solid var(--card-bg);
-            border-top: 3px solid var(--primary-color);
+            border: 4px solid var(--card-bg);
+            border-top: 4px solid var(--primary-color);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
             margin-right: 10px;
             display: none;
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
         .toggle-container {
             position: absolute;
             top: 20px;
             right: 20px;
         }
+
         .toggle-switch {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
         }
+
         .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
+
         .toggle-slider {
             position: absolute;
             cursor: pointer;
@@ -149,10 +169,11 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: var(--input-bg);
-            transition: var(--transition);
+            background-color: #ccc;
+            transition: 0.4s;
             border-radius: 34px;
         }
+
         .toggle-slider:before {
             position: absolute;
             content: "";
@@ -161,80 +182,91 @@
             left: 4px;
             bottom: 4px;
             background-color: white;
-            transition: var(--transition);
+            transition: 0.4s;
             border-radius: 50%;
         }
+
         input:checked + .toggle-slider {
             background-color: var(--primary-color);
         }
+
         input:checked + .toggle-slider:before {
             transform: translateX(26px);
         }
+
         .extension-info {
             display: none;
             margin-top: 2rem;
             padding: 1.5rem;
             background-color: var(--input-bg);
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             transition: var(--transition);
         }
+
         .extension-info h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
-            font-size: 1.5rem;
         }
+
         .extension-details {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
         }
+
         .extension-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 12px;
+            width: 72px;
+            height: 72px;
+            border-radius: 15px;
             margin-right: 1rem;
             object-fit: cover;
         }
+
         .extension-text {
             flex-grow: 1;
         }
+
         .extension-text p {
             margin-bottom: 0.5rem;
         }
+
         .download-options {
             display: flex;
             justify-content: space-between;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
+
         .download-option {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 0.9rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             transition: var(--transition);
-            flex: 1;
-            margin: 0 0.5rem;
         }
+
         .download-option:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
+            background-color: #0056b3;
         }
+
         @media (max-width: 768px) {
             .container {
-                padding: 2rem;
+                padding: 1.5rem;
             }
+
             h1 {
                 font-size: 2rem;
             }
+
             #extensionInput, #downloadButton {
-                font-size: 0.9rem;
+                font-size: 1rem;
             }
+
             .extension-icon {
-                width: 48px;
-                height: 48px;
+                width: 56px;
+                height: 56px;
             }
         }
     </style>
@@ -250,7 +282,7 @@
         <h1>Extension Manager</h1>
         <div class="input-group">
             <i class="fas fa-search input-icon"></i>
-            <input type="text" id="extensionInput" placeholder="Enter extension ID or URL">
+            <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID or URL">
         </div>
         <button id="downloadButton">
             <div class="loader" id="loader"></div>
@@ -277,299 +309,99 @@
     <script>
         class ExtensionManager {
             constructor() {
-                this.API_ENDPOINT = 'https://chrome.google.com/webstore/ajax/detail';
-                this.INSTALL_ENDPOINT = 'https://clients2.google.com/service/update2/crx';
-                this.cache = new Map();
-                this.rateLimiter = new RateLimiter(5, 1000);
+                this.API_ENDPOINT = 'https://example.com/extension'; this.INSTALL_ENDPOINT = 'https://clients2.google.com/service/update2/crx'; this.cache = new Map(); }
+                    async getExtensionDetails(extensionId) {
+            if (this.cache.has(extensionId)) {
+                return this.cache.get(extensionId);
             }
-
-            async getExtensionDetails(extensionId) {
-                if (this.cache.has(extensionId)) {
-                    return this.cache.get(extensionId);
-                }
-
-                await this.rateLimiter.acquire();
-                const response = await fetch(`${this.API_ENDPOINT}?id=${extensionId}`);
-                const data = await response.json();
-
-                const details = {
-                    id: extensionId,
-                    name: data[1][1],
-                    version: data[1][6],
-                    icon: data[1][3][2]
-                };
-
-                this.cache.set(extensionId, details);
-                return details;
-            }
-
-            async downloadExtension(extensionId, type = 'crx') {
-                const details = await this.getExtensionDetails(extensionId);
-                const url = `${this.INSTALL_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`;
-                
-                const response = await fetch(url);
-                const blob = await response.blob();
-                
-                let fileName, fileBlob;
-                if (type === 'zip') {
-                    fileName = `${details.name.replace(/[^a-z0-9]/gi, '_')}_${details.version}.zip`;
-                    fileBlob = await this.convertCrxToZip(blob);
-                } else {
-                    fileName = `${details.name.replace(/[^a-z0-9]/gi, '_')}_${details.version}.crx`;
-                    fileBlob = blob;
-                }
-
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(fileBlob);
-                link.download = fileName;
-                link.click();
-                URL.revokeObjectURL(link.href);
-
-                return details;
-            }
-
-            async convertCrxToZip(crxBlob) {
-                const arrayBuffer = await crxBlob.arrayBuffer();
-                const view = new DataView(arrayBuffer);
-                
-                let offset = 12;
-                const publicKeyLength = view.getUint32(8, true);
-                offset += publicKeyLength;
-                const signatureLength = view.getUint32(offset, true);
-                offset += 4 + signatureLength;
-                
-                return new Blob([arrayBuffer.slice(offset)], {type: 'application/zip'});
-            }
+            const response = await fetch(`${this.API_ENDPOINT}/${extensionId}`);
+            const details = await response.json();
+            this.cache.set(extensionId, details);
+            return details;
         }
 
-        class RateLimiter {
-            constructor(tokensPerInterval, interval) {
-                this.tokensPerInterval = tokensPerInterval;
-                this.interval = interval;
-                this.tokens = tokensPerInterval;
-                this.lastRefill = Date.now();
-            }
-
-            async acquire() {
-                await this.refill();
-                if (this.tokens < 1) {
-                    const waitTime = this.interval - (Date.now() - this.lastRefill);
-                    await new Promise(resolve => setTimeout(resolve, waitTime));
-                    await this.refill();
-                }
-                this.tokens--;
-            }
-
-            async refill() {
-                const now = Date.now();
-                const timePassed = now - this.lastRefill;
-                const refillAmount = Math.floor(timePassed / this.interval) * this.tokensPerInterval;
-                this.tokens = Math.min(this.tokensPerInterval, this.tokens + refillAmount);
-                this.lastRefill = now;
-            }
+        async downloadCRX(extensionId) {
+            const response = await fetch(`${this.INSTALL_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`);
+            const crxBlob = await response.blob();
+            return crxBlob;
         }
 
-        const manager = new ExtensionManager();
-        const input = document.getElementById('extensionInput');
-        const downloadButton = document.getElementById('downloadButton');
-        const status = document.getElementById('status');
+        async convertCRXToZIP(crxBlob) {
+            // You would use a client-side CRX-to-ZIP conversion library here.
+        }
+    }
+
+    const manager = new ExtensionManager();
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    darkModeToggle.addEventListener('change', () => {
+        if (darkModeToggle.checked) {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    });
+
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        body.classList.add('dark-mode');
+        darkModeToggle.checked = true;
+    }
+
+    document.getElementById('downloadButton').addEventListener('click', async () => {
+        const extensionInput = document.getElementById('extensionInput').value.trim();
+        const extensionId = getExtensionId(extensionInput);
+
+        if (!extensionId) {
+            showStatus('Please enter a valid extension ID or URL.');
+            return;
+        }
+
+        showLoader(true);
+
+        try {
+            const details = await manager.getExtensionDetails(extensionId);
+            showExtensionInfo(details);
+            showStatus('');
+        } catch (error) {
+            showStatus('Failed to fetch extension details. Try again.');
+        } finally {
+            showLoader(false);
+        }
+    });
+
+    function getExtensionId(input) {
+        const idRegex = /^[a-z]{32}$/;
+        if (idRegex.test(input)) {
+            return input;
+        }
+        const url = new URL(input);
+        if (url.hostname === 'chrome.google.com') {
+            const id = url.pathname.split('/').pop();
+            return idRegex.test(id) ? id : null;
+        }
+        return null;
+    }
+
+    function showLoader(visible) {
         const loader = document.getElementById('loader');
-        const extensionInfo = document.getElementById('extensionInfo');
-        const extensionIcon = document.getElementById('extensionIcon');
-        const extensionName = document.getElementById('extensionName');
-        const extensionVersion = document.getElementById('extensionVersion');
-        const extensionId = document.getElementById('extensionId');
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const downloadCRX = document.getElementById('downloadCRX');
-        const downloadZIP = document.getElementById('downloadZIP');
+        loader.style.display = visible ? 'inline-block' : 'none';
+    }
 
-        async function handleDownload(type = 'crx') {
-            const extensionIdOrUrl = input.value.trim();
-            if (!extensionIdOrUrl) {
-                status.textContent = 'Please enter a valid extension ID or URL.';
-                return;
-            }
+    function showStatus(message) {
+        const status = document.getElementById('status');
+        status.textContent = message;
+    }
 
-            status.textContent = '';
-            loader.style.display = 'inline-block';
-            downloadButton.disabled = true;
-            extensionInfo.style.display = 'none';
-
-            try {
-                const extractedId = extractExtensionId(extensionIdOrUrl);
-                const details = await manager.downloadExtension(extractedId, type);
-                status.textContent = 'Download complete!';
-                status.style.color = 'var(--secondary-color)';
-                displayExtensionInfo(details);
-            } catch (error) {
-                status.textContent = 'Error: ' + error.            } catch (error) {
-                status.textContent = 'Error: ' + error.message;
-                status.style.color = '#D93025';
-            } finally {
-                loader.style.display = 'none';
-                downloadButton.disabled = false;
-            }
-        }
-
-        function extractExtensionId(input) {
-            const urlPattern = /^https:\/\/chrome\.google\.com\/webstore\/detail\/[^\/]+\/([a-z]{32})/i;
-            const match = input.match(urlPattern);
-            return match ? match[1] : input;
-        }
-
-        function displayExtensionInfo(details) {
-            extensionIcon.src = details.icon;
-            extensionName.textContent = details.name;
-            extensionVersion.textContent = details.version;
-            extensionId.textContent = details.id;
-            extensionInfo.style.display = 'block';
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        }
-
-        // Event Listeners
-        downloadButton.addEventListener('click', () => handleDownload('crx'));
-        input.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                handleDownload('crx');
-            }
-        });
-        darkModeToggle.addEventListener('change', toggleDarkMode);
-        downloadCRX.addEventListener('click', () => handleDownload('crx'));
-        downloadZIP.addEventListener('click', () => handleDownload('zip'));
-
-        // Initialize dark mode
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        }
-
-        // Add this function to validate input in real-time
-        function validateInput() {
-            const value = input.value.trim();
-            const isValid = /^[a-z]{32}$/i.test(value) || /^https:\/\/chrome\.google\.com\/webstore\/detail\/[^\/]+\/[a-z]{32}/i.test(value);
-            downloadButton.disabled = !isValid;
-            input.style.borderColor = isValid ? 'var(--primary-color)' : '#D93025';
-        }
-
-        input.addEventListener('input', validateInput);
-
-        // Add this to show a tooltip with input instructions
-        const tooltip = document.createElement('div');
-        tooltip.textContent = 'Enter a 32-character extension ID or Chrome Web Store URL';
-        tooltip.style.cssText = `
-            position: absolute;
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            display: none;
-            box-shadow: var(--shadow);
-            z-index: 1000;
-            transition: var(--transition);
-        `;
-        input.parentNode.appendChild(tooltip);
-
-        input.addEventListener('focus', () => {
-            tooltip.style.display = 'block';
-        });
-
-        input.addEventListener('blur', () => {
-            tooltip.style.display = 'none';
-        });
-
-        // Add responsive design for smaller screens
-        function adjustLayoutForScreenSize() {
-            const container = document.querySelector('.container');
-            if (window.innerWidth < 600) {
-                container.style.padding = '1.5rem';
-                document.querySelector('h1').style.fontSize = '1.75rem';
-            } else {
-                container.style.padding = '2.5rem';
-                document.querySelector('h1').style.fontSize = '2.25rem';
-            }
-        }
-
-        window.addEventListener('resize', adjustLayoutForScreenSize);
-        adjustLayoutForScreenSize();
-
-        // Add animation for smoother transitions
-        document.body.style.opacity = '0';
-        document.body.style.transition = 'opacity 0.5s ease';
-        window.onload = () => {
-            document.body.style.opacity = '1';
-            adjustLayoutForScreenSize();
-        };
-
-        // Add a subtle background animation
-        const canvas = document.createElement('canvas');
-        document.body.appendChild(canvas);
-        canvas.style.position = 'fixed';
-        canvas.style.top = '0';
-        canvas.style.left = '0';
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        canvas.style.zIndex = '-1';
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function drawBackground() {
-            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--background-color');
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const particleCount = 50;
-            const particles = [];
-
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 3 + 1,
-                    dx: (Math.random() - 0.5) * 0.5,
-                    dy: (Math.random() - 0.5) * 0.5
-                });
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--background-color');
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                particles.forEach(particle => {
-                    ctx.beginPath();
-                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--primary-color');
-                    ctx.fill();
-
-                    particle.x += particle.dx;
-                    particle.y += particle.dy;
-
-                    if (particle.x < 0 || particle.x > canvas.width) particle.dx = -particle.dx;
-                    if (particle.y < 0 || particle.y > canvas.height) particle.dy = -particle.dy;
-                });
-
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-        }
-
-        drawBackground();
-    </script>
-</body>
-</html>
+    function showExtensionInfo(details) {
+        const infoContainer = document.getElementById('extensionInfo');
+        document.getElementById('extensionIcon').src = details.icon;
+        document.getElementById('extensionName').textContent = details.name;
+        document.getElementById('extensionVersion').textContent = details.version;
+        document.getElementById('extensionId').textContent = details.id;
+        infoContainer.style.display = 'block';
+    }
+</script>
