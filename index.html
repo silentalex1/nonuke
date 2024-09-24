@@ -280,7 +280,10 @@
                 if (this.cache.has(extensionId)) {
                     return this.cache.get(extensionId);
                 }
-                const response = await fetch(`${this.API_ENDPOINT}/${extensionId}`);
+                const response = await fetch(`${this.API_ENDPOINT}${extensionId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch extension details');
+                }
                 const details = await response.json();
                 this.cache.set(extensionId, details);
                 return details;
@@ -293,7 +296,7 @@
             }
 
             async convertCRXToZIP(crxBlob) {
-                // You would use a client-side CRX-to-ZIP conversion library here.
+                // Use a client-side CRX-to-ZIP conversion library here.
             }
         }
 
@@ -343,8 +346,42 @@
             }
         });
 
+        // Handle download CRX button click
+        document.getElementById('downloadCRX').addEventListener('click', async () => {
+            const extensionInput = document.getElementById('extensionInput').value.trim();
+            const extensionId = getExtensionId(extensionInput);
+
+            if (!extensionId) {
+                showStatus('Please enter a valid extension ID or URL.');
+                return;
+            }
+
+            showLoader(true);
+
+            try {
+                const crxBlob = await manager.downloadCRX(extensionId);
+                const url = URL.createObjectURL(crxBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${extensionId}.crx`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showStatus('Download started!');
+            } catch (error) {
+                showStatus('Failed to download the extension. Try again.');
+            } finally {
+                showLoader(false);
+            }
+        });
+
+        // Handle download ZIP button click (placeholder)
+        document.getElementById('downloadZIP').addEventListener('click', () => {
+            showStatus('ZIP download functionality coming soon!');
+        });
+
         function getExtensionId(input) {
-            const idRegex = /^[a-z]{32}$/;
+            const idRegex = /^[a-zA-Z0-9]{32}$/; // Corrected regex for extension IDs
             if (idRegex.test(input)) {
                 return input;
             }
@@ -368,10 +405,10 @@
 
         function showExtensionInfo(details) {
             const infoContainer = document.getElementById('extensionInfo');
-            document.getElementById('extensionIcon').src = details.icon;
-            document.getElementById('extensionName').textContent = details.name;
-            document.getElementById('extensionVersion').textContent = details.version;
-            document.getElementById('extensionId').textContent = details.id;
+            document.getElementById('extensionIcon').src = details.icon; // Assuming details have icon
+            document.getElementById('extensionName').textContent = details.name; // Assuming details have name
+            document.getElementById('extensionVersion').textContent = details.version; // Assuming details have version
+            document.getElementById('extensionId').textContent = details.id; // Assuming details have id
             infoContainer.style.display = 'block';
         }
     </script>
