@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Chrome Extension Manager</title>
+    <title>Extension Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4285F4;
-            --secondary-color: #34A853;
-            --background-color: #F8F9FA;
-            --text-color: #202124;
+            --primary-color: #6366F1;
+            --secondary-color: #4F46E5;
+            --background-color: #F9FAFB;
+            --text-color: #111827;
             --card-bg: #FFFFFF;
-            --input-bg: #FFFFFF;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --input-bg: #F3F4F6;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .dark-mode {
-            --primary-color: #8AB4F8;
-            --secondary-color: #81C995;
-            --background-color: #202124;
-            --text-color: #E8EAED;
-            --card-bg: #303134;
-            --input-bg: #303134;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --primary-color: #818CF8;
+            --secondary-color: #6366F1;
+            --background-color: #111827;
+            --text-color: #F9FAFB;
+            --card-bg: #1F2937;
+            --input-bg: #374151;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
         * {
             margin: 0;
@@ -47,16 +47,17 @@
             background-color: var(--card-bg);
             border-radius: 20px;
             box-shadow: var(--shadow);
-            padding: 2rem;
+            padding: 2.5rem;
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             transition: var(--transition);
         }
         h1 {
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 1.5rem;
-            font-size: 2rem;
+            font-size: 2.25rem;
+            font-weight: 700;
         }
         .input-group {
             position: relative;
@@ -66,15 +67,16 @@
             width: 100%;
             padding: 1rem 1rem 1rem 3rem;
             font-size: 1rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 50px;
+            border: 2px solid var(--input-bg);
+            border-radius: 12px;
             background-color: var(--input-bg);
             color: var(--text-color);
             transition: var(--transition);
         }
         #extensionInput:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
         .input-icon {
             position: absolute;
@@ -90,7 +92,7 @@
             padding: 1rem 2rem;
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 50px;
+            border-radius: 12px;
             transition: var(--transition);
             width: 100%;
             font-weight: 600;
@@ -99,7 +101,7 @@
             align-items: center;
         }
         #downloadButton:hover {
-            background-color: #3367D6;
+            background-color: var(--secondary-color);
             transform: translateY(-2px);
         }
         #downloadButton:active {
@@ -147,8 +149,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
+            background-color: var(--input-bg);
+            transition: var(--transition);
             border-radius: 34px;
         }
         .toggle-slider:before {
@@ -159,7 +161,7 @@
             left: 4px;
             bottom: 4px;
             background-color: white;
-            transition: .4s;
+            transition: var(--transition);
             border-radius: 50%;
         }
         input:checked + .toggle-slider {
@@ -171,14 +173,15 @@
         .extension-info {
             display: none;
             margin-top: 2rem;
-            padding: 1rem;
+            padding: 1.5rem;
             background-color: var(--input-bg);
-            border-radius: 10px;
+            border-radius: 12px;
             transition: var(--transition);
         }
         .extension-info h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
+            font-size: 1.5rem;
         }
         .extension-details {
             display: flex;
@@ -201,27 +204,30 @@
         .download-options {
             display: flex;
             justify-content: space-between;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
         .download-option {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.75rem 1.5rem;
             font-size: 0.9rem;
             cursor: pointer;
-            border-radius: 50px;
+            border-radius: 8px;
             transition: var(--transition);
+            flex: 1;
+            margin: 0 0.5rem;
         }
         .download-option:hover {
-            background-color: #3367D6;
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
         }
         @media (max-width: 768px) {
             .container {
-                padding: 1.5rem;
+                padding: 2rem;
             }
             h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
             #extensionInput, #downloadButton {
                 font-size: 0.9rem;
@@ -241,10 +247,10 @@
         </label>
     </div>
     <div class="container">
-        <h1>Advanced Chrome Extension Manager</h1>
+        <h1>Extension Manager</h1>
         <div class="input-group">
             <i class="fas fa-search input-icon"></i>
-            <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID or URL">
+            <input type="text" id="extensionInput" placeholder="Enter extension ID or URL">
         </div>
         <button id="downloadButton">
             <div class="loader" id="loader"></div>
@@ -396,6 +402,7 @@
                 status.style.color = 'var(--secondary-color)';
                 displayExtensionInfo(details);
             } catch (error) {
+                status.textContent = 'Error: ' + error.            } catch (error) {
                 status.textContent = 'Error: ' + error.message;
                 status.style.color = '#D93025';
             } finally {
@@ -411,7 +418,6 @@
         }
 
         function displayExtensionInfo(details) {
-            extensionIcon.src =         function displayExtensionInfo(details) {
             extensionIcon.src = details.icon;
             extensionName.textContent = details.name;
             extensionVersion.textContent = details.version;
@@ -468,6 +474,7 @@
             display: none;
             box-shadow: var(--shadow);
             z-index: 1000;
+            transition: var(--transition);
         `;
         input.parentNode.appendChild(tooltip);
 
@@ -483,11 +490,11 @@
         function adjustLayoutForScreenSize() {
             const container = document.querySelector('.container');
             if (window.innerWidth < 600) {
-                container.style.padding = '1rem';
-                document.querySelector('h1').style.fontSize = '1.5rem';
+                container.style.padding = '1.5rem';
+                document.querySelector('h1').style.fontSize = '1.75rem';
             } else {
-                container.style.padding = '2rem';
-                document.querySelector('h1').style.fontSize = '2rem';
+                container.style.padding = '2.5rem';
+                document.querySelector('h1').style.fontSize = '2.25rem';
             }
         }
 
@@ -499,7 +506,70 @@
         document.body.style.transition = 'opacity 0.5s ease';
         window.onload = () => {
             document.body.style.opacity = '1';
+            adjustLayoutForScreenSize();
         };
+
+        // Add a subtle background animation
+        const canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.zIndex = '-1';
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawBackground() {
+            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--background-color');
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const particleCount = 50;
+            const particles = [];
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 3 + 1,
+                    dx: (Math.random() - 0.5) * 0.5,
+                    dy: (Math.random() - 0.5) * 0.5
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--background-color');
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--primary-color');
+                    ctx.fill();
+
+                    particle.x += particle.dx;
+                    particle.y += particle.dy;
+
+                    if (particle.x < 0 || particle.x > canvas.width) particle.dx = -particle.dx;
+                    if (particle.y < 0 || particle.y > canvas.height) particle.dy = -particle.dy;
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        drawBackground();
     </script>
 </body>
 </html>
