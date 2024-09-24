@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkvertise Bypass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --background-color: #F8F9FA;
+            --text-color: #202124;
+            --card-bg: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #8AB4F8;
+            --background-color: #121212;
+            --text-color: #E8EAED;
+            --card-bg: #1F1F1F;
+            --shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color var(--transition);
+        }
+
+        .nav-button:hover {
+            background-color: #3367D6;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px 0;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .input-group button {
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color var(--transition);
+        }
+
+        .input-group button:hover {
+            background-color: #3367D6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <button class="nav-button" onclick="location.href='nonuke.me/adblocker.html'">Adblocker</button>
+        <button class="nav-button" onclick="location.href='nonuke.me/bypass.html'">Linkvertise Bypass</button>
+    </div>
+
+    <div class="container">
+        <h1>Linkvertise Bypass</h1>
+        <div class="input-group">
+            <input type="text" id="linkInput" placeholder="Enter a link to get started">
+            <select id="bypassType">
+                <option value="Linkvertise">Linkvertise</option>
+                <option value="Link">Link</option>
+            </select>
+            <button id="bypassButton">Bypass Link</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bypassButton').addEventListener('click', () => {
+            const link = document.getElementById('linkInput').value;
+            const bypassType = document.getElementById('bypassType').value;
+
+            if (!link) {
+                alert('Please enter a link.');
+                return;
+            }
+
+            // Here, you would add your bypass logic
+            alert(`Bypassing ${bypassType}: ${link}`);
+        });
+    </script>
+</body>
+
+</html>
