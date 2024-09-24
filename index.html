@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
+
         .dark-mode {
             --primary-color: #8AB4F8;
             --secondary-color: #81C995;
@@ -26,11 +28,13 @@
             --input-bg: #303134;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
@@ -43,6 +47,7 @@
             justify-content: center;
             padding: 20px;
         }
+
         .container {
             background-color: var(--card-bg);
             border-radius: 20px;
@@ -52,16 +57,19 @@
             max-width: 600px;
             transition: var(--transition);
         }
+
         h1 {
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 1.5rem;
             font-size: 2rem;
         }
+
         .input-group {
             position: relative;
             margin-bottom: 1.5rem;
         }
+
         #extensionInput {
             width: 100%;
             padding: 1rem 1rem 1rem 3rem;
@@ -72,10 +80,12 @@
             color: var(--text-color);
             transition: var(--transition);
         }
+
         #extensionInput:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
         }
+
         .input-icon {
             position: absolute;
             left: 1rem;
@@ -83,6 +93,7 @@
             transform: translateY(-50%);
             color: var(--primary-color);
         }
+
         #downloadButton {
             background-color: var(--primary-color);
             color: white;
@@ -98,18 +109,22 @@
             justify-content: center;
             align-items: center;
         }
+
         #downloadButton:hover {
             background-color: #3367D6;
             transform: translateY(-2px);
         }
+
         #downloadButton:active {
             transform: translateY(0);
         }
+
         #status {
             margin-top: 1.5rem;
             text-align: center;
             font-weight: 400;
         }
+
         .loader {
             border: 3px solid var(--card-bg);
             border-top: 3px solid var(--primary-color);
@@ -120,26 +135,36 @@
             margin-right: 10px;
             display: none;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
+
         .toggle-container {
             position: absolute;
             top: 20px;
             right: 20px;
         }
+
         .toggle-switch {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
         }
+
         .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
+
         .toggle-slider {
             position: absolute;
             cursor: pointer;
@@ -151,6 +176,7 @@
             transition: .4s;
             border-radius: 34px;
         }
+
         .toggle-slider:before {
             position: absolute;
             content: "";
@@ -162,12 +188,15 @@
             transition: .4s;
             border-radius: 50%;
         }
-        input:checked + .toggle-slider {
+
+        input:checked+.toggle-slider {
             background-color: var(--primary-color);
         }
-        input:checked + .toggle-slider:before {
+
+        input:checked+.toggle-slider:before {
             transform: translateX(26px);
         }
+
         .extension-info {
             display: none;
             margin-top: 2rem;
@@ -176,15 +205,18 @@
             border-radius: 10px;
             transition: var(--transition);
         }
+
         .extension-info h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
         }
+
         .extension-details {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
         }
+
         .extension-icon {
             width: 64px;
             height: 64px;
@@ -192,17 +224,21 @@
             margin-right: 1rem;
             object-fit: cover;
         }
+
         .extension-text {
             flex-grow: 1;
         }
+
         .extension-text p {
             margin-bottom: 0.5rem;
         }
+
         .download-options {
             display: flex;
             justify-content: space-between;
             margin-top: 1rem;
         }
+
         .download-option {
             background-color: var(--primary-color);
             color: white;
@@ -213,19 +249,25 @@
             border-radius: 50px;
             transition: var(--transition);
         }
+
         .download-option:hover {
             background-color: #3367D6;
         }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1.5rem;
             }
+
             h1 {
                 font-size: 1.5rem;
             }
-            #extensionInput, #downloadButton {
+
+            #extensionInput,
+            #downloadButton {
                 font-size: 0.9rem;
             }
+
             .extension-icon {
                 width: 48px;
                 height: 48px;
@@ -233,6 +275,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="toggle-container">
         <label class="toggle-switch">
@@ -295,8 +338,11 @@
                 return crxBlob;
             }
 
-            async convertCRXToZIP(crxBlob) {
-                // Use a client-side CRX-to-ZIP conversion library here.
+            async convertCRXToZIP(crxBlob, extensionName) {
+                const zip = new JSZip();
+                zip.file(`${extensionName}.crx`, crxBlob);
+                const zipBlob = await zip.generateAsync({ type: "blob" });
+                return zipBlob;
             }
         }
 
@@ -367,7 +413,7 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                showStatus('Download started!');
+                showStatus('CRX Download started!');
             } catch (error) {
                 showStatus('Failed to download the extension. Try again.');
             } finally {
@@ -375,9 +421,35 @@
             }
         });
 
-        // Handle download ZIP button click (placeholder)
-        document.getElementById('downloadZIP').addEventListener('click', () => {
-            showStatus('ZIP download functionality coming soon!');
+        // Handle download ZIP button click
+        document.getElementById('downloadZIP').addEventListener('click', async () => {
+            const extensionInput = document.getElementById('extensionInput').value.trim();
+            const extensionId = getExtensionId(extensionInput);
+
+            if (!extensionId) {
+                showStatus('Please enter a valid extension ID or URL.');
+                return;
+            }
+
+            showLoader(true);
+
+            try {
+                const crxBlob = await manager.downloadCRX(extensionId);
+                const details = await manager.getExtensionDetails(extensionId);
+                const zipBlob = await manager.convertCRXToZIP(crxBlob, details.name);
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${details.name}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showStatus('ZIP Download started!');
+            } catch (error) {
+                showStatus('Failed to download ZIP. Try again.');
+            } finally {
+                showLoader(false);
+            }
         });
 
         function getExtensionId(input) {
@@ -412,5 +484,7 @@
             infoContainer.style.display = 'block';
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </body>
+
 </html>
