@@ -311,11 +311,11 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
         class ExtensionManager {
             constructor() {
-                this.API_ENDPOINT = 'https://chrome.google.com/webstore/detail/';
-                this.INSTALL_ENDPOINT = 'https://clients2.google.com/service/update2/crx';
+                this.API_ENDPOINT = 'https://clients2.google.com/service/update2/crx';
                 this.cache = new Map();
             }
 
@@ -323,7 +323,7 @@
                 if (this.cache.has(extensionId)) {
                     return this.cache.get(extensionId);
                 }
-                const response = await fetch(`${this.API_ENDPOINT}${extensionId}`);
+                const response = await fetch(`${this.API_ENDPOINT}?response=redirect&id=${extensionId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch extension details');
                 }
@@ -333,7 +333,10 @@
             }
 
             async downloadCRX(extensionId) {
-                const response = await fetch(`${this.INSTALL_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`);
+                const response = await fetch(`${this.API_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`);
+                if (!response.ok) {
+                    throw new Error('Failed to download CRX');
+                }
                 const crxBlob = await response.blob();
                 return crxBlob;
             }
@@ -346,10 +349,7 @@
             }
         }
 
-        // Initialize the Extension Manager
         const manager = new ExtensionManager();
-
-        // Dark mode toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
 
@@ -363,13 +363,11 @@
             }
         });
 
-        // Preserve dark mode settings
         if (localStorage.getItem('darkMode') === 'enabled') {
             body.classList.add('dark-mode');
             darkModeToggle.checked = true;
         }
 
-        // Handle download button click
         document.getElementById('downloadButton').addEventListener('click', async () => {
             const extensionInput = document.getElementById('extensionInput').value.trim();
             const extensionId = getExtensionId(extensionInput);
@@ -392,7 +390,6 @@
             }
         });
 
-        // Handle download CRX button click
         document.getElementById('downloadCRX').addEventListener('click', async () => {
             const extensionInput = document.getElementById('extensionInput').value.trim();
             const extensionId = getExtensionId(extensionInput);
@@ -421,7 +418,6 @@
             }
         });
 
-        // Handle download ZIP button click
         document.getElementById('downloadZIP').addEventListener('click', async () => {
             const extensionInput = document.getElementById('extensionInput').value.trim();
             const extensionId = getExtensionId(extensionInput);
@@ -484,7 +480,6 @@
             infoContainer.style.display = 'block';
         }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </body>
 
 </html>
