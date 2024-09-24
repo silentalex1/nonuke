@@ -15,18 +15,18 @@
             --text-color: #202124;
             --card-bg: #FFFFFF;
             --input-bg: #FFFFFF;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s ease;
         }
 
         .dark-mode {
             --primary-color: #8AB4F8;
             --secondary-color: #81C995;
-            --background-color: #202124;
+            --background-color: #121212;
             --text-color: #E8EAED;
-            --card-bg: #303134;
+            --card-bg: #1F1F1F;
             --input-bg: #303134;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
         }
 
         * {
@@ -46,23 +46,26 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow: hidden;
         }
 
         .container {
             background-color: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 16px;
             box-shadow: var(--shadow);
             padding: 2rem;
             width: 100%;
             max-width: 600px;
             transition: var(--transition);
+            position: relative;
         }
 
         h1 {
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 1.5rem;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            font-weight: 600;
         }
 
         .input-group {
@@ -75,15 +78,17 @@
             padding: 1rem 1rem 1rem 3rem;
             font-size: 1rem;
             border: 2px solid var(--primary-color);
-            border-radius: 50px;
+            border-radius: 30px;
             background-color: var(--input-bg);
             color: var(--text-color);
             transition: var(--transition);
+            box-shadow: var(--shadow);
         }
 
         #extensionInput:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+            border-color: var(--secondary-color);
         }
 
         .input-icon {
@@ -92,6 +97,7 @@
             top: 50%;
             transform: translateY(-50%);
             color: var(--primary-color);
+            font-size: 1.2rem;
         }
 
         #downloadButton {
@@ -99,15 +105,16 @@
             color: white;
             border: none;
             padding: 1rem 2rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            border-radius: 50px;
+            border-radius: 30px;
             transition: var(--transition);
             width: 100%;
             font-weight: 600;
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: var(--shadow);
         }
 
         #downloadButton:hover {
@@ -123,6 +130,8 @@
             margin-top: 1.5rem;
             text-align: center;
             font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--primary-color);
         }
 
         .loader {
@@ -200,29 +209,35 @@
         .extension-info {
             display: none;
             margin-top: 2rem;
-            padding: 1rem;
+            padding: 1.5rem;
             background-color: var(--input-bg);
             border-radius: 10px;
             transition: var(--transition);
+            box-shadow: var(--shadow);
         }
 
         .extension-info h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
         }
 
         .extension-details {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+            margin-bottom: 1rem;
         }
 
         .extension-icon {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             border-radius: 12px;
             margin-right: 1rem;
             object-fit: cover;
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--shadow);
         }
 
         .extension-text {
@@ -231,6 +246,8 @@
 
         .extension-text p {
             margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
         }
 
         .download-options {
@@ -246,8 +263,10 @@
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
             cursor: pointer;
-            border-radius: 50px;
+            border-radius: 30px;
             transition: var(--transition);
+            width: 48%;
+            box-shadow: var(--shadow);
         }
 
         .download-option:hover {
@@ -260,7 +279,7 @@
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
 
             #extensionInput,
@@ -269,8 +288,19 @@
             }
 
             .extension-icon {
-                width: 48px;
-                height: 48px;
+                width: 64px;
+                height: 64px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .download-options {
+                flex-direction: column;
+            }
+
+            .download-option {
+                width: 100%;
+                margin-bottom: 0.5rem;
             }
         }
     </style>
