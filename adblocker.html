@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adblocker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --background-color: #F8F9FA;
+            --text-color: #202124;
+            --card-bg: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #8AB4F8;
+            --background-color: #121212;
+            --text-color: #E8EAED;
+            --card-bg: #1F1F1F;
+            --shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color var(--transition);
+        }
+
+        .nav-button:hover {
+            background-color: #3367D6;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .toggle-container {
+            margin: 20px 0;
+        }
+
+        .adblocker-button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            position: relative;
+            transition: background-color var(--transition);
+        }
+
+        .adblocker-button.loading {
+            background-color: #2196F3;
+        }
+
+        .adblocker-button.active {
+            background-color: #4CAF50;
+        }
+
+        .adblocker-button.deactivated {
+            background-color: #F44336;
+        }
+
+        .timer {
+            font-size: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <button class="nav-button" onclick="location.href='nonuke.me/adblocker.html'">Adblocker</button>
+        <button class="nav-button" onclick="location.href='nonuke.me/bypass.html'">Linkvertise Bypass</button>
+    </div>
+
+    <div class="container">
+        <h1>Adblocker</h1>
+        <div class="toggle-container">
+            <button id="adblockerButton" class="adblocker-button">Activate Adblocker</button>
+        </div>
+        <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <script>
+        const adblockerButton = document.getElementById('adblockerButton');
+        const timerDisplay = document.getElementById('timer');
+
+        let timerInterval;
+        let seconds = 0;
+
+        adblockerButton.addEventListener('click', async () => {
+            if (adblockerButton.classList.contains('active')) {
+                adblockerButton.classList.remove('active');
+                adblockerButton.classList.add('deactivated');
+                adblockerButton.textContent = 'Activate Adblocker';
+                clearInterval(timerInterval);
+                seconds = 0;
+                timerDisplay.textContent = '00:00';
+            } else {
+                const permission = confirm('Would you like to allow this website to access other sites?');
+                if (permission) {
+                    adblockerButton.classList.add('loading');
+                    adblockerButton.textContent = 'Activating...';
+                    setTimeout(() => {
+                        adblockerButton.classList.remove('loading');
+                        adblockerButton.classList.add('active');
+                        adblockerButton.textContent = 'Adblocker Activated!';
+                        startTimer();
+                    }, 2000);
+                } else {
+                    adblockerButton.classList.add('deactivated');
+                    adblockerButton.textContent = 'Adblocker Deactivated';
+                }
+            }
+        });
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
