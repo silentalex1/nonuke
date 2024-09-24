@@ -49,6 +49,35 @@
             overflow: hidden;
         }
 
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 10px 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .nav-button:hover {
+            background-color: #3367D6;
+        }
+
         .container {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -300,31 +329,34 @@
 
             .download-option {
                 width: 100%;
-                margin-bottom: 0.5rem;
+                margin-bottom: 10px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="toggle-container">
-        <label class="toggle-switch">
-            <input type="checkbox" id="darkModeToggle">
-            <span class="toggle-slider"></span>
-        </label>
+    <div class="navbar">
+        <button class="nav-button" onclick="location.href='nonuke.me/adblocker.html'">Adblocker</button>
+        <button class="nav-button" onclick="location.href='nonuke.me/bypass.html'">Linkvertise Bypass</button>
     </div>
+
     <div class="container">
         <h1>Chrome Extension Manager</h1>
-        <div class="input-group">
-            <i class="fas fa-search input-icon"></i>
-            <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID or URL">
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="toggle-slider"></span>
+            </label>
         </div>
-        <button id="downloadButton">
-            <div class="loader" id="loader"></div>
-            Download Extension
-        </button>
+        <div class="input-group">
+            <i class="fas fa-link input-icon"></i>
+            <input type="text" id="extensionInput" placeholder="Enter Extension ID or URL" />
+        </div>
+        <button id="downloadButton">Get Extension Details</button>
+        <div id="loader" class="loader"></div>
         <div id="status"></div>
-        <div class="extension-info" id="extensionInfo">
+        <div id="extensionInfo" class="extension-info">
             <h2>Extension Details</h2>
             <div class="extension-details">
                 <img id="extensionIcon" class="extension-icon" src="" alt="Extension Icon">
