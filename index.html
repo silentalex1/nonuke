@@ -3,17 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Extension Downloader</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Chrome Extension Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         :root {
             --primary-color: #4285F4;
             --secondary-color: #34A853;
-            --background-color: #F5F5F5;
-            --text-color: #333333;
+            --background-color: #F8F9FA;
+            --text-color: #202124;
+            --card-bg: #FFFFFF;
+            --input-bg: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dark-mode {
+            --primary-color: #8AB4F8;
+            --secondary-color: #81C995;
+            --background-color: #202124;
+            --text-color: #E8EAED;
+            --card-bg: #303134;
+            --input-bg: #303134;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,20 +34,23 @@
             margin: 0;
             background-color: var(--background-color);
             color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .container {
-            background-color: white;
+            background-color: var(--card-bg);
             padding: 3rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
             width: 100%;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
         h1 {
             color: var(--primary-color);
             margin-bottom: 1.5rem;
             font-weight: 700;
             text-align: center;
+            font-size: 2.5rem;
         }
         .input-group {
             position: relative;
@@ -42,16 +58,24 @@
         }
         #extensionInput {
             width: 100%;
-            padding: 1rem;
+            padding: 1rem 1rem 1rem 3rem;
             font-size: 1rem;
-            border: 2px solid #ddd;
+            border: 2px solid var(--primary-color);
             border-radius: 8px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
             transition: all 0.3s ease;
         }
         #extensionInput:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+        }
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
         }
         #downloadButton {
             background-color: var(--primary-color);
@@ -61,43 +85,139 @@
             font-size: 1rem;
             cursor: pointer;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             width: 100%;
-            font-weight: 700;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #downloadButton:hover {
             background-color: #3367D6;
+            transform: translateY(-2px);
+        }
+        #downloadButton:active {
+            transform: translateY(0);
         }
         #status {
             margin-top: 1.5rem;
             text-align: center;
-            font-weight: 300;
+            font-weight: 400;
         }
         .loader {
-            border: 3px solid #f3f3f3;
+            border: 3px solid var(--card-bg);
             border-top: 3px solid var(--primary-color);
             border-radius: 50%;
             width: 24px;
             height: 24px;
             animation: spin 1s linear infinite;
-            margin: 1rem auto;
+            margin-right: 10px;
             display: none;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .toggle-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        .extension-info {
+            display: none;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: var(--input-bg);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .extension-info h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .extension-info img {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            margin-right: 1rem;
+        }
+        .extension-details {
+            display: flex;
+            align-items: center;
+        }
+        .extension-text {
+            flex-grow: 1;
+        }
     </style>
 </head>
 <body>
+    <div class="toggle-container">
+        <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
     <div class="container">
-        <h1>Chrome Extension Downloader</h1>
+        <h1>Chrome Extension Manager</h1>
         <div class="input-group">
+            <i class="fas fa-search input-icon"></i>
             <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID">
         </div>
-        <button id="downloadButton">Download Extension</button>
-        <div class="loader" id="loader"></div>
+        <button id="downloadButton">
+            <div class="loader" id="loader"></div>
+            Download Extension
+        </button>
         <div id="status"></div>
+        <div class="extension-info" id="extensionInfo">
+            <h2>Extension Details</h2>
+            <div class="extension-details">
+                <img id="extensionIcon" src="" alt="Extension Icon">
+                <div class="extension-text">
+                    <p><strong>Name:</strong> <span id="extensionName"></span></p>
+                    <p><strong>Version:</strong> <span id="extensionVersion"></span></p>
+                    <p><strong>ID:</strong> <span id="extensionId"></span></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -152,6 +272,8 @@
                 link.download = fileName;
                 link.click();
                 URL.revokeObjectURL(link.href);
+
+                return details;
             }
 
             async acquireToken() {
@@ -170,6 +292,12 @@
         const downloadButton = document.getElementById('downloadButton');
         const status = document.getElementById('status');
         const loader = document.getElementById('loader');
+        const extensionInfo = document.getElementById('extensionInfo');
+        const extensionIcon = document.getElementById('extensionIcon');
+        const extensionName = document.getElementById('extensionName');
+        const extensionVersion = document.getElementById('extensionVersion');
+        const extensionId = document.getElementById('extensionId');
+        const darkModeToggle = document.getElementById('darkModeToggle');
 
         async function downloadExtension() {
             const extensionId = input.value.trim();
@@ -179,13 +307,15 @@
             }
 
             status.textContent = '';
-            loader.style.display = 'block';
+            loader.style.display = 'inline-block';
             downloadButton.disabled = true;
+            extensionInfo.style.display = 'none';
 
             try {
-                await manager.downloadExtension(extensionId);
+                const details = await manager.downloadExtension(extensionId);
                 status.textContent = 'Download complete!';
                 status.style.color = 'var(--secondary-color)';
+                displayExtensionInfo(details);
             } catch (error) {
                 status.textContent = 'Error: ' + error.message;
                 status.style.color = '#D93025';
@@ -195,12 +325,25 @@
             }
         }
 
+        function displayExtensionInfo(details) {
+            extensionIcon.src = details.icon;
+            extensionName.textContent = details.name;
+            extensionVersion.textContent = details.version;
+            extensionId.textContent = details.id;
+            extensionInfo.style.display = 'block';
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
         downloadButton.addEventListener('click', downloadExtension);
         input.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 downloadExtension();
             }
         });
+        darkModeToggle.addEventListener('change', toggleDarkMode);
     </script>
 </body>
 </html>
