@@ -3,90 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extension Manager</title>
+    <title>Chrome Extension Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         :root {
-            --primary-color: #0D6EFD;
-            --secondary-color: #198754;
-            --background-color: #F1F3F4;
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --background-color: #F8F9FA;
             --text-color: #202124;
             --card-bg: #FFFFFF;
-            --input-bg: #E9ECEF;
-            --shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --input-bg: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
-            --border-radius: 10px;
         }
-
         .dark-mode {
             --primary-color: #8AB4F8;
             --secondary-color: #81C995;
-            --background-color: #121212;
+            --background-color: #202124;
             --text-color: #E8EAED;
-            --card-bg: #1E1E1E;
+            --card-bg: #303134;
             --input-bg: #303134;
-            --shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
+            transition: var(--transition);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            transition: var(--transition);
+            justify-content: center;
             padding: 20px;
         }
-
         .container {
             background-color: var(--card-bg);
-            border-radius: var(--border-radius);
+            border-radius: 20px;
             box-shadow: var(--shadow);
             padding: 2rem;
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             transition: var(--transition);
         }
-
         h1 {
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
-            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
         }
-
         .input-group {
             position: relative;
             margin-bottom: 1.5rem;
         }
-
         #extensionInput {
             width: 100%;
-            padding: 1.2rem 1rem 1.2rem 3rem;
-            font-size: 1.1rem;
+            padding: 1rem 1rem 1rem 3rem;
+            font-size: 1rem;
             border: 2px solid var(--primary-color);
-            border-radius: var(--border-radius);
+            border-radius: 50px;
             background-color: var(--input-bg);
             color: var(--text-color);
             transition: var(--transition);
         }
-
         #extensionInput:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
         }
-
         .input-icon {
             position: absolute;
             left: 1rem;
@@ -94,74 +83,63 @@
             transform: translateY(-50%);
             color: var(--primary-color);
         }
-
         #downloadButton {
             background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 1rem 2rem;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
-            border-radius: var(--border-radius);
+            border-radius: 50px;
             transition: var(--transition);
             width: 100%;
+            font-weight: 600;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: 600;
         }
-
         #downloadButton:hover {
-            background-color: #0056b3;
+            background-color: #3367D6;
             transform: translateY(-2px);
         }
-
         #downloadButton:active {
             transform: translateY(0);
         }
-
         #status {
             margin-top: 1.5rem;
             text-align: center;
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-weight: 400;
         }
-
         .loader {
-            border: 4px solid var(--card-bg);
-            border-top: 4px solid var(--primary-color);
+            border: 3px solid var(--card-bg);
+            border-top: 3px solid var(--primary-color);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             animation: spin 1s linear infinite;
             margin-right: 10px;
             display: none;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         .toggle-container {
             position: absolute;
             top: 20px;
             right: 20px;
         }
-
         .toggle-switch {
             position: relative;
             display: inline-block;
             width: 60px;
             height: 34px;
         }
-
         .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-
         .toggle-slider {
             position: absolute;
             cursor: pointer;
@@ -170,10 +148,9 @@
             right: 0;
             bottom: 0;
             background-color: #ccc;
-            transition: 0.4s;
+            transition: .4s;
             border-radius: 34px;
         }
-
         .toggle-slider:before {
             position: absolute;
             content: "";
@@ -182,91 +159,76 @@
             left: 4px;
             bottom: 4px;
             background-color: white;
-            transition: 0.4s;
+            transition: .4s;
             border-radius: 50%;
         }
-
         input:checked + .toggle-slider {
             background-color: var(--primary-color);
         }
-
         input:checked + .toggle-slider:before {
             transform: translateX(26px);
         }
-
         .extension-info {
             display: none;
             margin-top: 2rem;
-            padding: 1.5rem;
+            padding: 1rem;
             background-color: var(--input-bg);
-            border-radius: var(--border-radius);
+            border-radius: 10px;
             transition: var(--transition);
         }
-
         .extension-info h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
         }
-
         .extension-details {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
         }
-
         .extension-icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 15px;
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
             margin-right: 1rem;
             object-fit: cover;
         }
-
         .extension-text {
             flex-grow: 1;
         }
-
         .extension-text p {
             margin-bottom: 0.5rem;
         }
-
         .download-options {
             display: flex;
             justify-content: space-between;
             margin-top: 1rem;
         }
-
         .download-option {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.7rem 1.5rem;
-            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            border-radius: var(--border-radius);
+            border-radius: 50px;
             transition: var(--transition);
         }
-
         .download-option:hover {
-            background-color: #0056b3;
+            background-color: #3367D6;
         }
-
         @media (max-width: 768px) {
             .container {
                 padding: 1.5rem;
             }
-
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
-
             #extensionInput, #downloadButton {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
-
             .extension-icon {
-                width: 56px;
-                height: 56px;
+                width: 48px;
+                height: 48px;
             }
         }
     </style>
@@ -279,7 +241,7 @@
         </label>
     </div>
     <div class="container">
-        <h1>Extension Manager</h1>
+        <h1>Chrome Extension Manager</h1>
         <div class="input-group">
             <i class="fas fa-search input-icon"></i>
             <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID or URL">
@@ -309,99 +271,109 @@
     <script>
         class ExtensionManager {
             constructor() {
-                this.API_ENDPOINT = 'https://example.com/extension'; this.INSTALL_ENDPOINT = 'https://clients2.google.com/service/update2/crx'; this.cache = new Map(); }
-                    async getExtensionDetails(extensionId) {
-            if (this.cache.has(extensionId)) {
-                return this.cache.get(extensionId);
+                this.API_ENDPOINT = 'https://chrome.google.com/webstore/detail/';
+                this.INSTALL_ENDPOINT = 'https://clients2.google.com/service/update2/crx';
+                this.cache = new Map();
             }
-            const response = await fetch(`${this.API_ENDPOINT}/${extensionId}`);
-            const details = await response.json();
-            this.cache.set(extensionId, details);
-            return details;
+
+            async getExtensionDetails(extensionId) {
+                if (this.cache.has(extensionId)) {
+                    return this.cache.get(extensionId);
+                }
+                const response = await fetch(`${this.API_ENDPOINT}/${extensionId}`);
+                const details = await response.json();
+                this.cache.set(extensionId, details);
+                return details;
+            }
+
+            async downloadCRX(extensionId) {
+                const response = await fetch(`${this.INSTALL_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`);
+                const crxBlob = await response.blob();
+                return crxBlob;
+            }
+
+            async convertCRXToZIP(crxBlob) {
+                // You would use a client-side CRX-to-ZIP conversion library here.
+            }
         }
 
-        async downloadCRX(extensionId) {
-            const response = await fetch(`${this.INSTALL_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`);
-            const crxBlob = await response.blob();
-            return crxBlob;
-        }
+        // Initialize the Extension Manager
+        const manager = new ExtensionManager();
 
-        async convertCRXToZIP(crxBlob) {
-            // You would use a client-side CRX-to-ZIP conversion library here.
-        }
-    }
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
 
-    const manager = new ExtensionManager();
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
 
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const body = document.body;
-
-    darkModeToggle.addEventListener('change', () => {
-        if (darkModeToggle.checked) {
+        // Preserve dark mode settings
+        if (localStorage.getItem('darkMode') === 'enabled') {
             body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('darkMode', 'disabled');
-        }
-    });
-
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        body.classList.add('dark-mode');
-        darkModeToggle.checked = true;
-    }
-
-    document.getElementById('downloadButton').addEventListener('click', async () => {
-        const extensionInput = document.getElementById('extensionInput').value.trim();
-        const extensionId = getExtensionId(extensionInput);
-
-        if (!extensionId) {
-            showStatus('Please enter a valid extension ID or URL.');
-            return;
+            darkModeToggle.checked = true;
         }
 
-        showLoader(true);
+        // Handle download button click
+        document.getElementById('downloadButton').addEventListener('click', async () => {
+            const extensionInput = document.getElementById('extensionInput').value.trim();
+            const extensionId = getExtensionId(extensionInput);
 
-        try {
-            const details = await manager.getExtensionDetails(extensionId);
-            showExtensionInfo(details);
-            showStatus('');
-        } catch (error) {
-            showStatus('Failed to fetch extension details. Try again.');
-        } finally {
-            showLoader(false);
+            if (!extensionId) {
+                showStatus('Please enter a valid extension ID or URL.');
+                return;
+            }
+
+            showLoader(true);
+
+            try {
+                const details = await manager.getExtensionDetails(extensionId);
+                showExtensionInfo(details);
+                showStatus('');
+            } catch (error) {
+                showStatus('Failed to fetch extension details. Try again.');
+            } finally {
+                showLoader(false);
+            }
+        });
+
+        function getExtensionId(input) {
+            const idRegex = /^[a-z]{32}$/;
+            if (idRegex.test(input)) {
+                return input;
+            }
+            const url = new URL(input);
+            if (url.hostname === 'chrome.google.com') {
+                const id = url.pathname.split('/').pop();
+                return idRegex.test(id) ? id : null;
+            }
+            return null;
         }
-    });
 
-    function getExtensionId(input) {
-        const idRegex = /^[a-z]{32}$/;
-        if (idRegex.test(input)) {
-            return input;
+        function showLoader(visible) {
+            const loader = document.getElementById('loader');
+            loader.style.display = visible ? 'inline-block' : 'none';
         }
-        const url = new URL(input);
-        if (url.hostname === 'chrome.google.com') {
-            const id = url.pathname.split('/').pop();
-            return idRegex.test(id) ? id : null;
+
+        function showStatus(message) {
+            const status = document.getElementById('status');
+            status.textContent = message;
         }
-        return null;
-    }
 
-    function showLoader(visible) {
-        const loader = document.getElementById('loader');
-        loader.style.display = visible ? 'inline-block' : 'none';
-    }
-
-    function showStatus(message) {
-        const status = document.getElementById('status');
-        status.textContent = message;
-    }
-
-    function showExtensionInfo(details) {
-        const infoContainer = document.getElementById('extensionInfo');
-        document.getElementById('extensionIcon').src = details.icon;
-        document.getElementById('extensionName').textContent = details.name;
-        document.getElementById('extensionVersion').textContent = details.version;
-        document.getElementById('extensionId').textContent = details.id;
-        infoContainer.style.display = 'block';
-    }
-</script>
+        function showExtensionInfo(details) {
+            const infoContainer = document.getElementById('extensionInfo');
+            document.getElementById('extensionIcon').src = details.icon;
+            document.getElementById('extensionName').textContent = details.name;
+            document.getElementById('extensionVersion').textContent = details.version;
+            document.getElementById('extensionId').textContent = details.id;
+            infoContainer.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
