@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Extension Manager</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Advanced Chrome Extension Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
         :root {
@@ -15,6 +15,7 @@
             --card-bg: #FFFFFF;
             --input-bg: #FFFFFF;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
         .dark-mode {
             --primary-color: #8AB4F8;
@@ -25,32 +26,37 @@
             --input-bg: #303134;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
         .container {
             background-color: var(--card-bg);
-            padding: 3rem;
-            border-radius: 16px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
-            max-width: 600px;
+            padding: 2rem;
             width: 100%;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            max-width: 600px;
+            transition: var(--transition);
         }
         h1 {
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
             text-align: center;
-            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
         }
         .input-group {
             position: relative;
@@ -61,10 +67,10 @@
             padding: 1rem 1rem 1rem 3rem;
             font-size: 1rem;
             border: 2px solid var(--primary-color);
-            border-radius: 8px;
+            border-radius: 50px;
             background-color: var(--input-bg);
             color: var(--text-color);
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
         #extensionInput:focus {
             outline: none;
@@ -81,11 +87,11 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 1rem;
+            padding: 1rem 2rem;
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 50px;
+            transition: var(--transition);
             width: 100%;
             font-weight: 600;
             display: flex;
@@ -167,25 +173,63 @@
             margin-top: 2rem;
             padding: 1rem;
             background-color: var(--input-bg);
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            transition: var(--transition);
         }
         .extension-info h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
         }
-        .extension-info img {
-            width: 64px;
-            height: 64px;
-            border-radius: 8px;
-            margin-right: 1rem;
-        }
         .extension-details {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+        }
+        .extension-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            margin-right: 1rem;
+            object-fit: cover;
         }
         .extension-text {
             flex-grow: 1;
+        }
+        .extension-text p {
+            margin-bottom: 0.5rem;
+        }
+        .download-options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        .download-option {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+        .download-option:hover {
+            background-color: #3367D6;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            #extensionInput, #downloadButton {
+                font-size: 0.9rem;
+            }
+            .extension-icon {
+                width: 48px;
+                height: 48px;
+            }
         }
     </style>
 </head>
@@ -197,10 +241,10 @@
         </label>
     </div>
     <div class="container">
-        <h1>Chrome Extension Manager</h1>
+        <h1>Advanced Chrome Extension Manager</h1>
         <div class="input-group">
             <i class="fas fa-search input-icon"></i>
-            <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID">
+            <input type="text" id="extensionInput" placeholder="Enter Chrome extension ID or URL">
         </div>
         <button id="downloadButton">
             <div class="loader" id="loader"></div>
@@ -210,12 +254,16 @@
         <div class="extension-info" id="extensionInfo">
             <h2>Extension Details</h2>
             <div class="extension-details">
-                <img id="extensionIcon" src="" alt="Extension Icon">
+                <img id="extensionIcon" class="extension-icon" src="" alt="Extension Icon">
                 <div class="extension-text">
                     <p><strong>Name:</strong> <span id="extensionName"></span></p>
                     <p><strong>Version:</strong> <span id="extensionVersion"></span></p>
                     <p><strong>ID:</strong> <span id="extensionId"></span></p>
                 </div>
+            </div>
+            <div class="download-options">
+                <button class="download-option" id="downloadCRX">Download CRX</button>
+                <button class="download-option" id="downloadZIP">Download ZIP</button>
             </div>
         </div>
     </div>
@@ -226,17 +274,7 @@
                 this.API_ENDPOINT = 'https://chrome.google.com/webstore/ajax/detail';
                 this.INSTALL_ENDPOINT = 'https://clients2.google.com/service/update2/crx';
                 this.cache = new Map();
-                this.rateLimiter = {
-                    tokens: 5,
-                    lastRefill: Date.now(),
-                    refill: function() {
-                        const now = Date.now();
-                        const timePassed = now - this.lastRefill;
-                        const refillAmount = Math.floor(timePassed / 1000) * 5;
-                        this.tokens = Math.min(5, this.tokens + refillAmount);
-                        this.lastRefill = now;
-                    }
-                };
+                this.rateLimiter = new RateLimiter(5, 1000);
             }
 
             async getExtensionDetails(extensionId) {
@@ -244,7 +282,7 @@
                     return this.cache.get(extensionId);
                 }
 
-                await this.acquireToken();
+                await this.rateLimiter.acquire();
                 const response = await fetch(`${this.API_ENDPOINT}?id=${extensionId}`);
                 const data = await response.json();
 
@@ -259,16 +297,24 @@
                 return details;
             }
 
-            async downloadExtension(extensionId) {
+            async downloadExtension(extensionId, type = 'crx') {
                 const details = await this.getExtensionDetails(extensionId);
                 const url = `${this.INSTALL_ENDPOINT}?response=redirect&prodversion=49.0&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`;
                 
                 const response = await fetch(url);
                 const blob = await response.blob();
                 
-                const fileName = `${details.name.replace(/[^a-z0-9]/gi, '_')}_${details.version}.crx`;
+                let fileName, fileBlob;
+                if (type === 'zip') {
+                    fileName = `${details.name.replace(/[^a-z0-9]/gi, '_')}_${details.version}.zip`;
+                    fileBlob = await this.convertCrxToZip(blob);
+                } else {
+                    fileName = `${details.name.replace(/[^a-z0-9]/gi, '_')}_${details.version}.crx`;
+                    fileBlob = blob;
+                }
+
                 const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
+                link.href = URL.createObjectURL(fileBlob);
                 link.download = fileName;
                 link.click();
                 URL.revokeObjectURL(link.href);
@@ -276,14 +322,44 @@
                 return details;
             }
 
-            async acquireToken() {
-                this.rateLimiter.refill();
-                if (this.rateLimiter.tokens < 1) {
-                    const waitTime = 1000 - (Date.now() - this.rateLimiter.lastRefill);
+            async convertCrxToZip(crxBlob) {
+                const arrayBuffer = await crxBlob.arrayBuffer();
+                const view = new DataView(arrayBuffer);
+                
+                let offset = 12;
+                const publicKeyLength = view.getUint32(8, true);
+                offset += publicKeyLength;
+                const signatureLength = view.getUint32(offset, true);
+                offset += 4 + signatureLength;
+                
+                return new Blob([arrayBuffer.slice(offset)], {type: 'application/zip'});
+            }
+        }
+
+        class RateLimiter {
+            constructor(tokensPerInterval, interval) {
+                this.tokensPerInterval = tokensPerInterval;
+                this.interval = interval;
+                this.tokens = tokensPerInterval;
+                this.lastRefill = Date.now();
+            }
+
+            async acquire() {
+                await this.refill();
+                if (this.tokens < 1) {
+                    const waitTime = this.interval - (Date.now() - this.lastRefill);
                     await new Promise(resolve => setTimeout(resolve, waitTime));
-                    this.rateLimiter.refill();
+                    await this.refill();
                 }
-                this.rateLimiter.tokens--;
+                this.tokens--;
+            }
+
+            async refill() {
+                const now = Date.now();
+                const timePassed = now - this.lastRefill;
+                const refillAmount = Math.floor(timePassed / this.interval) * this.tokensPerInterval;
+                this.tokens = Math.min(this.tokensPerInterval, this.tokens + refillAmount);
+                this.lastRefill = now;
             }
         }
 
@@ -298,11 +374,13 @@
         const extensionVersion = document.getElementById('extensionVersion');
         const extensionId = document.getElementById('extensionId');
         const darkModeToggle = document.getElementById('darkModeToggle');
+        const downloadCRX = document.getElementById('downloadCRX');
+        const downloadZIP = document.getElementById('downloadZIP');
 
-        async function downloadExtension() {
-            const extensionId = input.value.trim();
-            if (!extensionId) {
-                status.textContent = 'Please enter a valid extension ID.';
+        async function handleDownload(type = 'crx') {
+            const extensionIdOrUrl = input.value.trim();
+            if (!extensionIdOrUrl) {
+                status.textContent = 'Please enter a valid extension ID or URL.';
                 return;
             }
 
@@ -312,7 +390,8 @@
             extensionInfo.style.display = 'none';
 
             try {
-                const details = await manager.downloadExtension(extensionId);
+                const extractedId = extractExtensionId(extensionIdOrUrl);
+                const details = await manager.downloadExtension(extractedId, type);
                 status.textContent = 'Download complete!';
                 status.style.color = 'var(--secondary-color)';
                 displayExtensionInfo(details);
@@ -325,7 +404,14 @@
             }
         }
 
+        function extractExtensionId(input) {
+            const urlPattern = /^https:\/\/chrome\.google\.com\/webstore\/detail\/[^\/]+\/([a-z]{32})/i;
+            const match = input.match(urlPattern);
+            return match ? match[1] : input;
+        }
+
         function displayExtensionInfo(details) {
+            extensionIcon.src =         function displayExtensionInfo(details) {
             extensionIcon.src = details.icon;
             extensionName.textContent = details.name;
             extensionVersion.textContent = details.version;
@@ -335,15 +421,85 @@
 
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
         }
 
-        downloadButton.addEventListener('click', downloadExtension);
+        // Event Listeners
+        downloadButton.addEventListener('click', () => handleDownload('crx'));
         input.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-                downloadExtension();
+                handleDownload('crx');
             }
         });
         darkModeToggle.addEventListener('change', toggleDarkMode);
+        downloadCRX.addEventListener('click', () => handleDownload('crx'));
+        downloadZIP.addEventListener('click', () => handleDownload('zip'));
+
+        // Initialize dark mode
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+        // Add this function to validate input in real-time
+        function validateInput() {
+            const value = input.value.trim();
+            const isValid = /^[a-z]{32}$/i.test(value) || /^https:\/\/chrome\.google\.com\/webstore\/detail\/[^\/]+\/[a-z]{32}/i.test(value);
+            downloadButton.disabled = !isValid;
+            input.style.borderColor = isValid ? 'var(--primary-color)' : '#D93025';
+        }
+
+        input.addEventListener('input', validateInput);
+
+        // Add this to show a tooltip with input instructions
+        const tooltip = document.createElement('div');
+        tooltip.textContent = 'Enter a 32-character extension ID or Chrome Web Store URL';
+        tooltip.style.cssText = `
+            position: absolute;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            display: none;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        `;
+        input.parentNode.appendChild(tooltip);
+
+        input.addEventListener('focus', () => {
+            tooltip.style.display = 'block';
+        });
+
+        input.addEventListener('blur', () => {
+            tooltip.style.display = 'none';
+        });
+
+        // Add responsive design for smaller screens
+        function adjustLayoutForScreenSize() {
+            const container = document.querySelector('.container');
+            if (window.innerWidth < 600) {
+                container.style.padding = '1rem';
+                document.querySelector('h1').style.fontSize = '1.5rem';
+            } else {
+                container.style.padding = '2rem';
+                document.querySelector('h1').style.fontSize = '2rem';
+            }
+        }
+
+        window.addEventListener('resize', adjustLayoutForScreenSize);
+        adjustLayoutForScreenSize();
+
+        // Add animation for smoother transitions
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+        window.onload = () => {
+            document.body.style.opacity = '1';
+        };
     </script>
 </body>
 </html>
