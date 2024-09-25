@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adblocker</title>
+    <title>Google Adblocker | 3rd Party Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -138,33 +138,30 @@
             font-weight: bold;
         }
 
-        /* Google Permission Modal */
-        .modal {
+        /* Google Notification */
+        .notification {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
+            bottom: 20px;
+            right: 20px;
             background: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
-            text-align: center;
             box-shadow: var(--shadow);
-            max-width: 400px;
+            z-index: 9999;
         }
 
-        .modal-content h2 {
+        .notification h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .notification p {
+            font-size: 1rem;
             margin-bottom: 15px;
         }
 
-        .modal-button {
+        .notification-button {
             background-color: var(--primary-color);
             color: white;
             padding: 10px 20px;
@@ -176,11 +173,11 @@
             transition: var(--transition);
         }
 
-        .modal-button:hover {
+        .notification-button:hover {
             background-color: var(--secondary-color);
         }
 
-        .modal-button.cancel {
+        .notification-button.cancel {
             background-color: var(--danger-color);
         }
     </style>
@@ -194,27 +191,25 @@
     </div>
 
     <div class="container">
-        <h1>Adblocker.</h1>
+        <h1>Google Secure Access</h1>
         <div class="adblocker-container">
             <button id="adblockerButton" class="adblocker-button">Activate Adblocker</button>
         </div>
         <div class="timer" id="timer">00:00</div>
     </div>
 
-    <!-- Google Permission Modal -->
-    <div id="permissionModal" class="modal">
-        <div class="modal-content">
-            <h2>Google Request</h2>
-            <p>Would you like to allow this website to access other sites?</p>
-            <button id="allowBtn" class="modal-button">Allow</button>
-            <button id="denyBtn" class="modal-button cancel">Deny</button>
-        </div>
+    <!-- Google Notification -->
+    <div id="notification" class="notification">
+        <h2>Google Notification</h2>
+        <p>Would you like this website to access 3rd party?</p>
+        <button id="allowBtn" class="notification-button">Yes</button>
+        <button id="denyBtn" class="notification-button cancel">No</button>
     </div>
 
     <script>
         const adblockerButton = document.getElementById('adblockerButton');
         const timerDisplay = document.getElementById('timer');
-        const permissionModal = document.getElementById('permissionModal');
+        const notification = document.getElementById('notification');
         const allowBtn = document.getElementById('allowBtn');
         const denyBtn = document.getElementById('denyBtn');
 
@@ -222,29 +217,39 @@
         let seconds = 0;
 
         adblockerButton.addEventListener('click', () => {
-            permissionModal.style.display = 'flex';
+            notification.style.display = 'block';
         });
 
         allowBtn.addEventListener('click', () => {
-            permissionModal.style.display = 'none';
+            notification.style.display = 'none';
             activateAdblocker();
         });
 
         denyBtn.addEventListener('click', () => {
-            permissionModal.style.display = 'none';
+            notification.style.display = 'none';
             adblockerButton.classList.add('deactivated');
             adblockerButton.textContent = 'Adblocker Deactivated';
         });
 
         function activateAdblocker() {
-            adblockerButton.classList.add('loading');
-            adblockerButton.textContent = 'Activating...';
-            setTimeout(() => {
-                adblockerButton.classList.remove('loading');
-                adblockerButton.classList.add('active');
-                adblockerButton.textContent = 'Adblocker Activated!';
-                startTimer();
-            }, 2000);
+            if (adblockerButton.classList.contains('active')) {
+                adblockerButton.classList.remove('active');
+                adblockerButton.classList.add('deactivated');
+                adblockerButton.textContent = 'Activate Adblocker';
+                clearInterval(timerInterval);
+                seconds = 0;
+                timerDisplay.textContent = '00:00';
+            } else {
+                adblockerButton.classList.add('loading');
+                adblockerButton.textContent = 'Activating...';
+                setTimeout(() => {
+                    adblockerButton.classList.remove('loading');
+                    adblockerButton.classList.add('active');
+                    adblockerButton.textContent = 'Adblocker Activated!';
+                    startTimer();
+                    simulateAdblocker();
+                }, 2000);
+            }
         }
 
         function startTimer() {
@@ -254,6 +259,13 @@
                 const secs = seconds % 60;
                 timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
             }, 1000);
+        }
+
+        function simulateAdblocker() {
+            const youtubeAds = document.querySelectorAll('.ytp-ad-module');
+            youtubeAds.forEach(ad => {
+                ad.style.display = 'none';
+            });
         }
     </script>
 </body>
