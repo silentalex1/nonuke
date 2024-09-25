@@ -337,8 +337,8 @@
 
 <body>
     <div class="navbar">
-        <button class="nav-button" onclick="location.href='nonuke.me/adblocker.html'">Adblocker</button>
-        <button class="nav-button" onclick="location.href='nonuke.me/bypass.html'">Linkvertise Bypass</button>
+        <button class="nav-button" onclick="location.href='adblocker.html'">Adblocker</button>
+        <button class="nav-button" onclick="location.href='bypass.html'">Linkvertise Bypass</button>
     </div>
 
     <div class="container">
@@ -511,7 +511,7 @@
         });
 
         function getExtensionId(input) {
-            const idRegex = /^[a-zA-Z0-9]{32}$/; // Corrected regex for extension IDs
+            const idRegex = /^[a-zA-Z0-9]{32}$/;
             if (idRegex.test(input)) {
                 return input;
             }
@@ -535,10 +535,10 @@
 
         function showExtensionInfo(details) {
             const infoContainer = document.getElementById('extensionInfo');
-            document.getElementById('extensionIcon').src = details.icon; // Assuming details have icon
-            document.getElementById('extensionName').textContent = details.name; // Assuming details have name
-            document.getElementById('extensionVersion').textContent = details.version; // Assuming details have version
-            document.getElementById('extensionId').textContent = details.id; // Assuming details have id
+            document.getElementById('extensionIcon').src = details.icon;
+            document.getElementById('extensionName').textContent = details.name;
+            document.getElementById('extensionVersion').textContent = details.version;
+            document.getElementById('extensionId').textContent = details.id;
             infoContainer.style.display = 'block';
         }
     </script>
