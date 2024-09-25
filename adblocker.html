@@ -38,22 +38,27 @@
 
         .navbar {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: transparent;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 10px 20px;
             z-index: 1000;
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         .nav-button {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 5px;
             padding: 10px 15px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: background-color var(--transition);
+            transition: var(--transition);
+            font-weight: 600;
         }
 
         .nav-button:hover {
@@ -74,15 +79,20 @@
         }
 
         .adblocker-button {
-            padding: 15px 25px;
+            width: 150px;
+            height: 150px;
             border: none;
-            border-radius: 5px;
+            border-radius: 50%;
             background-color: var(--primary-color);
             color: white;
             font-size: 18px;
             cursor: pointer;
             position: relative;
             transition: background-color var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
         }
 
         .adblocker-button.loading {
@@ -106,8 +116,9 @@
 
 <body>
     <div class="navbar">
-        <button class="nav-button" onclick="location.href='nonuke.me/adblocker.html'">Adblocker</button>
-        <button class="nav-button" onclick="location.href='nonuke.me/bypass.html'">Linkvertise Bypass</button>
+        <button class="nav-button" onclick="location.href='index.html'">Home</button>
+        <button class="nav-button" onclick="location.href='adblocker.html'">Adblocker</button>
+        <button class="nav-button" onclick="location.href='bypass.html'">Linkvertise Bypass</button>
     </div>
 
     <div class="container">
