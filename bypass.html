@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Linkvertise Bypass</title>
+    <title>Linkvertise Bypass</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -204,9 +204,10 @@
     </div>
 
     <div class="container">
-        <h1>Advanced Linkvertise Bypass</h1>
+        <h1>Linkvertise Bypass</h1>
         <div class="input-group">
-            <input type="text" id="linkInput" placeholder="Enter a link to get started">
+            <input type="text" id="linkInput" placeholder="Enter the Linkvertise link">
+            <input type="text" id="mainLinkInput" placeholder="Enter the main website link">
             <select id="bypassType">
                 <option value="Linkvertise">Linkvertise</option>
                 <option value="Link">Link</option>
@@ -219,16 +220,22 @@
 
     <script>
         document.getElementById('bypassButton').addEventListener('click', () => {
-            const link = document.getElementById('linkInput').value;
+            const linkvertiseLink = document.getElementById('linkInput').value;
+            const mainLink = document.getElementById('mainLinkInput').value;
             const bypassType = document.getElementById('bypassType').value;
 
-            if (!link) {
-                alert('Please enter a link.');
+            if (!linkvertiseLink && bypassType === 'Linkvertise') {
+                alert('Please enter a Linkvertise link.');
                 return;
             }
 
-            if (bypassType === 'Linkvertise' && link.startsWith('https://linkvertise.com/')) {
-                const urlParams = new URLSearchParams(new URL(link).search);
+            if (!mainLink && bypassType === 'Link') {
+                alert('Please enter the main website link.');
+                return;
+            }
+
+            if (bypassType === 'Linkvertise' && linkvertiseLink.startsWith('https://linkvertise.com/')) {
+                const urlParams = new URLSearchParams(new URL(linkvertiseLink).search);
                 const actualLink = urlParams.get('u');
                 if (actualLink) {
                     showNotification('Bypassing Linkvertise', 'Redirecting...');
@@ -238,10 +245,10 @@
                 } else {
                     alert('Failed to retrieve the actual link.');
                 }
-            } else {
-                showNotification('Bypassing Link', 'Redirecting...');
+            } else if (bypassType === 'Link') {
+                showNotification('Bypassing Main Link', 'Redirecting...');
                 setTimeout(() => {
-                    window.location.href = link;
+                    window.location.href = mainLink;
                 }, 2000);
             }
         });
