@@ -136,8 +136,17 @@
                 return;
             }
 
-            // Here, you would add your bypass logic
-            alert(`Bypassing ${bypassType}: ${link}`);
+            if (bypassType === 'Linkvertise' && link.startsWith('https://linkvertise.com/')) {
+                const urlParams = new URLSearchParams(new URL(link).search);
+                const actualLink = urlParams.get('u');
+                if (actualLink) {
+                    window.location.href = actualLink;
+                } else {
+                    alert('Failed to retrieve the actual link.');
+                }
+            } else {
+                window.location.href = link;
+            }
         });
     </script>
 </body>
