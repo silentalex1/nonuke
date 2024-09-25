@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linkvertise Bypass</title>
+    <title>Advanced Linkvertise Bypass</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -104,6 +104,95 @@
         .input-group button:hover {
             background-color: #3367D6;
         }
+
+        .notification-tray {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 4000000;
+        }
+
+        .notification {
+            position: block;
+            margin: 10px;
+            padding: 10px;
+            padding-right: 20px;
+            background-color: #25262b;
+            color: white;
+            transition: opacity 0.6s;
+            width: 300px;
+            border-radius: 10px;
+            border: 2px solid #3b5bdb;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        .notification .grid-container {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 10px;
+        }
+
+        .notification .links {
+            display: flex;
+            justify-content: right;
+            align-items: center;
+        }
+
+        .notification .links span {
+            padding-bottom: 4px;
+            opacity: 0.7;
+        }
+
+        .notification .links a,
+        .notification .links span {
+            display: block;
+            color: white;
+            font-size: 0.8rem;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+        .grid-item img {
+            margin-top: 15px;
+            margin-right: 5px;
+            width: 32px;
+        }
+
+        .grid-item h3 {
+            padding-top: 10px;
+            padding-bottom: 3px;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .grid-item p {
+            font-style: italic;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .grid-item p a {
+            opacity: 1;
+            font-weight: 600;
+            text-decoration: underline !important;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .grid-item h3,
+        .grid-item p {
+            margin: 0;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #3b5bdb;
+            }
+
+            to {
+                box-shadow: 0 0 20px #3b5bdb;
+            }
+        }
     </style>
 </head>
 
@@ -115,7 +204,7 @@
     </div>
 
     <div class="container">
-        <h1>Linkvertise Bypass</h1>
+        <h1>Advanced Linkvertise Bypass</h1>
         <div class="input-group">
             <input type="text" id="linkInput" placeholder="Enter a link to get started">
             <select id="bypassType">
@@ -125,6 +214,8 @@
             <button id="bypassButton">Bypass Link</button>
         </div>
     </div>
+
+    <div id="notification-tray"></div>
 
     <script>
         document.getElementById('bypassButton').addEventListener('click', () => {
@@ -140,14 +231,48 @@
                 const urlParams = new URLSearchParams(new URL(link).search);
                 const actualLink = urlParams.get('u');
                 if (actualLink) {
-                    window.location.href = actualLink;
+                    showNotification('Bypassing Linkvertise', 'Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = actualLink;
+                    }, 2000);
                 } else {
                     alert('Failed to retrieve the actual link.');
                 }
             } else {
-                window.location.href = link;
+                showNotification('Bypassing Link', 'Redirecting...');
+                setTimeout(() => {
+                    window.location.href = link;
+                }, 2000);
             }
         });
+
+        function showNotification(title, text) {
+            const tray = document.getElementById('notification-tray');
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <img height="32" src="logo.svg" alt="B">
+                    </div>
+                    <div class="grid-item">
+                        <h3>${title}</h3>
+                        <p>${text}</p>
+                    </div>
+                </div>
+                <div class="links">
+                    <span id="version">Release</span>
+                    <span>&#8226;</span>
+                    <a href="https://discord.gg/tX8G9G5BMV">Get Support</a>
+                    <span>&#8226;</span>
+                    <a href="https://bypass.city/privacy">Privacy Policy</a>
+                </div>
+            `;
+            tray.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
     </script>
 </body>
 
