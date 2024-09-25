@@ -4,24 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adblocker</title>
+    <title>Adblocker | Google Secure Access</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --danger-color: #EA4335;
             --background-color: #F8F9FA;
+            --dark-background: #121212;
             --text-color: #202124;
             --card-bg: #FFFFFF;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             --transition: all 0.3s ease;
+            --button-gradient: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
         }
 
         .dark-mode {
             --primary-color: #8AB4F8;
+            --secondary-color: #81C995;
+            --danger-color: #F28B82;
             --background-color: #121212;
             --text-color: #E8EAED;
             --card-bg: #1F1F1F;
-            --shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            --shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -34,6 +40,7 @@
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
+            transition: var(--transition);
         }
 
         .navbar {
@@ -44,25 +51,28 @@
             background-color: var(--card-bg);
             box-shadow: var(--shadow);
             border-radius: 10px;
-            padding: 10px 20px;
+            padding: 15px 30px;
             z-index: 1000;
             display: flex;
-            gap: 15px;
+            gap: 20px;
+            opacity: 0.95;
         }
 
         .nav-button {
-            background-color: var(--primary-color);
+            background: var(--button-gradient);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
+            box-shadow: var(--shadow);
         }
 
         .nav-button:hover {
-            background-color: #3367D6;
+            transform: translateY(-2px);
+            background-color: var(--secondary-color);
         }
 
         .container {
@@ -74,42 +84,104 @@
             padding: 20px;
         }
 
-        .toggle-container {
-            margin: 20px 0;
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .adblocker-container {
+            margin: 40px 0;
+            position: relative;
         }
 
         .adblocker-button {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             border: none;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background: var(--button-gradient);
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
-            position: relative;
-            transition: background-color var(--transition);
             display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+            font-weight: bold;
         }
 
         .adblocker-button.loading {
-            background-color: #2196F3;
+            background: #FBB13C;
+            cursor: wait;
         }
 
         .adblocker-button.active {
-            background-color: #4CAF50;
+            background: var(--secondary-color);
         }
 
         .adblocker-button.deactivated {
-            background-color: #F44336;
+            background: var(--danger-color);
+        }
+
+        .adblocker-button:hover {
+            transform: translateY(-5px);
         }
 
         .timer {
-            font-size: 20px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
             margin: 20px;
+            font-weight: bold;
+        }
+
+        /* Google Permission Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            max-width: 400px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+        }
+
+        .modal-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 10px;
+            transition: var(--transition);
+        }
+
+        .modal-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .modal-button.cancel {
+            background-color: var(--danger-color);
         }
     </style>
 </head>
@@ -122,45 +194,58 @@
     </div>
 
     <div class="container">
-        <h1>Adblocker</h1>
-        <div class="toggle-container">
+        <h1>Google Secure Access</h1>
+        <div class="adblocker-container">
             <button id="adblockerButton" class="adblocker-button">Activate Adblocker</button>
         </div>
         <div class="timer" id="timer">00:00</div>
     </div>
 
+    <!-- Google Permission Modal -->
+    <div id="permissionModal" class="modal">
+        <div class="modal-content">
+            <h2>Google Request</h2>
+            <p>Would you like to allow this website to access other sites?</p>
+            <button id="allowBtn" class="modal-button">Allow</button>
+            <button id="denyBtn" class="modal-button cancel">Deny</button>
+        </div>
+    </div>
+
     <script>
         const adblockerButton = document.getElementById('adblockerButton');
         const timerDisplay = document.getElementById('timer');
+        const permissionModal = document.getElementById('permissionModal');
+        const allowBtn = document.getElementById('allowBtn');
+        const denyBtn = document.getElementById('denyBtn');
 
         let timerInterval;
         let seconds = 0;
 
-        adblockerButton.addEventListener('click', async () => {
-            if (adblockerButton.classList.contains('active')) {
-                adblockerButton.classList.remove('active');
-                adblockerButton.classList.add('deactivated');
-                adblockerButton.textContent = 'Activate Adblocker';
-                clearInterval(timerInterval);
-                seconds = 0;
-                timerDisplay.textContent = '00:00';
-            } else {
-                const permission = confirm('Would you like to allow this website to access other sites?');
-                if (permission) {
-                    adblockerButton.classList.add('loading');
-                    adblockerButton.textContent = 'Activating...';
-                    setTimeout(() => {
-                        adblockerButton.classList.remove('loading');
-                        adblockerButton.classList.add('active');
-                        adblockerButton.textContent = 'Adblocker Activated!';
-                        startTimer();
-                    }, 2000);
-                } else {
-                    adblockerButton.classList.add('deactivated');
-                    adblockerButton.textContent = 'Adblocker Deactivated';
-                }
-            }
+        adblockerButton.addEventListener('click', () => {
+            permissionModal.style.display = 'flex';
         });
+
+        allowBtn.addEventListener('click', () => {
+            permissionModal.style.display = 'none';
+            activateAdblocker();
+        });
+
+        denyBtn.addEventListener('click', () => {
+            permissionModal.style.display = 'none';
+            adblockerButton.classList.add('deactivated');
+            adblockerButton.textContent = 'Adblocker Deactivated';
+        });
+
+        function activateAdblocker() {
+            adblockerButton.classList.add('loading');
+            adblockerButton.textContent = 'Activating...';
+            setTimeout(() => {
+                adblockerButton.classList.remove('loading');
+                adblockerButton.classList.add('active');
+                adblockerButton.textContent = 'Adblocker Activated!';
+                startTimer();
+            }, 2000);
+        }
 
         function startTimer() {
             timerInterval = setInterval(() => {
