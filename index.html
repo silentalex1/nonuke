@@ -16,8 +16,6 @@
             margin: 0;
         }
         .container {
-            width: 90%;
-            max-width: 1000px;
             text-align: center;
         }
         h1 {
@@ -28,7 +26,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
         button {
             padding: 10px 20px;
@@ -38,56 +36,10 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #388bfd;
-        }
-        .editor-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: #161b22;
-            padding: 20px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        #editor {
-            flex: 1;
-            padding: 20px;
-            background-color: #0d1117;
-            color: #c9d1d9;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            min-height: 200px;
-            resize: vertical;
-            font-family: monospace;
-        }
-        #console {
-            padding: 20px;
-            background-color: #161b22;
-            color: #c9d1d9;
-            border-radius: 8px;
-            font-family: monospace;
-            overflow-y: auto;
-            height: 200px;
-            border: 1px solid #30363d;
-            text-align: left;
-        }
-        .console-message {
-            margin: 0;
-            font-size: 0.9em;
-        }
-        .console-error {
-            color: #ff7b72;
-        }
-        .console-info {
-            color: #a5d6ff;
         }
         .version {
             position: absolute;
@@ -104,141 +56,21 @@
     <h1>Obfuscator Web</h1>
     <div class="version">Obfuscator v1.0</div>
     <div id="fileOptions">
-        <button onclick="newFile()">New File</button>
+        <button onclick="location.href='/obfuscator'">New File</button>
         <input type="file" id="uploadFile" style="display:none" onchange="uploadFile(event)">
         <button onclick="document.getElementById('uploadFile').click()">Upload File</button>
-    </div>
-
-    <div id="editorPage" style="display:none">
-        <div class="editor-container">
-            <textarea id="editor" placeholder="Enter your code here..."></textarea>
-            <div class="sidebar">
-                <button onclick="setMode('lua')">Lua Obfuscator</button>
-                <button onclick="setMode('html')">HTML Obfuscator</button>
-                <button onclick="setMode('javascript')">JavaScript Obfuscator</button>
-                <button onclick="setMode('deobfuscate')">Deobfuscate Code</button>
-                <button onclick="obfuscate()">Obfuscate</button>
-                <button onclick="deobfuscate()">Deobfuscate</button>
-                <button onclick="downloadObfuscated()">Download</button>
-            </div>
-        </div>
-        <h2>Console</h2>
-        <div id="console">Console initialized!</div>
     </div>
 </div>
 
 <script>
-    let obfuscatedCode = '';
-    let isObfuscated = false;
-    let obfuscationMode = 'lua';
-
-    function newFile() {
-        document.getElementById('fileOptions').style.display = 'none';
-        document.getElementById('editorPage').style.display = 'block';
-        consoleMessage("Initialized Console!", "info");
-    }
-
     function uploadFile(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = function(e) {
-            newFile();
-            document.getElementById('editor').value = e.target.result;
-            consoleMessage("File loaded successfully!", "info");
+            // Handle the file upload logic here if needed
+            alert("File loaded successfully: " + file.name);
         };
         reader.readAsText(file);
-    }
-
-    function consoleMessage(message, type="info") {
-        const consoleElement = document.getElementById('console');
-        const messageElem = document.createElement("p");
-        messageElem.textContent = `> ${message}`;
-        messageElem.className = "console-message " + (type === "error" ? "console-error" : "console-info");
-        consoleElement.appendChild(messageElem);
-        consoleElement.scrollTop = consoleElement.scrollHeight;
-    }
-
-    function setMode(mode) {
-        obfuscationMode = mode;
-        const modeText = mode === 'lua' ? "Lua" : mode === 'html' ? "HTML" : mode === 'javascript' ? "JavaScript" : "Deobfuscation";
-        consoleMessage(`Switched to ${modeText} mode`, "info");
-    }
-
-    function obfuscate() {
-        const code = document.getElementById("editor").value.trim();
-        if (!code) {
-            const errorMessage = obfuscationMode === 'html' ? "Must have a HTML code!" : 
-                                 obfuscationMode === 'javascript' ? "Must have a JavaScript code!" : 
-                                 "Must have a Lua code!";
-            consoleMessage(errorMessage, "error");
-            return;
-        }
-
-        consoleMessage(`Applying ${obfuscationMode} obfuscation...`, "info");
-
-        if (obfuscationMode === 'lua') {
-            obfuscatedCode = code
-                .replace(/--.*$/gm, '')
-                .replace(/\b(\w+)\b/g, match => "v" + Math.random().toString(36).substr(2, 4))
-                .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"');
-            obfuscatedCode = obfuscatedCode.replace(/\s+/g, '');
-        } else if (obfuscationMode === 'html') {
-            obfuscatedCode = code.replace(/</g, "&lt;")
-                                 .replace(/>/g, "&gt;")
-                                 .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"')
-                                 .replace(/\s+/g, ' ');
-        } else if (obfuscationMode === 'javascript') {
-            obfuscatedCode = code.split('').map(c => "\\x" + c.charCodeAt(0).toString(16)).join('');
-            obfuscatedCode = `eval("${obfuscatedCode}");`;
-        }
-
-        document.getElementById("editor").value = obfuscatedCode;
-        isObfuscated = true;
-        consoleMessage("Obfuscation finished!", "info");
-    }
-
-    function deobfuscate() {
-        const code = document.getElementById("editor").value.trim();
-        if (!code) {
-            consoleMessage("Must have an obfuscated code!", "error");
-            return;
-        }
-
-        consoleMessage(`Applying deobfuscation...`, "info");
-
-        if (obfuscationMode === 'lua') {
-            obfuscatedCode = code.replace(/v\w+/g, 'var').replace(/"\w+"/g, match => match.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 2)).join(''));
-        } else if (obfuscationMode === 'html') {
-            obfuscatedCode = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-        } else if (obfuscationMode === 'javascript') {
-            obfuscatedCode = eval(code.replace(/\\x/g, '%'));
-        }
-
-        document.getElementById("editor").value = obfuscatedCode;
-        consoleMessage("Deobfuscation finished!", "info");
-    }
-
-    function downloadObfuscated() {
-        const code = document.getElementById("editor").value.trim();
-
-        if (!code) {
-            consoleMessage("Must have a code in first!", "error");
-            return;
-        }
-
-        const modeSuffix = isObfuscated ? 'obfuscated' : 'deobfuscated';
-        const blob = new Blob([code], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${modeSuffix}_code.txt`;
-        a.click();
-        URL.revokeObjectURL(url);
-        consoleMessage(`${modeSuffix.charAt(0).toUpperCase() + modeSuffix.slice(1)} code downloaded!`, "info");
-    }
-
-    function scrambleString(input) {
-        return input.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 2)).join('');
     }
 </script>
 
