@@ -104,10 +104,12 @@
     <!-- New File Page -->
     <div id="editorPage" style="display:none">
         <div class="editor-container">
-            <textarea id="editor" placeholder="Enter your Lua code here..."></textarea>
+            <textarea id="editor" placeholder="Enter your code here..."></textarea>
             <div class="sidebar">
+                <button onclick="setMode('lua')">Lua Obfuscator</button>
+                <button onclick="setMode('html')">HTML Obfuscator</button>
+                <button onclick="setMode('javascript')">JavaScript Obfuscator</button>
                 <button onclick="obfuscate()">Obfuscate</button>
-                <button onclick="obfuscateV2()">Obfuscate v2</button>
                 <button onclick="downloadObfuscated()">Download</button>
             </div>
         </div>
@@ -119,6 +121,7 @@
 <script>
     let obfuscatedCode = '';
     let isObfuscated = false;
+    let obfuscationMode = 'lua';
 
     function newFile() {
         document.getElementById('fileOptions').style.display = 'none';
@@ -146,40 +149,43 @@
         consoleElement.scrollTop = consoleElement.scrollHeight;
     }
 
+    function setMode(mode) {
+        obfuscationMode = mode;
+        const modeText = mode === 'lua' ? "Lua" : mode === 'html' ? "HTML" : "JavaScript";
+        consoleMessage(`Switched to ${modeText} obfuscator`, "info");
+    }
+
     function obfuscate() {
         const code = document.getElementById("editor").value.trim();
         if (!code) {
-            consoleMessage("Must have code in the obfuscate text", "error");
+            const errorMessage = obfuscationMode === 'html' ? "Must have a HTML code!" : 
+                                 obfuscationMode === 'javascript' ? "Must have a JavaScript code!" : 
+                                 "Must have a Lua code!";
+            consoleMessage(errorMessage, "error");
             return;
         }
-        consoleMessage("Applying obfuscation...", "info");
 
-        obfuscatedCode = code
-            .replace(/--.*$/gm, '')
-            .replace(/\b(\w+)\b/g, match => "v" + Math.random().toString(36).substr(2, 4))
-            .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"');
-        
-        obfuscatedCode = obfuscatedCode.replace(/\s+/g, '');  // Single-line obfuscation
+        consoleMessage(`Applying ${obfuscationMode} obfuscation...`, "info");
+
+        if (obfuscationMode === 'lua') {
+            obfuscatedCode = code
+                .replace(/--.*$/gm, '')
+                .replace(/\b(\w+)\b/g, match => "v" + Math.random().toString(36).substr(2, 4))
+                .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"');
+            obfuscatedCode = obfuscatedCode.replace(/\s+/g, '');
+        } else if (obfuscationMode === 'html') {
+            obfuscatedCode = code.replace(/</g, "&lt;")
+                                 .replace(/>/g, "&gt;")
+                                 .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"')
+                                 .replace(/\s+/g, ' ');
+        } else if (obfuscationMode === 'javascript') {
+            obfuscatedCode = code.split('').map(c => "\\x" + c.charCodeAt(0).toString(16)).join('');
+            obfuscatedCode = `eval("${obfuscatedCode}");`;
+        }
+
         document.getElementById("editor").value = obfuscatedCode;
         isObfuscated = true;
         consoleMessage("Obfuscation finished!", "info");
-    }
-
-    function obfuscateV2() {
-        const code = document.getElementById("editor").value.trim();
-        if (!code) {
-            consoleMessage("Must have code in the obfuscate text", "error");
-            return;
-        }
-        consoleMessage("Changed to obfuscator v2", "info");
-        consoleMessage("Applying v2 obfuscation...", "info");
-
-        obfuscatedCode = code.split('').map(c => "\\x" + c.charCodeAt(0).toString(16)).join('');
-        obfuscatedCode = `loadstring("${obfuscatedCode}")()`;
-
-        document.getElementById("editor").value = obfuscatedCode;
-        isObfuscated = true;
-        consoleMessage("Obfuscation v2 finished!", "info");
     }
 
     function scrambleString(input) {
@@ -202,7 +208,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "obfuscated_code.txt";
+        a.download = `${obfuscationMode}_obfuscated_code.txt`;
         a.click();
         URL.revokeObjectURL(url);
         consoleMessage("Obfuscated code downloaded!", "info");
