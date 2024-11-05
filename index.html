@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Lua Obfuscator</title>
+    <title>Lua Obfuscator</title>
     <style>
-        /* Basic Styling for Blue and Black Design */
+        /* Blue and black theme styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #0d1117;
@@ -18,34 +18,33 @@
         }
         .container {
             width: 90%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            max-width: 1000px;
+            text-align: center;
         }
         h1 {
             color: #58a6ff;
         }
         #fileOptions {
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 20px;
         }
         button {
             padding: 10px 20px;
-            border: none;
+            font-size: 16px;
             color: #fff;
             background-color: #1f6feb;
-            cursor: pointer;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
         }
         button:hover {
             background-color: #388bfd;
         }
-        /* New File Page Styling */
         .editor-container {
             display: flex;
-            width: 100%;
             gap: 20px;
             margin-top: 20px;
         }
@@ -58,19 +57,37 @@
             flex-direction: column;
             gap: 10px;
         }
-        #editor, #console {
+        #editor {
             flex: 1;
             padding: 20px;
             background-color: #0d1117;
             color: #c9d1d9;
             border: 1px solid #30363d;
             border-radius: 8px;
-            min-height: 300px;
+            min-height: 200px;
+            resize: vertical;
+            font-family: monospace;
         }
         #console {
+            padding: 20px;
+            background-color: #161b22;
+            color: #c9d1d9;
+            border-radius: 8px;
             font-family: monospace;
             overflow-y: auto;
-            height: 300px;
+            height: 200px;
+            border: 1px solid #30363d;
+            text-align: left;
+        }
+        .console-message {
+            margin: 0;
+            font-size: 0.9em;
+        }
+        .console-error {
+            color: #ff7b72;
+        }
+        .console-info {
+            color: #a5d6ff;
         }
     </style>
 </head>
@@ -84,7 +101,7 @@
         <button onclick="document.getElementById('uploadFile').click()">Upload File</button>
     </div>
 
-    <!-- Editor Page for New File -->
+    <!-- New File Page -->
     <div id="editorPage" style="display:none">
         <div class="editor-container">
             <textarea id="editor" placeholder="Enter your Lua code here..."></textarea>
@@ -98,50 +115,60 @@
 </div>
 
 <script>
-    // Function to handle new file creation and page navigation
+    // Show editor page and initialize the console
     function newFile() {
         document.getElementById('fileOptions').style.display = 'none';
         document.getElementById('editorPage').style.display = 'block';
-        consoleMessage("Initialized Console!");
+        consoleMessage("Initialized Console!", "info");
     }
 
-    // Function to handle file upload and load content into editor
+    // Handle file upload and load content into the editor
     function uploadFile(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onload = function(e) {
             newFile();
             document.getElementById('editor').value = e.target.result;
-            consoleMessage("File loaded successfully!");
+            consoleMessage("File loaded successfully!", "info");
         };
         reader.readAsText(file);
     }
 
-    // Function to display messages in the console
-    function consoleMessage(message) {
+    // Log messages to the console
+    function consoleMessage(message, type="info") {
         const consoleElement = document.getElementById('console');
-        consoleElement.innerHTML += `<div>> ${message}</div>`;
-        consoleElement.scrollTop = consoleElement.scrollHeight;  // Auto-scroll to the bottom
+        const messageElem = document.createElement("p");
+        messageElem.textContent = `> ${message}`;
+        messageElem.className = "console-message " + (type === "error" ? "console-error" : "console-info");
+        consoleElement.appendChild(messageElem);
+        consoleElement.scrollTop = consoleElement.scrollHeight;
     }
 
-    // Obfuscation function
+    // Obfuscate Lua code with basic operations
     function obfuscate() {
-        const code = document.getElementById("editor").value;
+        const code = document.getElementById("editor").value.trim();
 
-        consoleMessage("Applying obfuscation...");
-        
-        // Basic obfuscation logic: remove comments, scramble variables, etc.
+        // Check if code is present
+        if (!code) {
+            consoleMessage("Must have code in the obfuscate text", "error");
+            return;
+        }
+
+        consoleMessage("Applying obfuscation...", "info");
+
+        // Simple Lua code obfuscation logic
         let obfuscated = code
-            .replace(/--.*$/gm, '')                           // Remove comments
-            .replace(/\b(\w+)\b/g, function (match) {         // Rename variables
-                return "v" + Math.random().toString(36).substr(2, 6);
-            })
-            .replace(/"(.*?)"/g, function (match, p1) {       // Scramble strings
-                return '"' + btoa(p1).split('').reverse().join('') + '"';
-            });
+            .replace(/--.*$/gm, '') // Remove comments
+            .replace(/\b(\w+)\b/g, (match) => "v" + Math.random().toString(36).substr(2, 4)) // Rename variables
+            .replace(/"(.*?)"/g, (match, p1) => '"' + scrambleString(p1) + '"'); // Scramble strings
 
-        document.getElementById("editor").value = obfuscated; // Show obfuscated code in editor
-        consoleMessage("Obfuscation finished!");
+        document.getElementById("editor").value = obfuscated;
+        consoleMessage("Obfuscation finished!", "info");
+    }
+
+    // Simple string scrambling function
+    function scrambleString(input) {
+        return input.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 2)).join('');
     }
 </script>
 
