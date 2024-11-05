@@ -200,14 +200,15 @@
         consoleMessage(`Applying deobfuscation...`, "info");
 
         if (obfuscationMode === 'lua') {
-            obfuscatedCode = code.replace(/v\w+/g, 'var').replace(/"\w+"/g, match => match.split('').map(c => String.fromCharCode(c.charCodeAt(1) - 2)).join(''));
+            // Sample advanced deobfuscation logic for Lua
+            obfuscatedCode = code.replace(/v\w+/g, 'var').replace(/"\w+"/g, match => match.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 2)).join(''));
         } else if (obfuscationMode === 'html') {
             obfuscatedCode = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
         } else if (obfuscationMode === 'javascript') {
             obfuscatedCode = eval(code.replace(/\\x/g, '%'));
         }
 
-        document.getElementById("editor").value = obfuscatedCode;
+        document.getElementById("editor").value = obfuscatedCode; // Display deobfuscated code
         consoleMessage("Deobfuscation finished!", "info");
     }
 
@@ -231,6 +232,7 @@
     }
 
     function scrambleString(input) {
+        // Simple scrambling method for demonstration purposes
         return input.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 2)).join('');
     }
 </script>
