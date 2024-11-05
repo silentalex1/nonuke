@@ -3,58 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obfuscator</title>
+    <title>Code Obfuscator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #0d1117;
             color: #c9d1d9;
-            margin: 0;
-        }
-        .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
         }
         h1 {
             color: #58a6ff;
-            margin: 20px 0;
+            margin: 0;
         }
         .editor-container {
             display: flex;
-            width: 100%;
             gap: 20px;
             margin-top: 20px;
+            width: 100%;
         }
         #editor {
-            flex: 2;
+            flex: 1;
             padding: 20px;
-            background-color: #161b22; /* Set typing text box color to black */
+            background-color: #0d1117;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
             border-radius: 8px;
             min-height: 300px;
-            border: 1px solid #30363d;
             resize: vertical;
             font-family: monospace;
-            overflow-y: auto;
-            color: #c9d1d9;
         }
         .sidebar {
-            flex: 0 0 200px; /* Set a fixed width for the sidebar */
+            width: 150px;
             background-color: #161b22;
-            padding: 10px; /* Reduced padding */
+            padding: 20px;
             border-radius: 8px;
-            border: 1px solid #30363d;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
         button {
             padding: 10px;
-            font-size: 16px;
+            font-size: 14px;
             color: #fff;
             background-color: #1f6feb;
             border: none;
@@ -72,11 +70,10 @@
             border-radius: 8px;
             font-family: monospace;
             overflow-y: auto;
-            height: 200px;
+            height: 150px;
             border: 1px solid #30363d;
             text-align: left;
             margin-top: 20px;
-            width: 100%;
         }
         .console-message {
             margin: 0;
@@ -93,17 +90,14 @@
 <body>
 
 <div class="container">
-    <h1>Obfuscator</h1>
+    <h1>Code Obfuscator</h1>
     <div class="editor-container">
         <textarea id="editor" placeholder="Enter your code here..."></textarea>
         <div class="sidebar">
-            <h3>Options</h3>
-            <button onclick="setMode('lua')">Lua Obfuscator</button>
-            <button onclick="setMode('html')">HTML Obfuscator</button>
-            <button onclick="setMode('javascript')">JavaScript Obfuscator</button>
-            <button onclick="setMode('deobfuscate')">Deobfuscate Code</button>
-            <button onclick="obfuscate()">Obfuscate</button>
-            <button onclick="deobfuscate()">Deobfuscate</button>
+            <button onclick="obfuscateLua()">Obfuscate Lua</button>
+            <button onclick="obfuscateHTML()">Obfuscate HTML</button>
+            <button onclick="obfuscateJavaScript()">Obfuscate JavaScript</button>
+            <button onclick="deobfuscate()">Deobfuscate Code</button>
             <button onclick="downloadObfuscated()">Download</button>
         </div>
     </div>
@@ -114,9 +108,8 @@
 <script>
     let obfuscatedCode = '';
     let isObfuscated = false;
-    let obfuscationMode = 'lua';
 
-    function consoleMessage(message, type="info") {
+    function consoleMessage(message, type = "info") {
         const consoleElement = document.getElementById('console');
         const messageElem = document.createElement("p");
         messageElem.textContent = `> ${message}`;
@@ -125,87 +118,149 @@
         consoleElement.scrollTop = consoleElement.scrollHeight;
     }
 
-    function setMode(mode) {
-        obfuscationMode = mode;
-        const modeText = mode.charAt(0).toUpperCase() + mode.slice(1);
-        consoleMessage(`Switched to ${modeText} mode`, "info");
-    }
-
-    function obfuscate() {
+    function obfuscateLua() {
         const code = document.getElementById("editor").value.trim();
         if (!code) {
-            consoleMessage(`Must have a ${obfuscationMode} code!`, "error");
+            consoleMessage("Must have Lua code!", "error");
             return;
         }
-
-        consoleMessage(`Applying ${obfuscationMode} obfuscation...`, "info");
-        obfuscatedCode = '';
-
-        if (obfuscationMode === 'lua') {
-            obfuscatedCode = luaObfuscator(code);
-        } else if (obfuscationMode === 'html') {
-            obfuscatedCode = htmlObfuscator(code);
-        } else if (obfuscationMode === 'javascript') {
-            obfuscatedCode = jsObfuscator(code);
-        }
-
+        consoleMessage("Applying Lua obfuscation...", "info");
+        obfuscatedCode = obfuscateLuaCode(code);
         document.getElementById("editor").value = obfuscatedCode;
         isObfuscated = true;
-        consoleMessage("Obfuscation finished!", "info");
+        consoleMessage("Lua obfuscation finished!", "info");
     }
 
-    function luaObfuscator(code) {
-        return code.replace(/--.*$/gm, '')
-                   .replace(/\b(\w+)\b/g, match => "v" + Math.random().toString(36).substr(2, 4))
-                   .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"')
-                   .replace(/\s+/g, '');
+    function obfuscateLuaCode(code) {
+        const variableMap = {};
+        let variableCounter = 0;
+
+        function getNewVariableName() {
+            return `v${variableCounter++}`;
+        }
+
+        let obfuscatedCode = code.replace(/--.*$/gm, '');
+        obfuscatedCode = obfuscatedCode.replace(/\b(\w+)\b/g, (match) => {
+            if (!variableMap[match]) {
+                variableMap[match] = getNewVariableName();
+            }
+            return variableMap[match];
+        });
+        obfuscatedCode = obfuscatedCode.replace(/"([^"]*)"/g, (_, p1) => {
+            return `"${scrambleString(p1)}"`;
+        });
+        return obfuscatedCode.replace(/\s+/g, ' ').trim();
     }
 
-    function htmlObfuscator(code) {
-        return code.replace(/</g, "&lt;")
-                   .replace(/>/g, "&gt;")
-                   .replace(/"(.*?)"/g, (_, p1) => '"' + scrambleString(p1) + '"')
-                   .replace(/\s+/g, ' ');
+    function obfuscateHTML() {
+        const code = document.getElementById("editor").value.trim();
+        if (!code) {
+            consoleMessage("Must have HTML code!", "error");
+            return;
+        }
+        consoleMessage("Applying HTML obfuscation...", "info");
+        obfuscatedCode = obfuscateHTMLCode(code);
+        document.getElementById("editor").value = obfuscatedCode;
+        isObfuscated = true;
+        consoleMessage("HTML obfuscation finished!", "info");
     }
 
-    function jsObfuscator(code) {
-        return `eval("${code.split('').map(c => "\\x" + c.charCodeAt(0).toString(16)).join('')}");`;
+    function obfuscateHTMLCode(code) {
+        const tagObfuscationMap = {
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '&': '&amp;'
+        };
+        let obfuscatedCode = code.replace(/<[^>]*>/g, (tag) => {
+            return tag.split('').map(char => tagObfuscationMap[char] || char).join('');
+        });
+        return obfuscatedCode.split('').reverse().join('');
+    }
+
+    function obfuscateJavaScript() {
+        const code = document.getElementById("editor").value.trim();
+        if (!code) {
+            consoleMessage("Must have JavaScript code!", "error");
+            return;
+        }
+        consoleMessage("Applying JavaScript obfuscation...", "info");
+        obfuscatedCode = obfuscateJavaScriptCode(code);
+        document.getElementById("editor").value = obfuscatedCode;
+        isObfuscated = true;
+        consoleMessage("JavaScript obfuscation finished!", "info");
+    }
+
+    function obfuscateJavaScriptCode(code) {
+        const variableMap = {};
+        let variableCounter = 0;
+
+        function getNewVariableName() {
+            return `v${variableCounter++}`;
+        }
+
+        let obfuscatedCode = code.replace(/(var|let|const)\s+(\w+)/g, (match, p1, p2) => {
+            variableMap[p2] = getNewVariableName();
+            return `${p1} ${variableMap[p2]}`;
+        });
+        obfuscatedCode = obfuscatedCode.replace(/"([^"]*)"/g, (_, p1) => `"${scrambleString(p1)}"`);
+        obfuscatedCode = obfuscatedCode.replace(/\b(\w+)\b/g, (match) => variableMap[match] || match);
+        return obfuscatedCode.replace(/\s+/g, ' ').trim();
     }
 
     function deobfuscate() {
         const code = document.getElementById("editor").value.trim();
         if (!code) {
-            consoleMessage("Must have an obfuscated code!", "error");
+            consoleMessage("Must have obfuscated code!", "error");
             return;
         }
-
-        consoleMessage(`Applying deobfuscation...`, "info");
-        obfuscatedCode = '';
-        // Add your deobfuscation logic here
+        consoleMessage("Applying deobfuscation...", "info");
+        const originalCode = deobfuscateCode(code);
+        document.getElementById("editor").value = originalCode;
         isObfuscated = false;
         consoleMessage("Deobfuscation finished!", "info");
     }
 
+    function deobfuscateCode(code) {
+        if (obfuscatedCode.includes('v') || code.includes('v')) {
+            return deobfuscateLuaCode(code);
+        } else if (code.split('').reverse().join('') === code) {
+            return code.split('').reverse().join('');
+        } else {
+            return code.split('').map(char => String.fromCharCode(char.charCodeAt(0) - 1)).join('');
+        }
+    }
+
     function downloadObfuscated() {
-        if (!isObfuscated) {
-            consoleMessage("Nothing to download!", "error");
+        const code = document.getElementById("editor").value.trim();
+        if (!code) {
+            consoleMessage("Must have code in first!", "error");
             return;
         }
-
-        const blob = new Blob([obfuscatedCode], { type: 'text/plain' });
+        const modeSuffix = isObfuscated ? 'obfuscated' : 'deobfuscated';
+        const blob = new Blob([code], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "obfuscated_code.txt";
-        document.body.appendChild(a);
+        a.download = `${modeSuffix}_code.txt`;
         a.click();
-        document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        consoleMessage("Obfuscated code downloaded!", "info");
+        consoleMessage(`${modeSuffix.charAt(0).toUpperCase() + modeSuffix.slice(1)} code downloaded!`, "info");
     }
 
     function scrambleString(input) {
-        return input.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 2)).join('');
+        return input.split('').map(char => {
+            const charCode = char.charCodeAt(0);
+            return String.fromCharCode(charCode + Math.floor(Math.random() * 10)); 
+        }).join('');
+    }
+
+    function unscrambleString(input) {
+        return input.split('').map(char => {
+            const charCode = char.charCodeAt(0);
+            return String.fromCharCode(charCode - Math.floor(Math.random() * 10)); 
+        }).join('');
     }
 </script>
 
