@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obfuscator Web</title>
     <style>
-        /* Styling for Blue and Black Theme */
         body {
             font-family: Arial, sans-serif;
             background-color: #0d1117;
@@ -23,6 +22,7 @@
         }
         h1 {
             color: #58a6ff;
+            margin: 0;
         }
         #fileOptions {
             display: flex;
@@ -89,19 +89,26 @@
         .console-info {
             color: #a5d6ff;
         }
+        .version {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 14px;
+            color: #58a6ff;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Obfuscator Web</h1>
+    <div class="version">Obfuscator v1.0</div>
     <div id="fileOptions">
         <button onclick="newFile()">New File</button>
         <input type="file" id="uploadFile" style="display:none" onchange="uploadFile(event)">
         <button onclick="document.getElementById('uploadFile').click()">Upload File</button>
     </div>
 
-    <!-- New File Page -->
     <div id="editorPage" style="display:none">
         <div class="editor-container">
             <textarea id="editor" placeholder="Enter your code here..."></textarea>
@@ -200,7 +207,6 @@
         consoleMessage(`Applying deobfuscation...`, "info");
 
         if (obfuscationMode === 'lua') {
-            // Sample advanced deobfuscation logic for Lua
             obfuscatedCode = code.replace(/v\w+/g, 'var').replace(/"\w+"/g, match => match.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 2)).join(''));
         } else if (obfuscationMode === 'html') {
             obfuscatedCode = code.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -208,7 +214,7 @@
             obfuscatedCode = eval(code.replace(/\\x/g, '%'));
         }
 
-        document.getElementById("editor").value = obfuscatedCode; // Display deobfuscated code
+        document.getElementById("editor").value = obfuscatedCode;
         consoleMessage("Deobfuscation finished!", "info");
     }
 
@@ -232,7 +238,6 @@
     }
 
     function scrambleString(input) {
-        // Simple scrambling method for demonstration purposes
         return input.split('').map(char => String.fromCharCode(char.charCodeAt(0) + 2)).join('');
     }
 </script>
