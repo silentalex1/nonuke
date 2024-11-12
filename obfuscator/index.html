@@ -136,7 +136,7 @@
     }
 
     function obfuscateLuaCode(code) {
-      const shift = 3;
+      const shift = 5; // Shift for Caesar cipher
       return `
         local function decode(s)
           local result = ""
@@ -180,7 +180,7 @@
       let deobfuscatedCode = code.includes('atob(') 
         ? atob(code.match(/atob\("(.+?)"\)/)[1])
         : code.includes('local function decode') 
-          ? shiftChars(code.match(/local obfuscated = "(.+?)"/)[1], -3) 
+          ? shiftChars(code.match(/local obfuscated = "(.+?)"/)[1], -5) 
           : code;
 
       document.getElementById("editor").value = deobfuscatedCode;
