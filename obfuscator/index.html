@@ -107,21 +107,20 @@
     <div class="editor-container">
       <textarea id="editor" placeholder="Enter your code here..."></textarea>
       <div class="sidebar">
-        <button onclick="obfuscateCode('lua')">
+        <button onclick="obfuscateLua()">
           <i class="fas fa-lock"></i> Obfuscate Lua
         </button>
-        <button onclick="obfuscateCode('html')">
+        <button onclick="obfuscateHTML()">
           <i class="fas fa-lock"></i> Obfuscate HTML
         </button>
-        <button onclick="obfuscateCode('javascript')">
+        <button onclick="obfuscateJavaScript()">
           <i class="fas fa-lock"></i> Obfuscate JavaScript
         </button>
         <button onclick="deobfuscate()">
           <i class="fas fa-unlock"></i> Deobfuscate Code
         </button>
         <button onclick="downloadCode()">
-          <i class="fas fa-download"></i> Download
-        </button>
+          <i class="fas fa-download"></i> Download</button>
         <button onclick="clearConsole()">
           <i class="fas fa-trash"></i> Clear Console
         </button>
@@ -145,26 +144,89 @@
       consoleElement.scrollTop = consoleElement.scrollHeight;
     }
 
-    function obfuscateCode(type) {
+    function obfuscateLua() {
       const code = document.getElementById("editor").value.trim();
       if (!code) {
-        consoleMessage(`${type.toUpperCase()} code required!`, "error");
+        consoleMessage("Lua code required!", "error");
         return;
       }
-      consoleMessage(`Applying ${type.toUpperCase()} obfuscation...`, "info");
-      if (type === 'lua') {
-        obfuscatedCode = obfuscateLuaCode(code);
-      } else if (type === 'html') {
-        obfuscatedCode = obfuscateHTMLCode(code);
-      } else if (type === 'javascript') {
-        obfuscatedCode = obfuscateJavaScriptCode(code);
-      }
+      consoleMessage("Applying Lua obfuscation...", "info");
+      obfuscatedCode = obfuscateLuaCode(code);
       document.getElementById("editor").value = obfuscatedCode;
       isObfuscated = true;
-      consoleMessage(`${type.toUpperCase()} obfuscation completed!`, "info");
+      consoleMessage("Lua obfuscation completed!", "info");
     }
 
-    // The obfuscation functions remain the same as in the previous version
+    function obfuscateHTML() {
+      const code = document.getElementById("editor").value.trim();
+      if (!code) {
+        consoleMessage("HTML code required!", "error");
+        return;
+      }
+      consoleMessage("Applying HTML obfuscation...", "info");
+      obfuscatedCode = obfuscateHTMLCode(code);
+      document.getElementById("editor").value = obfuscatedCode;
+      isObfuscated = true;
+      consoleMessage("HTML obfuscation completed!", "info");
+    }
+
+    function obfuscateJavaScript() {
+      const code = document.getElementById("editor").value.trim();
+      if (!code) {
+        consoleMessage("JavaScript code required!", "error");
+        return;
+      }
+      consoleMessage("Applying JavaScript obfuscation...", "info");
+      obfuscatedCode = obfuscateJavaScriptCode(code);
+      document.getElementById("editor").value = obfuscatedCode;
+      isObfuscated = true;
+      consoleMessage("JavaScript obfuscation completed!", "info");
+    }
+
+    function obfuscateLuaCode(code) {
+      const shift = 5;
+      return `local function decode(s)
+        local result = ""
+        for i = 1, #s do
+          local c = string.byte(s, i)
+          if c >= 32 and c <= 126 then
+            c = ((c - 32 + 95 - ${shift}) % 95) + 32
+          end
+          result = result .. string.char(c)
+        end
+        return result
+      end
+      local obfuscated = "${shiftChars(code, shift)}"
+      load(decode(obfuscated))()`;
+    }
+
+    function obfuscateHTMLCode(code) {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let obfuscatedHTML = "";
+      for (let i = 0; i < code.length; i++) {
+        const char = code.charAt(i);
+        if (char.match(/[a-zA-Z0-9]/)) {
+          obfuscatedHTML += chars.charAt(Math.floor(Math.random() * chars.length));
+        } else {
+          obfuscatedHTML += char;
+        }
+      }
+      return `<script>document.write("${obfuscatedHTML}");</script>`;
+    }
+
+    function obfuscateJavaScriptCode(code) {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let obfuscatedJS = "";
+      for (let i = 0; i < code.length; i++) {
+        const char = code.charAt(i);
+        if (char.match(/[a-zA-Z0-9]/)) {
+          obfuscatedJS += chars.charAt(Math.floor(Math.random() * chars.length));
+        } else {
+          obfuscatedJS += char;
+        }
+      }
+      return `(function(){${obfuscatedJS}})();`;
+    }
 
     function deobfuscate() {
       const code = document.getElementById("editor").value.trim();
@@ -182,12 +244,22 @@
       } else if (code.includes('local function decode')) {
         const match = code.match(/local obfuscated = "(.+?)"/);
         if (match) {
-          deobfuscatedCode = shiftChars(match[1], -3);
+          deobfuscatedCode = shiftChars(match[1], -5);
         }
       }
       document.getElementById("editor").value = deobfuscatedCode;
       isObfuscated = false;
-      consoleMessage("Basic deobfuscation completed!", "info");
+      consoleMessage("Deobfuscation completed!", "info");
+    }
+
+    function shiftChars(str, shift) {
+      return str.split('').map(char => {
+        const code = char.charCodeAt(0);
+        if (code >= 32 && code <= 126) {
+          return String.fromCharCode(((code - 32 + shift) % 95) + 32);
+        }
+        return char;
+      }).join('');
     }
 
     function downloadCode() {
