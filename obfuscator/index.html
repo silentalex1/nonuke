@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Obfuscator v1</title>
+    <title>Code Obfuscator v1.0</title>
     <style>
+        /* Basic Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #0d1117;
@@ -121,7 +122,8 @@
         }
 
         function obfuscateCode(type) {
-            const code = document.getElementById("editor").value.trim();
+            const editor = document.getElementById("editor");
+            const code = editor.value.trim();
             if (!code) {
                 consoleMessage("Code is required for obfuscation.", "error");
                 return;
@@ -133,21 +135,21 @@
                     consoleMessage("Applying AES encryption for Lua obfuscation...", "info");
                     const passphrase = "securepass";  // Use a secure passphrase here
                     obfuscatedCode = CryptoJS.AES.encrypt(code, passphrase).toString();
-                    document.getElementById("editor").value = `-- Encrypted Lua Code\nlocal function runEncryptedCode()\nlocal code = "${obfuscatedCode}"\nlocal decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)\nload(decryptedCode)()\nend\nrunEncryptedCode()`;
+                    editor.value = `-- Encrypted Lua Code\nlocal function runEncryptedCode()\nlocal code = "${obfuscatedCode}"\nlocal decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)\nload(decryptedCode)()\nend\nrunEncryptedCode()`;
                     consoleMessage("Lua obfuscation (AES encryption) completed.", "info");
                     isObfuscated = true;
                     break;
                 case 'javascript':
                     consoleMessage("Applying JavaScript obfuscation...", "info");
                     obfuscatedCode = btoa(unescape(encodeURIComponent(code)));
-                    document.getElementById("editor").value = `(function(){ eval(atob("${obfuscatedCode}")); })();`;
+                    editor.value = `(function(){ eval(atob("${obfuscatedCode}")); })();`;
                     consoleMessage("JavaScript obfuscation completed.", "info");
                     isObfuscated = true;
                     break;
                 case 'html':
                     consoleMessage("Applying HTML obfuscation...", "info");
                     obfuscatedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    document.getElementById("editor").value = `<script>document.write(atob("${btoa(obfuscatedCode)}"));</script>`;
+                    editor.value = `<script>document.write(atob("${btoa(obfuscatedCode)}"));</script>`;
                     consoleMessage("HTML obfuscation completed.", "info");
                     isObfuscated = true;
                     break;
@@ -157,7 +159,8 @@
         }
 
         function downloadCode() {
-            const code = document.getElementById("editor").value.trim();
+            const editor = document.getElementById("editor");
+            const code = editor.value.trim();
             if (!code) {
                 consoleMessage("No code available to download.", "error");
                 return;
