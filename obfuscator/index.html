@@ -33,17 +33,16 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.6;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             width: 100%;
             background-color: var(--bg-color);
             padding: 20px;
@@ -54,21 +53,20 @@
         h1 {
             color: var(--primary-color);
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 3rem;
-            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
         }
 
         .editor-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
         #editor {
             width: 100%;
-            height: 300px;
+            height: 200px;
             padding: 15px;
             background-color: var(--editor-bg);
             color: var(--editor-text);
@@ -86,13 +84,13 @@
 
         .buttons {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 10px 15px;
             background-color: var(--primary-color);
             color: var(--button-text);
             border: none;
@@ -107,17 +105,12 @@
             transform: scale(1.05);
         }
 
-        button:active {
-            background-color: #4589d1;
-            transform: scale(0.98);
-        }
-
         #console {
             background-color: var(--console-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 15px;
-            height: 200px;
+            height: 150px;
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
@@ -126,7 +119,7 @@
         }
 
         .console-message {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-size: 14px;
         }
 
@@ -141,23 +134,6 @@
 
         .console-success {
             color: var(--success-color);
-        }
-
-        .console-warning {
-            color: #ffeb3b;
-        }
-
-        @media (min-width: 768px) {
-            .editor-container {
-                flex-direction: row;
-            }
-            #editor {
-                flex: 1;
-            }
-            .buttons {
-                flex-direction: column;
-                width: 200px;
-            }
         }
     </style>
 </head>
@@ -174,7 +150,7 @@
                 <button onclick="clearConsole()">Clear Console</button>
             </div>
         </div>
-        <h2>Console</h2>
+        <h2 style="text-align: center; color: var(--primary-color);">Console</h2>
         <div id="console"></div>
     </div>
 
@@ -205,7 +181,6 @@
                     const passphrase = "securepass";
                     obfuscatedCode = CryptoJS.AES.encrypt(code, passphrase).toString();
                     editor.value = `
-                        -- Encrypted Lua Code
                         local function runEncryptedCode()
                             local code = "${obfuscatedCode}"
                             local decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)
