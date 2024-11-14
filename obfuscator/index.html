@@ -90,6 +90,8 @@
             color: #a5d6ff;
         }
     </style>
+    <!-- Include CryptoJS library for AES encryption -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -100,7 +102,6 @@
                 <button onclick="obfuscateCode('lua')">Obfuscate Lua</button>
                 <button onclick="obfuscateCode('html')">Obfuscate HTML</button>
                 <button onclick="obfuscateCode('javascript')">Obfuscate JavaScript</button>
-                <button onclick="deobfuscateCode()">Deobfuscate Code</button>
                 <button onclick="downloadCode()">Download</button>
                 <button onclick="clearConsole()">Clear Console</button>
             </div>
@@ -126,39 +127,33 @@
                 consoleMessage("Code is required for obfuscation.", "error");
                 return;
             }
-            consoleMessage(`Applying ${type.toUpperCase()} obfuscation...`, "info");
 
             let obfuscatedCode = "";
-            try {
-                obfuscatedCode = btoa(unescape(encodeURIComponent(code))); // Basic obfuscation example
-                document.getElementById("editor").value = `(function(){ eval(atob("${obfuscatedCode}")); })();`;
-                isObfuscated = true;
-                consoleMessage(`${type.toUpperCase()} obfuscation completed.`, "info");
-            } catch (error) {
-                consoleMessage(`Error: ${error.message}`, "error");
-            }
-        }
-
-        function deobfuscateCode() {
-            const code = document.getElementById("editor").value.trim();
-            if (!code || !code.includes("atob")) {
-                consoleMessage("No valid obfuscated code found for deobfuscation.", "error");
-                return;
-            }
-            consoleMessage("Deobfuscating code...", "info");
-
-            try {
-                const match = code.match(/atob\("([^"]+)"\)/);
-                if (match && match[1]) {
-                    const deobfuscatedCode = decodeURIComponent(escape(atob(match[1])));
-                    document.getElementById("editor").value = deobfuscatedCode;
-                    isObfuscated = false;
-                    consoleMessage("Deobfuscation completed.", "info");
-                } else {
-                    consoleMessage("No obfuscated code detected.", "error");
-                }
-            } catch (error) {
-                consoleMessage(`Error: ${error.message}`, "error");
+            switch (type) {
+                case 'lua':
+                    consoleMessage("Applying AES encryption for Lua obfuscation...", "info");
+                    const passphrase = "securepass";  // Use a secure passphrase here
+                    obfuscatedCode = CryptoJS.AES.encrypt(code, passphrase).toString();
+                    document.getElementById("editor").value = `-- Encrypted Lua Code\nlocal function runEncryptedCode()\nlocal code = "${obfuscatedCode}"\nlocal decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)\nload(decryptedCode)()\nend\nrunEncryptedCode()`;
+                    consoleMessage("Lua obfuscation (AES encryption) completed.", "info");
+                    isObfuscated = true;
+                    break;
+                case 'javascript':
+                    consoleMessage("Applying JavaScript obfuscation...", "info");
+                    obfuscatedCode = btoa(unescape(encodeURIComponent(code)));
+                    document.getElementById("editor").value = `(function(){ eval(atob("${obfuscatedCode}")); })();`;
+                    consoleMessage("JavaScript obfuscation completed.", "info");
+                    isObfuscated = true;
+                    break;
+                case 'html':
+                    consoleMessage("Applying HTML obfuscation...", "info");
+                    obfuscatedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    document.getElementById("editor").value = `<script>document.write(atob("${btoa(obfuscatedCode)}"));</script>`;
+                    consoleMessage("HTML obfuscation completed.", "info");
+                    isObfuscated = true;
+                    break;
+                default:
+                    consoleMessage("Invalid obfuscation type.", "error");
             }
         }
 
