@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Obfuscator v1/title>
+    <title>Code Obfuscator v1.0title>
     <style>
         /* Basic Styling */
         body {
@@ -112,6 +112,7 @@
     <script>
         let isObfuscated = false;
 
+        // Display messages in the console
         function consoleMessage(message, type = "info") {
             const consoleElement = document.getElementById('console');
             const messageElem = document.createElement("p");
@@ -121,6 +122,7 @@
             consoleElement.scrollTop = consoleElement.scrollHeight;
         }
 
+        // Obfuscate code based on the type selected
         function obfuscateCode(type) {
             const editor = document.getElementById("editor");
             const code = editor.value.trim();
@@ -158,6 +160,7 @@
             }
         }
 
+        // Download the obfuscated code as a file
         function downloadCode() {
             const editor = document.getElementById("editor");
             const code = editor.value.trim();
@@ -175,6 +178,7 @@
             consoleMessage("Code downloaded successfully.", "info");
         }
 
+        // Clear the console messages
         function clearConsole() {
             const consoleElement = document.getElementById('console');
             consoleElement.innerHTML = "<p class='console-info'>Console initialized!</p>";
