@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Obfuscator v1.0</title>
+    <title>Code Obfuscator v1</title>
     <style>
-        /* Basic Styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #0d1117;
@@ -109,10 +108,9 @@
         <h2>Console</h2>
         <div id="console">Console initialized!</div>
     </div>
+
     <script>
         let isObfuscated = false;
-
-        // Display messages in the console
         function consoleMessage(message, type = "info") {
             const consoleElement = document.getElementById('console');
             const messageElem = document.createElement("p");
@@ -121,8 +119,6 @@
             consoleElement.appendChild(messageElem);
             consoleElement.scrollTop = consoleElement.scrollHeight;
         }
-
-        // Obfuscate code based on the type selected
         function obfuscateCode(type) {
             const editor = document.getElementById("editor");
             const code = editor.value.trim();
@@ -130,12 +126,11 @@
                 consoleMessage("Code is required for obfuscation.", "error");
                 return;
             }
-
             let obfuscatedCode = "";
             switch (type) {
                 case 'lua':
                     consoleMessage("Applying AES encryption for Lua obfuscation...", "info");
-                    const passphrase = "securepass";  // Use a secure passphrase here
+                    const passphrase = "securepass";
                     obfuscatedCode = CryptoJS.AES.encrypt(code, passphrase).toString();
                     editor.value = `-- Encrypted Lua Code\nlocal function runEncryptedCode()\nlocal code = "${obfuscatedCode}"\nlocal decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)\nload(decryptedCode)()\nend\nrunEncryptedCode()`;
                     consoleMessage("Lua obfuscation (AES encryption) completed.", "info");
@@ -159,8 +154,6 @@
                     consoleMessage("Invalid obfuscation type.", "error");
             }
         }
-
-        // Download the obfuscated code as a file
         function downloadCode() {
             const editor = document.getElementById("editor");
             const code = editor.value.trim();
@@ -177,8 +170,6 @@
             URL.revokeObjectURL(url);
             consoleMessage("Code downloaded successfully.", "info");
         }
-
-        // Clear the console messages
         function clearConsole() {
             const consoleElement = document.getElementById('console');
             consoleElement.innerHTML = "<p class='console-info'>Console initialized!</p>";
