@@ -233,8 +233,8 @@
                     editor.value = `
                         <script>
                             document.write(atob("${btoa(obfuscatedCode)}"));
-                        /script>
-                    ';
+                        </script>
+                    `;
                     consoleMessage("HTML obfuscation completed.", "success");
                     isObfuscated = true;
                     break;
@@ -267,6 +267,6 @@
         }
 
         consoleMessage("Console initialized!", "info");
-    /script>
+    </script>
 </body>
 </html>
