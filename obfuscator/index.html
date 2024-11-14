@@ -3,57 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Obfuscator v1</title>
+    <title>Code Obfuscator v1.0</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
+        }
+        body {
             background-color: #0d1117;
             color: #c9d1d9;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            padding: 20px;
         }
         .container {
-            width: 90%;
-            max-width: 1200px;
-            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            background-color: #161b22;
+            padding: 20px;
+            border-radius: 8px;
         }
         h1 {
             color: #58a6ff;
-            margin: 20px 0;
-            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .editor-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
+        textarea {
             width: 100%;
-        }
-        #editor {
-            flex: 1;
-            padding: 20px;
+            height: 200px;
+            padding: 10px;
             background-color: #0d1117;
             color: #c9d1d9;
             border: 1px solid #30363d;
             border-radius: 8px;
-            min-height: 300px;
             resize: vertical;
             font-family: monospace;
         }
-        .sidebar {
-            width: 200px;
-            background-color: #161b22;
-            padding: 20px;
-            border-radius: 8px;
+        .buttons {
             display: flex;
-            flex-direction: column;
             gap: 10px;
+            margin-top: 10px;
+            justify-content: space-between;
         }
         button {
+            flex: 1;
             padding: 10px;
             font-size: 14px;
             color: #fff;
@@ -66,20 +63,18 @@
         button:hover {
             background-color: #388bfd;
         }
-        #console {
-            padding: 20px;
+        .console {
             background-color: #161b22;
             color: #c9d1d9;
             border-radius: 8px;
+            padding: 10px;
             font-family: monospace;
-            overflow-y: auto;
-            height: 200px;
-            border: 1px solid #30363d;
-            text-align: left;
             margin-top: 20px;
-            word-wrap: break-word;
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid #30363d;
         }
-        .console-message {
+        .console p {
             margin: 0;
             font-size: 0.9em;
         }
@@ -95,30 +90,29 @@
 <body>
     <div class="container">
         <h1>Code Obfuscator v1</h1>
-        <div class="editor-container">
-            <textarea id="editor" placeholder="Enter your code here..."></textarea>
-            <div class="sidebar">
-                <button onclick="obfuscateCode('lua')">Obfuscate Lua</button>
-                <button onclick="obfuscateCode('html')">Obfuscate HTML</button>
-                <button onclick="obfuscateCode('javascript')">Obfuscate JavaScript</button>
-                <button onclick="downloadCode()">Download</button>
-                <button onclick="clearConsole()">Clear Console</button>
-            </div>
+        <textarea id="editor" placeholder="Enter your code here..."></textarea>
+        <div class="buttons">
+            <button onclick="obfuscateCode('lua')">Obfuscate Lua</button>
+            <button onclick="obfuscateCode('html')">Obfuscate HTML</button>
+            <button onclick="obfuscateCode('javascript')">Obfuscate JavaScript</button>
+            <button onclick="downloadCode()">Download</button>
+            <button onclick="clearConsole()">Clear Console</button>
         </div>
-        <h2>Console</h2>
-        <div id="console">Console initialized!</div>
+        <div id="console" class="console">Console initialized!</div>
     </div>
 
     <script>
         let isObfuscated = false;
+
         function consoleMessage(message, type = "info") {
             const consoleElement = document.getElementById('console');
             const messageElem = document.createElement("p");
             messageElem.textContent = message;
-            messageElem.className = "console-message " + (type === "error" ? "console-error" : "console-info");
+            messageElem.className = type === "error" ? "console-error" : "console-info";
             consoleElement.appendChild(messageElem);
             consoleElement.scrollTop = consoleElement.scrollHeight;
         }
+
         function obfuscateCode(type) {
             const editor = document.getElementById("editor");
             const code = editor.value.trim();
@@ -126,10 +120,10 @@
                 consoleMessage("Code is required for obfuscation.", "error");
                 return;
             }
+
             let obfuscatedCode = "";
             switch (type) {
                 case 'lua':
-                    consoleMessage("Applying AES encryption for Lua obfuscation...", "info");
                     const passphrase = "securepass";
                     obfuscatedCode = CryptoJS.AES.encrypt(code, passphrase).toString();
                     editor.value = `-- Encrypted Lua Code\nlocal function runEncryptedCode()\nlocal code = "${obfuscatedCode}"\nlocal decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)\nload(decryptedCode)()\nend\nrunEncryptedCode()`;
@@ -137,14 +131,12 @@
                     isObfuscated = true;
                     break;
                 case 'javascript':
-                    consoleMessage("Applying JavaScript obfuscation...", "info");
                     obfuscatedCode = btoa(unescape(encodeURIComponent(code)));
                     editor.value = `(function(){ eval(atob("${obfuscatedCode}")); })();`;
                     consoleMessage("JavaScript obfuscation completed.", "info");
                     isObfuscated = true;
                     break;
                 case 'html':
-                    consoleMessage("Applying HTML obfuscation...", "info");
                     obfuscatedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                     editor.value = `<script>document.write(atob("${btoa(obfuscatedCode)}"));</script>`;
                     consoleMessage("HTML obfuscation completed.", "info");
@@ -154,6 +146,7 @@
                     consoleMessage("Invalid obfuscation type.", "error");
             }
         }
+
         function downloadCode() {
             const editor = document.getElementById("editor");
             const code = editor.value.trim();
@@ -161,6 +154,7 @@
                 consoleMessage("No code available to download.", "error");
                 return;
             }
+
             const blob = new Blob([code], { type: "text/plain" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -170,6 +164,7 @@
             URL.revokeObjectURL(url);
             consoleMessage("Code downloaded successfully.", "info");
         }
+
         function clearConsole() {
             const consoleElement = document.getElementById('console');
             consoleElement.innerHTML = "<p class='console-info'>Console initialized!</p>";
