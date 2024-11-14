@@ -143,21 +143,43 @@
                     consoleMessage("Applying AES encryption for Lua obfuscation...", "info");
                     const passphrase = "securepass";
                     obfuscatedCode = CryptoJS.AES.encrypt(code, passphrase).toString();
-                    editor.value = `-- Encrypted Lua Code\nlocal function runEncryptedCode()\nlocal code = "${obfuscatedCode}"\nlocal decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)\nload(decryptedCode)()\nend\nrunEncryptedCode()`;
+                    editor.value = '';
+                    const luaScriptElement = document.createElement('script');
+                    luaScriptElement.innerHTML = `
+                        local function runEncryptedCode()
+                            local code = "${obfuscatedCode}"
+                            local decryptedCode = CryptoJS.AES.decrypt(code, "${passphrase}"):toString(CryptoJS.enc.Utf8)
+                            load(decryptedCode)()
+                        end
+                        runEncryptedCode();
+                    `;
+                    document.body.appendChild(luaScriptElement);
                     consoleMessage("Lua obfuscation (AES encryption) completed.", "info");
                     isObfuscated = true;
                     break;
                 case 'javascript':
                     consoleMessage("Applying JavaScript obfuscation...", "info");
                     obfuscatedCode = btoa(encodeURIComponent(code));
-                    editor.value = `(function(){ eval(decodeURIComponent(atob("${obfuscatedCode}"))); })();`;
+                    editor.value = '';
+                    const jsScriptElement = document.createElement('script');
+                    jsScriptElement.innerHTML = `
+                        (function() {
+                            eval(decodeURIComponent(atob("${obfuscatedCode}")));
+                        })();
+                    `;
+                    document.body.appendChild(jsScriptElement);
                     consoleMessage("JavaScript obfuscation completed.", "info");
                     isObfuscated = true;
                     break;
                 case 'html':
                     consoleMessage("Applying HTML obfuscation...", "info");
                     obfuscatedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    editor.value = `<script>document.write(atob("${btoa(obfuscatedCode)}"));</script>`;
+                    editor.value = '';
+                    const htmlScriptElement = document.createElement('script');
+                    htmlScriptElement.innerHTML = `
+                        document.write(atob("${btoa(obfuscatedCode)}"));
+                    `;
+                    document.body.appendChild(htmlScriptElement);
                     consoleMessage("HTML obfuscation completed.", "info");
                     isObfuscated = true;
                     break;
@@ -189,7 +211,6 @@
             consoleMessage("Console cleared.", "info");
         }
 
-        // Initialize console
         consoleMessage("Console initialized!", "info");
     </script>
 </body>
