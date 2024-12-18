@@ -4,7 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Obfuscator v1.2</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00aaff;
+        }
+
+        .editor-container {
+            margin: 20px 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background-color: #0d0d0d;
+            color: #ffffff;
+            border: 1px solid #00aaff;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+        }
+
+        .buttons {
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #00aaff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0077cc;
+        }
+
+        #console {
+            background-color: #0d0d0d;
+            color: #ffffff;
+            border: 1px solid #00aaff;
+            border-radius: 5px;
+            padding: 10px;
+            height: 150px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -24,6 +85,34 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        function obfuscateCode(type) {
+            let code = document.getElementById('editor').value;
+            let obfuscatedCode;
+
+            if (type === 'lua') {
+                obfuscatedCode = CryptoJS.AES.encrypt(code, 'secret key 123').toString();
+            } else if (type === 'html') {
+                obfuscatedCode = CryptoJS.AES.encrypt(code, 'secret key 456').toString();
+            } else if (type === 'javascript') {
+                obfuscatedCode = CryptoJS.AES.encrypt(code, 'secret key 789').toString();
+            }
+
+            document.getElementById('console').textContent = obfuscatedCode;
+        }
+
+        function downloadCode() {
+            let code = document.getElementById('console').textContent;
+            let blob = new Blob([code], { type: 'text/plain' });
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'obfuscated_code.txt';
+            link.click();
+        }
+
+        function clearConsole() {
+            document.getElementById('console').textContent = '';
+        }
+    </script>
 </body>
 </html>
