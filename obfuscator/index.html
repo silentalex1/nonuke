@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi Obfuscator 1.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background: linear-gradient(135deg, #1e1e2f, #2a2a44);
@@ -15,21 +16,45 @@
         }
 
         .container {
-            width: 90%;
+            max-width: 1200px;
             margin: auto;
             padding: 20px;
             text-align: center;
         }
 
-        h1 {
-            font-size: 2.5em;
+        header {
+            background: #2a2a44;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            margin: 0;
             color: #00c9ff;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #00c9ff;
         }
 
         .editor-container {
             margin: 20px 0;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         textarea {
@@ -46,7 +71,10 @@
         }
 
         .buttons {
-            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         button {
@@ -56,9 +84,9 @@
             border-radius: 5px;
             padding: 10px 15px;
             font-size: 1rem;
-            margin: 5px;
             cursor: pointer;
             transition: background 0.3s;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
@@ -71,14 +99,51 @@
             border: 1px solid #00c9ff;
             border-radius: 5px;
             padding: 10px;
-            height: 150px;
+            height: 200px;
             overflow-y: auto;
             font-family: monospace;
+            margin-top: 20px;
+            white-space: pre-wrap;
         }
 
         .error {
             color: red;
             font-weight: bold;
+        }
+
+        .features {
+            margin: 50px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #1e1e2f;
+            border: 1px solid #00c9ff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-card h3 {
+            color: #00c9ff;
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #00c9ff;
+        }
+
+        footer {
+            background: #2a2a44;
+            color: #999;
+            font-size: 0.9rem;
+            padding: 20px 0;
+            margin-top: 30px;
+            text-align: center;
         }
 
         pre[class*="language-"] {
@@ -87,17 +152,68 @@
             font-size: 0.9rem;
         }
 
-        footer {
-            margin-top: 30px;
-            color: #999;
-            font-size: 0.9rem;
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #00c9ff;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .theme-switch i {
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="theme-switch" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </div>
+    <header>
         <h1>Multi Obfuscator 1.0</h1>
-        <div class="editor-container">
+        <nav>
+            <a href="#">Home</a>
+            <a href="#features">Features</a>
+            <a href="#editor">Obfuscate</a>
+            <a href="#console">Console</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="features">
+            <h2>Features</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Multi Lua Obfuscation</h3>
+                    <p>Specialized methods for Lua and Roblox scripts.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-html5"></i>
+                    <h3>HTML/CSS/JS Obfuscation</h3>
+                    <p>Securely obfuscate your web code with style.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Multi-layered Encryption</h3>
+                    <p>Strong encryption algorithms for all code types.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="editor" class="editor-container">
             <textarea id="editor" placeholder="Enter your code here..."></textarea>
             <div class="buttons">
                 <button onclick="obfuscateLuaCode()">Obfuscate Lua</button>
@@ -106,7 +222,8 @@
                 <button onclick="downloadCode()">Download</button>
                 <button onclick="clearConsole()">Clear Console</button>
             </div>
-        </div>
+        </section>
+
         <h2>Console</h2>
         <pre id="console" class="language-javascript"></pre>
     </div>
@@ -118,6 +235,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
+
         function obfuscateLuaCode() {
             let code = document.getElementById('editor').value;
             let consoleElement = document.getElementById('console');
