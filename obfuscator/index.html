@@ -65,6 +65,11 @@
             height: 150px;
             overflow-y: auto;
         }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -88,6 +93,15 @@
     <script>
         function obfuscateCode(type) {
             let code = document.getElementById('editor').value;
+            let consoleElement = document.getElementById('console');
+            consoleElement.classList.remove('error');
+
+            if (!code.trim()) {
+                consoleElement.textContent = "There's no code... please put your code in.";
+                consoleElement.classList.add('error');
+                return;
+            }
+
             let obfuscatedCode;
 
             if (type === 'lua') {
@@ -98,7 +112,7 @@
                 obfuscatedCode = CryptoJS.AES.encrypt(code, 'secret key 789').toString();
             }
 
-            document.getElementById('console').textContent = obfuscatedCode;
+            consoleElement.textContent = obfuscatedCode;
         }
 
         function downloadCode() {
@@ -111,7 +125,9 @@
         }
 
         function clearConsole() {
-            document.getElementById('console').textContent = '';
+            let consoleElement = document.getElementById('console');
+            consoleElement.textContent = '';
+            consoleElement.classList.remove('error');
         }
     </script>
 </body>
