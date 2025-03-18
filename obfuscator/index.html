@@ -60,15 +60,24 @@
             position: relative;
         }
 
-        a {
-            color: #0066ff;
+        .discord-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #0066ff;
+            color: #ffffff;
             text-decoration: none;
+            border-radius: 8px;
             font-weight: bold;
-            transition: color 0.3s ease;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
 
-        a:hover {
-            color: #3399ff;
+        .discord-btn:hover {
+            background: #0033cc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.4);
         }
 
         .progress {
@@ -117,7 +126,7 @@
     <div class="container">
         <div class="icon"></div>
         <h1>Being worked on.</h1>
-        <p>This site is under active development, the team of the site is developing this website and working hard. So stay tuned for the launch! (<a href="#">Join the discord server</a> for more information.)</p>
+        <p>This site is under active development, the team of the site is developing this website and working hard. So stay tuned for the launch! (<a href="https://discord.gg/84D6cKeMuZ" class="discord-btn">Join the Discord Server</a> for more information.)</p>
         <div class="progress">
             <div class="progress-bar"></div>
         </div>
