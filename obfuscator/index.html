@@ -21,12 +21,12 @@
         }
 
         .container {
-            background: #1a1a1a;
-            padding: 50px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: #1c1c1c;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
             text-align: center;
-            max-width: 600px;
+            max-width: 650px;
             position: relative;
             overflow: hidden;
         }
@@ -34,65 +34,77 @@
         .container::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 102, 255, 0.1) 0%, transparent 70%);
-            animation: rotate 15s linear infinite;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
         }
 
         h1 {
-            color: #fff;
-            font-size: 36px;
-            margin-bottom: 25px;
-            position: relative;
+            color: #ffffff;
+            font-size: 40px;
+            margin-bottom: 30px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            position: relative;
         }
 
         p {
-            color: #b3b3b3;
-            font-size: 20px;
-            line-height: 1.8;
+            color: #cccccc;
+            font-size: 18px;
+            line-height: 1.7;
             margin-bottom: 40px;
             position: relative;
         }
 
+        a {
+            color: #0066ff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #3399ff;
+        }
+
         .progress {
             width: 100%;
-            height: 10px;
-            background: #333;
-            border-radius: 5px;
+            height: 12px;
+            background: #2a2a2a;
+            border-radius: 6px;
             overflow: hidden;
             position: relative;
         }
 
         .progress-bar {
-            width: 40%;
+            width: 50%;
             height: 100%;
-            background: #0066ff;
-            animation: loading 3s ease-in-out infinite;
-            box-shadow: 0 0 15px #0066ff;
+            background: linear-gradient(90deg, #0066ff, #0033cc);
+            animation: loading 2.5s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.7);
         }
 
         .icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 30px;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 35px;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%230066ff" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>') center/contain no-repeat;
-            animation: pulse 2s infinite;
+            animation: pulse 2s infinite ease-in-out;
         }
 
         @keyframes loading {
-            0% { width: 20%; transform: translateX(0); }
-            50% { width: 60%; transform: translateX(50%); }
-            100% { width: 20%; transform: translateX(100%); }
+            0% { width: 30%; transform: translateX(0); }
+            50% { width: 70%; transform: translateX(40%); }
+            100% { width: 30%; transform: translateX(80%); }
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.08); }
             100% { transform: scale(1); }
         }
 
@@ -105,7 +117,7 @@
     <div class="container">
         <div class="icon"></div>
         <h1>Being worked on.</h1>
-        <p>This site is under active development. We're crafting something extraordinary with cutting-edge design. Stay tuned for the launch!</p>
+        <p>This site is under active development, the team of the site is developing this website and working hard. So stay tuned for the launch! (<a href="#">Join the discord server</a> for more information.)</p>
         <div class="progress">
             <div class="progress-bar"></div>
         </div>
