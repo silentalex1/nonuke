@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; img-src 'self' data: https:;">
-    <meta name="description" content="Nexus Prime - Advanced Chrome Extension Management Tool">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; img-src 'self' data: https:; object-src 'none';">
+    <meta name="description" content="Nexus Prime - Chrome Extension Management Tool">
     <meta name="keywords" content="chrome extension, extension management, nexus prime, browser tools">
     <meta name="author" content="Nexus Prime Team">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#1d4ed8">
-    <title>Nexus Prime - Advanced Extension Management</title>
+    <title>Nexus Prime - Extension Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%231d4ed8' d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-12h2v4h4v2h-4v4h-2v-4H7v-2h4V8z'/></svg>">
     <style>
-        /* CSS Variables for Consistency */
         :root {
             --primary: #1d4ed8;
             --secondary: #7c3aed;
@@ -23,8 +22,8 @@
             --neutral: #6b7280;
             --bg-light: #f8fafc;
             --bg-dark: #1e293b;
-            --surface-light: rgba(255, 255, 255, 0.98);
-            --surface-dark: rgba(30, 41, 59, 0.98);
+            --surface-light: rgba(255, 255, 255, 0.95);
+            --surface-dark: rgba(30, 41, 59, 0.95);
             --text-light: #1f2937;
             --text-dark: #e5e7eb;
             --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -34,7 +33,6 @@
             --spacing: 16px;
         }
 
-        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -51,7 +49,6 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
         }
 
@@ -60,7 +57,6 @@
             color: var(--text-dark);
         }
 
-        /* Background Effects */
         .background {
             position: fixed;
             inset: 0;
@@ -85,7 +81,7 @@
             position: absolute;
             border-radius: 50%;
             background: radial-gradient(circle, var(--primary) 10%, transparent 70%);
-            opacity: 0.15;
+            opacity: 0.2;
             animation: particleFloat 50s infinite ease-in-out;
         }
 
@@ -93,14 +89,13 @@
         .particle:nth-child(2) { width: 280px; height: 280px; top: 65%; left: 75%; animation-delay: 15s; }
         .particle:nth-child(3) { width: 300px; height: 300px; top: 45%; left: 25%; animation-delay: 30s; }
 
-        /* Main Container */
         .app-container {
             background: var(--surface-light);
             padding: calc(var(--spacing) * 1.5);
             border-radius: var(--radius);
             box-shadow: var(--shadow-md);
             width: 90%;
-            max-width: 560px;
+            max-width: 600px;
             position: relative;
             z-index: 2;
             backdrop-filter: blur(16px);
@@ -118,42 +113,26 @@
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: calc(var(--spacing) * 1.5);
         }
 
         .logo {
-            font-size: 2.25rem;
+            font-size: 2.5rem;
             font-weight: 700;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            position: relative;
-            display: inline-block;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            opacity: 0.3;
         }
 
         .subtitle {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--neutral);
             margin-top: calc(var(--spacing) * 0.5);
-            font-weight: 400;
         }
 
-        /* Input Section */
         .input-section {
             position: relative;
             margin-bottom: calc(var(--spacing) * 1.5);
@@ -161,10 +140,10 @@
 
         .input-field {
             width: 100%;
-            padding: calc(var(--spacing) * 0.75) calc(var(--spacing) * 3) calc(var(--spacing) * 0.75) calc(var(--spacing) * 1.25);
+            padding: calc(var(--spacing) * 0.75) calc(var(--spacing) * 3) calc(var(--spacing) * 0.75) calc(var(--spacing));
             border: 1px solid #d1d5db;
             border-radius: calc(var(--radius) * 0.75);
-            font-size: 0.95rem;
+            font-size: 1rem;
             background: #fff;
             transition: var(--transition);
         }
@@ -188,29 +167,22 @@
 
         .input-icon {
             position: absolute;
-            right: calc(var(--spacing) * 1.25);
+            right: calc(var(--spacing));
             top: 50%;
             transform: translateY(-50%);
             color: var(--neutral);
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1.2rem;
         }
 
-        .input-field:focus + .input-icon {
-            color: var(--primary);
-        }
-
-        /* Action Buttons */
         .actions {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: calc(var(--spacing) * 0.75);
-            margin-bottom: calc(var(--spacing) * 1.5);
         }
 
         .action-btn {
             padding: calc(var(--spacing) * 0.75) var(--spacing);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #fff;
             border: none;
@@ -218,24 +190,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             transition: var(--transition);
-        }
-
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.4s ease;
-        }
-
-        .action-btn:hover::before {
-            left: 100%;
         }
 
         .action-btn:hover {
@@ -243,22 +198,12 @@
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
-        .action-btn:active {
-            transform: scale(0.98);
-        }
-
-        .action-btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
         .action-btn.loading::after {
             content: '';
             position: absolute;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #fff;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #fff;
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -271,16 +216,13 @@
         .btn-scan { background: linear-gradient(135deg, var(--warning), var(--primary)); }
         .btn-manage { background: linear-gradient(135deg, var(--neutral), var(--primary)); }
         .btn-analyze { background: linear-gradient(135deg, var(--accent), var(--primary)); }
-        .btn-share { background: linear-gradient(135deg, #ec4899, var(--primary)); }
 
-        /* Dashboard */
         .dashboard {
             background: #fff;
             padding: var(--spacing);
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
             margin-top: calc(var(--spacing) * 1.5);
-            transition: var(--transition);
         }
 
         body.dark .dashboard {
@@ -295,7 +237,7 @@
         }
 
         .dashboard-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
@@ -305,8 +247,8 @@
         }
 
         .dashboard-btn {
-            font-size: 0.85rem;
-            padding: calc(var(--spacing) * 0.4) calc(var(--spacing) * 0.8);
+            font-size: 0.9rem;
+            padding: calc(var(--spacing) * 0.5) var(--spacing);
             background: var(--neutral);
             color: #fff;
             border-radius: calc(var(--radius) * 0.5);
@@ -320,12 +262,12 @@
 
         .status-message {
             margin-bottom: var(--spacing);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: calc(var(--spacing) * 0.75);
         }
 
@@ -347,20 +289,19 @@
         }
 
         .metric-value {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary);
         }
 
         .metric-label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--neutral);
         }
 
-        /* History Section */
         .history-section {
             margin-top: calc(var(--spacing) * 1.5);
-            max-height: 240px;
+            max-height: 300px;
             overflow-y: auto;
             background: #fff;
             padding: var(--spacing);
@@ -368,7 +309,6 @@
             box-shadow: var(--shadow-sm);
             scrollbar-width: thin;
             scrollbar-color: var(--primary) #e5e7eb;
-            transition: var(--transition);
         }
 
         body.dark .history-section {
@@ -382,7 +322,6 @@
             align-items: center;
             padding: calc(var(--spacing) * 0.5) 0;
             border-bottom: 1px solid #e5e7eb;
-            transition: var(--transition);
         }
 
         body.dark .history-entry {
@@ -390,177 +329,33 @@
         }
 
         .history-entry:hover {
-            background: rgba(29, 78, 216, 0.05);
-        }
-
-        .history-entry:last-child {
-            border-bottom: none;
+            background: rgba(29, 78, 216, 0.1);
         }
 
         .history-action {
             color: var(--warning);
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
         }
 
         .history-action:hover {
             color: var(--primary);
         }
 
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal {
-            background: var(--surface-light);
-            padding: calc(var(--spacing) * 1.5);
-            border-radius: var(--radius);
-            max-width: 480px;
-            width: 90%;
-            box-shadow: var(--shadow-md);
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        body.dark .modal {
-            background: var(--surface-dark);
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: calc(var(--spacing) * 1.5);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: calc(var(--spacing) * 0.75);
-            right: calc(var(--spacing) * 0.75);
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: var(--neutral);
-            transition: var(--transition);
-        }
-
-        .modal-close:hover {
-            color: var(--primary);
-        }
-
-        .modal-nav {
-            display: flex;
-            gap: calc(var(--spacing) * 0.5);
-            margin-bottom: var(--spacing);
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        body.dark .modal-nav {
-            border-bottom: 1px solid #4b5563;
-        }
-
-        .modal-tab {
-            padding: calc(var(--spacing) * 0.5) var(--spacing);
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--neutral);
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .modal-tab.active {
-            color: var(--primary);
-        }
-
-        .modal-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary);
-        }
-
-        .modal-tab:hover {
-            color: var(--primary);
-        }
-
-        .tab-panel {
-            display: none;
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        .settings-option {
-            margin-bottom: var(--spacing);
-        }
-
-        .settings-option label {
-            display: block;
-            margin-bottom: calc(var(--spacing) * 0.5);
-            font-weight: 600;
-        }
-
-        .settings-option select,
-        .settings-option input[type="checkbox"] {
-            margin-right: calc(var(--spacing) * 0.5);
-        }
-
-        select {
-            width: 100%;
-            padding: calc(var(--spacing) * 0.5);
-            border-radius: calc(var(--radius) * 0.5);
-            border: 1px solid #d1d5db;
-            background: #fff;
-            transition: var(--transition);
-        }
-
-        body.dark select {
-            background: #2d3748;
-            border-color: #4b5563;
-            color: var(--text-dark);
-        }
-
-        select:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-
-        /* Animations */
         @keyframes backgroundPulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.9; }
         }
 
         @keyframes particleFloat {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.15; }
-            50% { transform: scale(1.4) rotate(180deg); opacity: 0.3; }
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.2; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.4; }
         }
 
         @keyframes spin {
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
             .app-container {
                 width: 95%;
@@ -568,22 +363,11 @@
             }
 
             .logo {
-                font-size: 1.75rem;
+                font-size: 2rem;
             }
 
             .actions {
                 grid-template-columns: 1fr;
-            }
-
-            .metrics-grid {
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
             }
         }
     </style>
@@ -595,22 +379,21 @@
         <div class="particle"></div>
         <div class="particle"></div>
     </div>
-    <div class="app-container">
+    <main class="app-container">
         <header class="header">
             <h1 class="logo">Nexus Prime</h1>
-            <p class="subtitle">Advanced Extension Management</p>
+            <p class="subtitle">Extension Management</p>
         </header>
-        <div class="input-section">
-            <input type="text" id="extensionInput" class="input-field" placeholder="Extension ID or Chrome Store URL" aria-label="Extension ID or URL">
+        <section class="input-section">
+            <input type="text" id="extensionInput" class="input-field" placeholder="Enter Extension ID or URL" aria-label="Extension ID or URL">
             <span class="input-icon">🔗</span>
-        </div>
-        <div class="actions">
+        </section>
+        <section class="actions">
             <button class="action-btn btn-install" id="installBtn">Install</button>
             <button class="action-btn btn-scan" id="scanBtn">Scan</button>
             <button class="action-btn btn-manage" id="manageBtn">Manage</button>
             <button class="action-btn btn-analyze" id="analyzeBtn">Analyze</button>
-            <button class="action-btn btn-share" id="shareBtn">Share</button>
-        </div>
+        </section>
         <section class="dashboard">
             <div class="dashboard-header">
                 <h2 class="dashboard-title">Nexus Dashboard</h2>
@@ -623,34 +406,7 @@
             <div class="metrics-grid" id="metricsGrid"></div>
         </section>
         <section class="history-section" id="historySection"></section>
-    </div>
-    <div class="modal-overlay" id="manageModal">
-        <div class="modal">
-            <span class="modal-close" id="closeModalBtn">✕</span>
-            <h2 class="modal-title">Manage Extensions</h2>
-            <nav class="modal-nav">
-                <span class="modal-tab active" data-tab="installed">Installed</span>
-                <span class="modal-tab" data-tab="settings">Settings</span>
-            </nav>
-            <div class="tab-panel active" id="installedTab">
-                <div id="installedExtensions"></div>
-            </div>
-            <div class="tab-panel" id="settingsTab">
-                <div class="settings-option">
-                    <label for="themeSelect">Theme</label>
-                    <select id="themeSelect">
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                    </select>
-                </div>
-                <div class="settings-option">
-                    <label>
-                        <input type="checkbox" id="autoClearHistory"> Auto-Clear History on Close
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
+    </main>
 
     <script>
         // DOM Elements
@@ -659,41 +415,41 @@
             scanBtn: document.getElementById('scanBtn'),
             manageBtn: document.getElementById('manageBtn'),
             analyzeBtn: document.getElementById('analyzeBtn'),
-            shareBtn: document.getElementById('shareBtn'),
             extensionInput: document.getElementById('extensionInput'),
             statusMessage: document.getElementById('statusMessage'),
             metricsGrid: document.getElementById('metricsGrid'),
             historySection: document.getElementById('historySection'),
-            manageModal: document.getElementById('manageModal'),
-            installedExtensions: document.getElementById('installedExtensions'),
-            closeModalBtn: document.getElementById('closeModalBtn'),
             clearHistoryBtn: document.getElementById('clearHistoryBtn'),
-            exportDataBtn: document.getElementById('exportDataBtn'),
-            modalTabs: document.querySelectorAll('.modal-tab'),
-            installedTab: document.getElementById('installedTab'),
-            settingsTab: document.getElementById('settingsTab'),
-            themeSelect: document.getElementById('themeSelect'),
-            autoClearHistory: document.getElementById('autoClearHistory')
+            exportDataBtn: document.getElementById('exportDataBtn')
         };
 
         // Application State
-        const appState = {
-            history: JSON.parse(localStorage.getItem('nexusHistory') || '[]'),
-            stats: JSON.parse(localStorage.getItem('nexusStats') || '{"installs":0,"success":0,"scans":0,"analyzes":0,"shares":0}'),
-            installed: JSON.parse(localStorage.getItem('nexusInstalled') || '{}'),
-            settings: JSON.parse(localStorage.getItem('nexusSettings') || '{"theme":"light","autoClear":false}'),
-            isChrome: navigator.userAgent.includes('Chrome') && !!window.chrome,
-            canInstall: typeof window.chrome?.webstore?.install === 'function'
-        };
+        class AppState {
+            constructor() {
+                this.history = JSON.parse(localStorage.getItem('nexusHistory') || '[]');
+                this.stats = JSON.parse(localStorage.getItem('nexusStats') || '{"installs":0,"success":0,"scans":0,"analyzes":0}');
+                this.installed = JSON.parse(localStorage.getItem('nexusInstalled') || '{}');
+                this.isChrome = navigator.userAgent.includes('Chrome') && !!window.chrome;
+                this.canInstall = typeof window.chrome?.webstore?.install === 'function';
+            }
+
+            save() {
+                localStorage.setItem('nexusHistory', JSON.stringify(this.history));
+                localStorage.setItem('nexusStats', JSON.stringify(this.stats));
+                localStorage.setItem('nexusInstalled', JSON.stringify(this.installed));
+            }
+
+            logAction(id, status, details) {
+                this.history.unshift({ id, status, details, timestamp: Date.now() });
+                this.history = this.history.slice(0, 50);
+                this.stats[status === 'success' ? 'success' : 'installs']++;
+                this.save();
+            }
+        }
+
+        const app = new AppState();
 
         // Utility Functions
-        const saveState = () => {
-            localStorage.setItem('nexusHistory', JSON.stringify(appState.history));
-            localStorage.setItem('nexusStats', JSON.stringify(appState.stats));
-            localStorage.setItem('nexusInstalled', JSON.stringify(appState.installed));
-            localStorage.setItem('nexusSettings', JSON.stringify(appState.settings));
-        };
-
         const setLoading = (button, isLoading) => {
             button.disabled = isLoading;
             button.classList.toggle('loading', isLoading);
@@ -712,37 +468,23 @@
         };
 
         const renderMetrics = () => {
-            const successRate = appState.stats.installs > 0 ? ((appState.stats.success / appState.stats.installs) * 100).toFixed(1) : 0;
+            const successRate = app.stats.installs > 0 ? ((app.stats.success / app.stats.installs) * 100).toFixed(1) : 0;
             DOM.metricsGrid.innerHTML = `
-                <div class="metric">
-                    <div class="metric-value">${appState.stats.installs}</div>
-                    <div class="metric-label">Installs</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">${appState.stats.success}</div>
-                    <div class="metric-label">Success</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">${appState.stats.scans}</div>
-                    <div class="metric-label">Scans</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">${appState.stats.analyzes}</div>
-                    <div class="metric-label">Analyzes</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">${appState.stats.shares}</div>
-                    <div class="metric-label">Shares</div>
-                </div>
-                <div class="metric">
-                    <div class="metric-value">${successRate}%</div>
-                    <div class="metric-label">Success Rate</div>
-                </div>
+                <div class="metric"><div class="metric-value">${app.stats.installs}</div><div class="metric-label">Installs</div></div>
+                <div class="metric"><div class="metric-value">${app.stats.success}</div><div class="metric-label">Success</div></div>
+                <div class="metric"><div class="metric-value">${app.stats.scans}</div><div class="metric-label">Scans</div></div>
+                <div class="metric"><div class="metric-value">${app.stats.analyzes}</div><div class="metric-label">Analyzes</div></div>
+                <div class="metric"><div class="metric-value">${successRate}%</div><div class="metric-label">Success Rate</div></div>
             `;
         };
 
-        const applyTheme = () => {
-            document.body.classList.toggle('dark', appState.settings.theme === 'dark');
+        const renderHistory = () => {
+            DOM.historySection.innerHTML = app.history.map(entry => `
+                <div class="history-entry">
+                    <span>${entry.details.name} (${entry.id.slice(0, 6)}...)</span>
+                    <span style="color: var(--${entry.status === 'success' ? 'accent' : 'danger'})">${entry.status}</span>
+                </div>
+            `).join('');
         };
 
         const extractExtensionId = (input) => {
@@ -761,52 +503,66 @@
                 return {
                     name: doc.querySelector('h1')?.textContent || 'Unknown Extension',
                     version: doc.querySelector('.gH0guc')?.textContent || 'N/A',
-                    icon: doc.querySelector('img.e8i0yl')?.src || 'https://via.placeholder.com/24',
-                    description: doc.querySelector('.C-bC2d')?.textContent?.trim() || 'No description available',
-                    rating: doc.querySelector('.rQF9jd')?.textContent || 'N/A'
+                    icon: doc.querySelector('img.e8i0yl')?.src || 'https://via.placeholder.com/24'
                 };
             } catch {
-                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24', description: 'N/A', rating: 'N/A' };
+                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24' };
             }
         };
 
-        const installExtension = (id) => {
-            if (appState.canInstall) {
-                return new Promise((resolve, reject) => {
-                    window.chrome.webstore.install(
-                        `https://chrome.google.com/webstore/detail/${id}`,
-                        () => resolve({ success: true, message: 'Extension installed' }),
-                        (error) => reject(new Error(error))
-                    );
-                });
+        // Custom Installation Methods
+        const installViaWebstoreAPI = (id) => {
+            return new Promise((resolve, reject) => {
+                if (!app.canInstall) return reject(new Error('Webstore API not available'));
+                window.chrome.webstore.install(
+                    `https://chrome.google.com/webstore/detail/${id}`,
+                    () => resolve({ success: true, message: 'Installed via Webstore API' }),
+                    (error) => reject(new Error(error))
+                );
+            });
+        };
+
+        const installViaPrompt = (id) => {
+            return new Promise((resolve) => {
+                const confirmed = confirm(`Install extension ${id} from Chrome Web Store?`);
+                if (confirmed) {
+                    window.open(`https://chrome.google.com/webstore/detail/${id}`, '_blank');
+                    resolve({ success: true, message: 'Prompted installation' });
+                } else {
+                    resolve({ success: false, message: 'Installation cancelled' });
+                }
+            });
+        };
+
+        const installViaManifest = async (id) => {
+            try {
+                const manifestUrl = `https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0&x=id%3D${id}%26installsource%3Dondemand%26uc`;
+                const response = await fetch(manifestUrl, { method: 'HEAD' });
+                if (response.ok) {
+                    window.location.href = manifestUrl;
+                    return { success: true, message: 'Installed via manifest redirect' };
+                }
+                throw new Error('Manifest unavailable');
+            } catch (error) {
+                throw new Error(`Manifest install failed: ${error.message}`);
             }
-            return new Promise(resolve => setTimeout(() => resolve({ success: true, message: 'Simulated install' }), 1500));
         };
 
-        const logAction = (id, status, details) => {
-            appState.history.unshift({ id, status, details, timestamp: Date.now() });
-            appState.history = appState.history.slice(0, 100);
-            appState.stats[status === 'success' ? 'success' : 'installs']++;
-            saveState();
-            renderHistory();
-        };
+        const installExtension = async (id) => {
+            const methods = [installViaWebstoreAPI, installViaPrompt, installViaManifest];
+            let result = null;
 
-        const renderHistory = () => {
-            DOM.historySection.innerHTML = appState.history.map(entry => `
-                <div class="history-entry">
-                    <span>${entry.details.name} (${entry.id.slice(0, 6)}...)</span>
-                    <span style="color: var(--${entry.status === 'success' ? 'accent' : 'danger'})">${entry.status}</span>
-                </div>
-            `).join('');
-        };
+            for (const method of methods) {
+                try {
+                    result = await method(id);
+                    if (result.success) break;
+                } catch (error) {
+                    console.warn(`Method ${method.name} failed: ${error.message}`);
+                }
+            }
 
-        const renderInstalled = () => {
-            DOM.installedExtensions.innerHTML = Object.entries(appState.installed).map(([id, details]) => `
-                <div class="history-entry">
-                    <span><img src="${details.icon}" alt="${details.name}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">${details.name}</span>
-                    <span class="history-action" data-id="${id}">Remove</span>
-                </div>
-            `).join('') || '<p>No extensions installed yet.</p>';
+            if (!result || !result.success) throw new Error('All installation methods failed');
+            return result;
         };
 
         // Event Handlers
@@ -823,12 +579,12 @@
             try {
                 const info = await fetchExtensionDetails(id);
                 const result = await installExtension(id);
-                appState.installed[id] = info;
-                logAction(id, 'success', info);
-                displayStatus(`${info.name} installed successfully`, 'success');
+                app.installed[id] = info;
+                app.logAction(id, 'success', info);
+                displayStatus(`${info.name} installed: ${result.message}`, 'success');
                 DOM.extensionInput.value = '';
             } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' });
+                app.logAction(id, 'error', { name: 'Unknown' });
                 displayStatus(`Installation failed: ${error.message}`, 'error');
             } finally {
                 setLoading(DOM.installBtn, false);
@@ -847,9 +603,9 @@
 
             try {
                 const info = await fetchExtensionDetails(id);
-                appState.stats.scans++;
-                saveState();
-                displayStatus(`${info.name} (v${info.version})<br>Rating: ${info.rating}<br>${info.description}`, 'success');
+                app.stats.scans++;
+                app.save();
+                displayStatus(`${info.name} (v${info.version})`, 'success');
             } catch (error) {
                 displayStatus(`Scan failed: ${error.message}`, 'error');
             } finally {
@@ -869,9 +625,9 @@
 
             try {
                 const info = await fetchExtensionDetails(id);
-                appState.stats.analyzes++;
-                saveState();
-                displayStatus(`${info.name}<br>Version: ${info.version}<br>Rating: ${info.rating}`, 'success');
+                app.stats.analyzes++;
+                app.save();
+                displayStatus(`${info.name} - Version: ${info.version}`, 'success');
             } catch (error) {
                 displayStatus(`Analysis failed: ${error.message}`, 'error');
             } finally {
@@ -879,48 +635,19 @@
             }
         };
 
-        const handleShare = async () => {
-            const id = extractExtensionId(DOM.extensionInput.value);
-            if (!id) {
-                displayStatus('Invalid Extension ID or URL', 'error');
-                return;
-            }
-
-            setLoading(DOM.shareBtn, true);
-            displayStatus(`Preparing to share ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await fetchExtensionDetails(id);
-                const shareData = {
-                    title: `Check out ${info.name} on Nexus Prime`,
-                    text: `I found ${info.name} (v${info.version}) on Nexus Prime. ${info.description}`,
-                    url: `https://chrome.google.com/webstore/detail/${id}`
-                };
-                await navigator.share(shareData);
-                appState.stats.shares++;
-                saveState();
-                displayStatus(`Shared ${info.name} successfully`, 'success');
-            } catch (error) {
-                displayStatus(`Share failed: ${error.message}`, 'error');
-            } finally {
-                setLoading(DOM.shareBtn, false);
-            }
-        };
-
         const handleManage = () => {
-            renderInstalled();
-            DOM.manageModal.classList.add('active');
+            alert('Manage functionality coming soon!');
         };
 
         const handleClearHistory = () => {
-            appState.history = [];
-            saveState();
+            app.history = [];
+            app.save();
             renderHistory();
-            displayStatus('History cleared successfully', 'success');
+            displayStatus('History cleared', 'success');
         };
 
         const handleExportData = () => {
-            const data = { history: appState.history, stats: appState.stats, installed: appState.installed };
+            const data = { history: app.history, stats: app.stats, installed: app.installed };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -928,69 +655,23 @@
             a.download = 'nexus-prime-data.json';
             a.click();
             URL.revokeObjectURL(url);
-            displayStatus('Data exported successfully', 'success');
+            displayStatus('Data exported', 'success');
         };
 
-        const handleModalClose = () => {
-            if (appState.settings.autoClear) handleClearHistory();
-            DOM.manageModal.classList.remove('active');
-        };
-
-        // Initialize Application
+        // Initialization
         const init = () => {
-            applyTheme();
-            DOM.themeSelect.value = appState.settings.theme;
-            DOM.autoClearHistory.checked = appState.settings.autoClear;
             renderHistory();
             renderMetrics();
-            displayStatus('Nexus Prime initialized. Ready to manage extensions.', 'neutral');
-            if (!appState.canInstall) {
-                displayStatus('Running in simulation mode (Chrome Web Store API unavailable)', 'warning');
-            }
+            displayStatus('Nexus Prime ready', 'neutral');
+            if (!app.canInstall) displayStatus('Limited installation mode', 'warning');
 
-            // Event Listeners
             DOM.installBtn.addEventListener('click', handleInstall);
             DOM.scanBtn.addEventListener('click', handleScan);
             DOM.manageBtn.addEventListener('click', handleManage);
             DOM.analyzeBtn.addEventListener('click', handleAnalyze);
-            DOM.shareBtn.addEventListener('click', handleShare);
             DOM.extensionInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleInstall());
             DOM.clearHistoryBtn.addEventListener('click', handleClearHistory);
             DOM.exportDataBtn.addEventListener('click', handleExportData);
-            DOM.closeModalBtn.addEventListener('click', handleModalClose);
-            DOM.manageModal.addEventListener('click', (e) => {
-                if (e.target === DOM.manageModal) handleModalClose();
-            });
-
-            DOM.modalTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    DOM.modalTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    DOM.installedTab.classList.remove('active');
-                    DOM.settingsTab.classList.remove('active');
-                    document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
-                });
-            });
-
-            DOM.installedExtensions.addEventListener('click', (e) => {
-                if (e.target.classList.contains('history-action')) {
-                    const id = e.target.dataset.id;
-                    delete appState.installed[id];
-                    saveState();
-                    renderInstalled();
-                }
-            });
-
-            DOM.themeSelect.addEventListener('change', (e) => {
-                appState.settings.theme = e.target.value;
-                saveState();
-                applyTheme();
-            });
-
-            DOM.autoClearHistory.addEventListener('change', (e) => {
-                appState.settings.autoClear = e.target.checked;
-                saveState();
-            });
         };
 
         window.addEventListener('load', init);
