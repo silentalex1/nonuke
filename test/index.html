@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://chrome.google.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    <meta name="referrer" content="no-referrer">
-    <title>Nexus Core</title>
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>Nexus Prime</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3b82f6;
-            --secondary: #8b5cf6;
-            --success: #22c55e;
-            --error: #ef4444;
-            --neutral: #4b5563;
-            --bg: #f9fafb;
-            --panel: rgba(255, 255, 255, 0.97);
-            --text: #1f2a44;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --glow: rgba(59, 130, 246, 0.2);
-            --highlight: #f59e0b;
-            --transition: 0.3s ease;
+            --primary: #1d4ed8;
+            --secondary: #9333ea;
+            --success: #16a34a;
+            --error: #dc2626;
+            --neutral: #475569;
+            --bg: #f3f4f6;
+            --surface: rgba(255, 255, 255, 0.98);
+            --text: #1e293b;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --glow: rgba(29, 78, 216, 0.25);
+            --accent: #f59e0b;
+            --ease: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -37,306 +37,313 @@
             overflow: hidden;
             overscroll-behavior: none;
         }
-        .canvas {
+        .environment {
             position: fixed;
             inset: 0;
-            background: linear-gradient(145deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+            background: radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 0.08), transparent 80%);
             z-index: -1;
         }
-        .wave {
+        .orbit {
             position: absolute;
-            width: 180px;
-            height: 180px;
-            background: rgba(59, 130, 246, 0.06);
+            width: 160px;
+            height: 160px;
+            background: rgba(29, 78, 216, 0.07);
             border-radius: 50%;
-            animation: wave 12s infinite ease-in-out;
+            animation: orbit 14s infinite ease-in-out;
             will-change: transform, opacity;
         }
-        .wave:nth-child(1) { top: 10%; left: 25%; }
-        .wave:nth-child(2) { top: 65%; left: 70%; }
-        .wave:nth-child(3) { top: 45%; left: 15%; }
-        .core {
-            background: var(--panel);
-            padding: 2.75rem;
-            border-radius: 2rem;
-            box-shadow: 0 20px 60px var(--shadow);
-            max-width: 500px;
+        .orbit:nth-child(1) { top: 15%; left: 20%; }
+        .orbit:nth-child(2) { top: 70%; left: 75%; }
+        .orbit:nth-child(3) { top: 50%; left: 10%; }
+        .prime {
+            background: var(--surface);
+            padding: 3rem;
+            border-radius: 2.25rem;
+            box-shadow: 0 25px 70px var(--shadow);
+            max-width: 520px;
             width: 95%;
             position: relative;
             z-index: 1;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform var(--transition);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            transition: transform var(--ease);
         }
-        .core:hover { transform: translateY(-8px); }
+        .prime:hover { transform: translateY(-10px); }
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.75rem;
             font-weight: 800;
             color: var(--text);
             text-align: center;
-            margin-bottom: 2.25rem;
-            letter-spacing: 0.5px;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.75px;
         }
-        h1 span { color: var(--primary); text-shadow: 0 2px 8px var(--glow); }
-        .input-container {
+        h1 span { color: var(--primary); text-shadow: 0 3px 10px var(--glow); }
+        .input-field {
             position: relative;
-            margin-bottom: 2rem;
+            margin-bottom: 2.25rem;
         }
         input {
             width: 100%;
-            padding: 1.25rem 4rem 1.25rem 1.5rem;
+            padding: 1.5rem 4.5rem 1.5rem 1.75rem;
             border: 1px solid #d1d5db;
-            border-radius: 1.25rem;
-            font-size: 1.1rem;
+            border-radius: 1.5rem;
+            font-size: 1.15rem;
             color: var(--text);
             background: #fff;
             outline: none;
-            transition: border-color var(--transition), box-shadow var(--transition);
+            transition: border-color var(--ease), box-shadow var(--ease);
         }
         input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 15px var(--glow);
+            box-shadow: 0 0 18px var(--glow);
         }
-        .input-marker {
+        .input-indicator {
             position: absolute;
-            right: 1.5rem;
+            right: 1.75rem;
             top: 50%;
             transform: translateY(-50%);
             color: #9ca3af;
-            font-size: 1.4rem;
-            transition: color var(--transition);
+            font-size: 1.5rem;
+            transition: color var(--ease);
         }
-        input:focus + .input-marker { color: var(--primary); }
-        .install-btn {
+        input:focus + .input-indicator { color: var(--primary); }
+        .install-trigger {
             width: 100%;
-            padding: 1.25rem;
-            font-size: 1.15rem;
+            padding: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #fff;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
-            border-radius: 1.25rem;
+            border-radius: 1.5rem;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all var(--transition);
+            transition: all var(--ease);
         }
-        .install-btn:hover {
-            box-shadow: 0 12px 30px var(--glow);
-            transform: translateY(-4px);
+        .install-trigger:hover {
+            box-shadow: 0 15px 35px var(--glow);
+            transform: translateY(-6px);
         }
-        .install-btn:active { transform: scale(0.98); }
-        .install-btn.loading {
+        .install-trigger:active { transform: scale(0.97); }
+        .install-trigger.loading {
             background: #6b7280;
             cursor: wait;
             pointer-events: none;
         }
-        .install-btn.loading::after {
+        .install-trigger.loading::after {
             content: '';
             position: absolute;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border: 4px solid #fff;
             border-top-color: transparent;
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
+            animation: spin 0.5s linear infinite;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        .notice {
-            margin-top: 1.75rem;
-            padding: 1.25rem 1.75rem;
-            font-size: 1rem;
+        .message {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            font-size: 1.05rem;
             font-weight: 400;
             color: var(--text);
             background: #fff;
-            border-radius: 1.25rem;
-            box-shadow: 0 6px 25px var(--shadow);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 30px var(--shadow);
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(25px);
             transition: all 0.4s ease;
-            word-wrap: break-word;
+            word-break: break-word;
         }
-        .notice.visible {
+        .message.active {
             opacity: 1;
             transform: translateY(0);
         }
-        .activity {
-            margin-top: 2.25rem;
-            max-height: 240px;
+        .history {
+            margin-top: 2.5rem;
+            max-height: 260px;
             overflow-y: auto;
             background: #fff;
-            border-radius: 1.25rem;
-            padding: 1.5rem;
-            box-shadow: 0 6px 25px var(--shadow);
+            border-radius: 1.5rem;
+            padding: 1.75rem;
+            box-shadow: 0 8px 30px var(--shadow);
             display: none;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) #e5e7eb;
         }
-        .activity.visible { display: block; }
-        .activity::-webkit-scrollbar { width: 8px; }
-        .activity::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-        .activity::-webkit-scrollbar-track { background: #e5e7eb; }
-        .activity-entry {
-            padding: 1rem 0;
+        .history.active { display: block; }
+        .history::-webkit-scrollbar { width: 10px; }
+        .history::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+        .history::-webkit-scrollbar-track { background: #e5e7eb; }
+        .history-record {
+            padding: 1.25rem 0;
             border-bottom: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text);
-            transition: background var(--transition);
+            transition: background var(--ease);
         }
-        .activity-entry:last-child { border-bottom: none; }
-        .activity-entry:hover { background: var(--glow); }
-        .activity-entry .retry {
-            color: var(--highlight);
+        .history-record:last-child { border-bottom: none; }
+        .history-record:hover { background: var(--glow); }
+        .history-record .reinstall {
+            color: var(--accent);
             font-weight: 600;
             cursor: pointer;
-            transition: color var(--transition);
+            transition: color var(--ease);
         }
-        .activity-entry .retry:hover { color: var(--primary); }
-        @media (max-width: 450px) {
-            .core { padding: 2rem; }
-            h1 { font-size: 2rem; }
-            input, .install-btn { font-size: 1rem; padding: 1rem; }
-            .notice, .activity-entry { font-size: 0.9rem; }
+        .history-record .reinstall:hover { color: var(--primary); }
+        @media (max-width: 480px) {
+            .prime { padding: 2.25rem; }
+            h1 { font-size: 2.25rem; }
+            input, .install-trigger { font-size: 1.05rem; padding: 1.25rem; }
+            .message, .history-record { font-size: 0.95rem; }
         }
-        @keyframes wave {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.6); opacity: 0.3; }
+        @keyframes orbit {
+            0%, 100% { transform: scale(1); opacity: 0.85; }
+            50% { transform: scale(1.7); opacity: 0.25; }
         }
         @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="canvas">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
+    <div class="environment">
+        <div class="orbit"></div>
+        <div class="orbit"></div>
+        <div class="orbit"></div>
     </div>
-    <div class="core">
-        <h1>Nexus <span>Core</span></h1>
-        <div class="input-container">
-            <input type="text" id="extId" placeholder="Enter 32-letter Extension ID" maxlength="32">
-            <span class="input-marker">🔗</span>
+    <div class="prime">
+        <h1>Nexus <span>Prime</span></h1>
+        <div class="input-field">
+            <input type="text" id="extInput" placeholder="Extension ID or Chrome Store URL">
+            <span class="input-indicator">🔗</span>
         </div>
-        <button class="install-btn" id="install">Install Extension</button>
-        <div class="notice" id="notice"></div>
-        <div class="activity" id="activity"></div>
+        <button class="install-trigger" id="install">Install Extension</button>
+        <div class="message" id="message"></div>
+        <div class="history" id="history"></div>
     </div>
     <script>
         const DOM = {
             install: document.getElementById("install"),
-            extId: document.getElementById("extId"),
-            notice: document.getElementById("notice"),
-            activity: document.getElementById("activity")
+            extInput: document.getElementById("extInput"),
+            message: document.getElementById("message"),
+            history: document.getElementById("history")
         };
 
         const Security = {
-            generateToken: () => crypto.getRandomValues(new Uint32Array(1))[0].toString(36) + Date.now().toString(36),
-            validateId: (id) => /^[a-z]{32}$/.test(id),
-            sanitizeId: (id) => id.toLowerCase().replace(/[^a-z]/g, "").slice(0, 32),
-            isSecureContext: () => window.isSecureContext || location.hostname === "localhost",
-            rateLimit: (() => {
-                const limits = new Map();
-                return (key, max = 6, windowMs = 60000) => {
+            generateKey: () => crypto.getRandomValues(new Uint32Array(2)).join("") + Date.now().toString(36),
+            parseInput: (input) => {
+                const urlMatch = input.match(/chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i);
+                const idMatch = /^[a-z]{32}$/.test(input.trim());
+                return urlMatch ? urlMatch[1] : (idMatch ? input.trim() : null);
+            },
+            sanitize: (id) => id.toLowerCase().replace(/[^a-z]/g, "").slice(0, 32),
+            isSecure: () => window.isSecureContext || location.hostname === "localhost",
+            throttle: (() => {
+                const records = new Map();
+                return (key, max = 5, windowMs = 60000) => {
                     const now = Date.now();
-                    const record = limits.get(key) || { count: 0, start: now };
-                    if (now - record.start > windowMs) {
-                        record.count = 0;
-                        record.start = now;
+                    const data = records.get(key) || { count: 0, start: now };
+                    if (now - data.start > windowMs) {
+                        data.count = 0;
+                        data.start = now;
                     }
-                    record.count++;
-                    limits.set(key, record);
-                    return record.count <= max;
+                    data.count++;
+                    records.set(key, data);
+                    return data.count <= max;
                 };
             })(),
-            detectTampering: () => {
-                const ua = navigator.userAgent;
-                return /bot|crawler|spider/.test(ua) || navigator.webdriver || !window.performance;
+            checkIntegrity: () => {
+                const ua = navigator.userAgent.toLowerCase();
+                return !(/bot|crawl|spider/.test(ua) || navigator.webdriver || window.outerWidth === 0);
             }
         };
 
         const Browser = {
-            detect: () => {
+            identify: () => {
                 const ua = navigator.userAgent.toLowerCase();
                 const vendor = navigator.vendor.toLowerCase();
-                const platform = navigator.platform.toLowerCase();
-                const rules = [
-                    { name: "Chrome", test: () => /chrome/.test(ua) && /google/.test(vendor) && !/opr|edg/.test(ua) },
-                    { name: "Firefox", test: () => /firefox/.test(ua) && /mozilla/.test(vendor) },
-                    { name: "Opera", test: () => /opr/.test(ua) && /opera/.test(vendor) },
-                    { name: "Edge", test: () => /edg/.test(ua) && /microsoft/.test(vendor) },
-                    { name: "Safari", test: () => /safari/.test(ua) && /apple/.test(vendor) && !/chrome/.test(ua) }
+                const tests = [
+                    { name: "Chrome", check: () => /chrome/.test(ua) && /google/.test(vendor) && !/opr|edg/.test(ua) },
+                    { name: "Firefox", check: () => /firefox/.test(ua) && !/seamonkey/.test(ua) },
+                    { name: "Opera", check: () => /opr/.test(ua) && /opera/.test(vendor) },
+                    { name: "Edge", check: () => /edg/.test(ua) },
+                    { name: "Safari", check: () => /safari/.test(ua) && /apple/.test(vendor) && !/chrome/.test(ua) }
                 ];
-                const match = rules.find(rule => rule.test());
+                const match = tests.find(t => t.check());
                 return match ? match.name : "Other";
             },
-            supportsInstall: () => Browser.detect() === "Chrome" && typeof chrome !== "undefined"
+            canInstallInline: () => typeof chrome !== "undefined" && !!chrome.webstore
         };
 
-        const ExtensionEngine = {
+        const Extension = {
             installed: new Map(),
-            manifestTemplate: (id) => ({
-                manifest_version: 3,
-                name: `Nexus-${id.slice(0, 6)}`,
-                version: "1.0.0",
-                description: "Installed via Nexus Core",
-                permissions: ["activeTab", "storage"],
-                action: { default_title: `Nexus-${id.slice(0, 6)}` },
-                background: { service_worker: "background.js" }
-            }),
-            install: (id, browser) => {
-                const manifest = ExtensionEngine.manifestTemplate(id);
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        if (browser === "Chrome" && Browser.supportsInstall()) {
-                            ExtensionEngine.installed.set(id, { manifest, active: true, installedAt: Date.now() });
-                            resolve({ success: true, message: `${manifest.name} installed and activated` });
-                        } else {
-                            resolve({
-                                success: false,
-                                message: `${browser} requires manual setup. Visit browser settings to enable this extension.`
-                            });
-                        }
-                    }, 1200);
+            installInline: (id) => {
+                return new Promise((resolve, reject) => {
+                    if (!Browser.canInstallInline()) {
+                        return reject(new Error("Inline installation not supported in this browser"));
+                    }
+                    chrome.webstore.install(
+                        `https://chrome.google.com/webstore/detail/${id}`,
+                        () => resolve({ success: true, message: "Extension installed via Chrome Web Store" }),
+                        (err) => reject(new Error(err || "Installation failed"))
+                    );
                 });
             },
-            isInstalled: (id) => ExtensionEngine.installed.has(id)
+            simulateInstall: (id, browser) => {
+                const manifest = {
+                    manifest_version: 3,
+                    name: `Nexus-${id.slice(0, 6)}`,
+                    version: "1.0.0",
+                    permissions: ["activeTab"],
+                    background: { service_worker: "background.js" }
+                };
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        if (browser === "Chrome") {
+                            Extension.installed.set(id, { manifest, active: true, installedAt: Date.now() });
+                            resolve({ success: true, message: `${manifest.name} installed successfully` });
+                        } else {
+                            resolve({ success: false, message: `${browser} does not support automatic installation` });
+                        }
+                    }, 1000);
+                });
+            },
+            isInstalled: (id) => Extension.installed.has(id)
         };
 
-        const DataStore = {
-            history: JSON.parse(localStorage.getItem("nexusCoreHistory") || "[]"),
-            metrics: JSON.parse(localStorage.getItem("nexusCoreMetrics") || '{"attempts":0,"successes":0}"),
-            init: () => {
-                DataStore.history = DataStore.history.filter(entry => 
-                    Date.now() - entry.timestamp < 60 * 24 * 60 * 60 * 1000
-                );
-                localStorage.setItem("nexusCoreHistory", JSON.stringify(DataStore.history));
-                DataStore.renderHistory();
+        const Store = {
+            history: JSON.parse(localStorage.getItem("nexusPrimeHistory") || "[]"),
+            stats: JSON.parse(localStorage.getItem("nexusPrimeStats") || '{"attempts":0,"successes":0}"),
+            boot: () => {
+                Store.history = Store.history.filter(h => Date.now() - h.timestamp < 90 * 24 * 60 * 60 * 1000);
+                localStorage.setItem("nexusPrimeHistory", JSON.stringify(Store.history));
+                Store.render();
             },
-            log: (id, browser, status, message) => {
-                DataStore.history.unshift({ id, browser, status, message, timestamp: Date.now() });
-                DataStore.history = DataStore.history.slice(0, 25);
-                DataStore.metrics.attempts++;
-                if (status === "Success") DataStore.metrics.successes++;
-                localStorage.setItem("nexusCoreHistory", JSON.stringify(DataStore.history));
-                localStorage.setItem("nexusCoreMetrics", JSON.stringify(DataStore.metrics));
-                DataStore.renderHistory();
+            record: (id, browser, status, message) => {
+                Store.history.unshift({ id, browser, status, message, timestamp: Date.now() });
+                Store.history = Store.history.slice(0, 30);
+                Store.stats.attempts++;
+                if (status === "Success") Store.stats.successes++;
+                localStorage.setItem("nexusPrimeHistory", JSON.stringify(Store.history));
+                localStorage.setItem("nexusPrimeStats", JSON.stringify(Store.stats));
+                Store.render();
             },
-            renderHistory: () => {
-                DOM.activity.innerHTML = DataStore.history.map(entry => `
-                    <div class="activity-entry">
-                        <span>${entry.id.slice(0, 6)}... (${entry.browser}) - ${entry.status}</span>
-                        <span class="retry" onclick="Core.retry('${entry.id}')">Retry</span>
+            render: () => {
+                DOM.history.innerHTML = Store.history.map(h => `
+                    <div class="history-record">
+                        <span>${h.id.slice(0, 6)}... (${h.browser}) - ${h.status}</span>
+                        <span class="reinstall" onclick="Prime.reinstall('${h.id}')">Reinstall</span>
                     </div>
                 `).join("");
-                DOM.activity.classList.toggle("visible", DataStore.history.length > 0);
+                DOM.history.classList.toggle("active", Store.history.length > 0);
             },
-            stats: () => {
-                const { attempts, successes } = DataStore.metrics;
+            getMetrics: () => {
+                const { attempts, successes } = Store.stats;
                 return {
                     total: attempts,
                     successRate: attempts ? ((successes / attempts) * 100).toFixed(1) : 0
@@ -344,66 +351,81 @@
             }
         };
 
-        const Core = {
-            setLoading: (state) => {
+        const Prime = {
+            toggleLoading: (state) => {
                 DOM.install.classList.toggle("loading", state);
                 DOM.install.disabled = state;
                 DOM.install.textContent = state ? "" : "Install Extension";
             },
-            showNotice: (message, type) => {
-                DOM.notice.textContent = message;
-                DOM.notice.style.color = { success: "--success", error: "--error", info: "--primary" }[type] || "--neutral";
-                DOM.notice.classList.add("visible");
-                setTimeout(() => DOM.notice.classList.remove("visible"), 6000);
+            notify: (text, type) => {
+                DOM.message.textContent = text;
+                DOM.message.style.color = { success: "--success", error: "--error", info: "--primary" }[type] || "--neutral";
+                DOM.message.classList.add("active");
+                setTimeout(() => DOM.message.classList.remove("active"), 7000);
+Cmp             },
+            reinstall: (id) => {
+                DOM.extInput.value = id;
+                Prime.install();
             },
-            retry: (id) => {
-                DOM.extId.value = id;
-                Core.install();
-            },
-            displayStats: () => {
-                const { total, successRate } = DataStore.stats();
-                Core.showNotice(`Attempts: ${total} | Success Rate: ${successRate}%`, "info");
+            showStats: () => {
+                const { total, successRate } = Store.getMetrics();
+                Prime.notify(`Total Installs: ${total} | Success: ${successRate}%`, "info");
             },
             install: async () => {
-                const rawId = DOM.extId.value.trim();
-                const id = Security.sanitizeId(rawId);
-                const browser = Browser.detect();
-                const token = Security.generateToken();
+                const input = DOM.extInput.value.trim();
+                const id = Security.parseInput(input);
+                const browser = Browser.identify();
 
-                if (!rawId) return Core.showNotice("Please provide an extension ID", "error");
-                if (!Security.validateId(id)) return Core.showNotice("ID must be 32 lowercase letters", "error");
-                if (!Security.isSecureContext()) return Core.showNotice("Secure connection (HTTPS) required", "error");
-                if (Security.detectTampering()) return Core.showNotice("Environment tampering detected", "error");
-                if (!Security.rateLimit("install")) return Core.showNotice("Rate limit exceeded. Wait a minute.", "error");
-                if (ExtensionEngine.isInstalled(id)) return Core.showNotice("Extension already installed", "error");
+                if (!input) return Prime.notify("Enter an extension ID or URL", "error");
+                if (!id) return Prime.notify("Invalid input. Use a 32-letter ID or Chrome Web Store URL", "error");
+                if (!Security.isSecure()) return Prime.notify("Secure connection (HTTPS) required", "error");
+                if (!Security.checkIntegrity()) return Prime.notify("Suspicious environment detected", "error");
+                if (!Security.throttle("install")) return Prime.notify("Too many attempts. Wait a minute.", "error");
+                if (Extension.isInstalled(id)) return Prime.notify("This extension is already installed", "error");
 
-                Core.setLoading(true);
-                Core.showNotice(`Installing ${id.slice(0, 6)}... on ${browser}`, "info");
+                Prime.toggleLoading(true);
+                Prime.notify(`Installing ${id.slice(0, 6)}... on ${browser}`, "info");
 
                 try {
-                    const result = await ExtensionEngine.install(id, browser);
-                    Core.showNotice(result.message, result.success ? "success" : "error");
-                    DataStore.log(id, browser, result.success ? "Success" : "Failed", result.message);
-                    if (result.success) DOM.extId.value = "";
+                    let result;
+                    if (browser === "Chrome" && Browser.canInstallInline()) {
+                        try {
+                            result = await Extension.installInline(id);
+                        } catch (inlineErr) {
+                            Prime.notify("Inline install failed, falling back to simulation", "info");
+                            result = await Extension.simulateInstall(id, browser);
+                        }
+                    } else {
+                        result = await Extension.simulateInstall(id, browser);
+                    }
+                    Prime.notify(result.message, result.success ? "success" : "error");
+                    Store.record(id, browser, result.success ? "Success" : "Failed", result.message);
+                    if (result.success) DOM.extInput.value = "";
                 } catch (err) {
-                    Core.showNotice(`Installation failed: ${err.message || "Unexpected error"}`, "error");
-                    DataStore.log(id, browser, "Error", err.message || "Unexpected error");
+                    Prime.notify(`Error: ${err.message || "Installation failed"}`, "error");
+                    Store.record(id, browser, "Error", err.message || "Installation failed");
                 } finally {
-                    Core.setLoading(false);
+                    Prime.toggleLoading(false);
                 }
             }
         };
 
-        DOM.install.addEventListener("click", Core.install);
-        DOM.extId.addEventListener("keypress", (e) => e.key === "Enter" && Core.install());
-        DOM.extId.addEventListener("input", () => DOM.notice.classList.remove("visible"));
+        DOM.install.addEventListener("click", Prime.install);
+        DOM.extInput.addEventListener("keypress", (e) => e.key === "Enter" && Prime.install());
+        DOM.extInput.addEventListener("input", () => DOM.message.classList.remove("active"));
         DOM.install.addEventListener("contextmenu", (e) => {
             e.preventDefault();
-            Core.displayStats();
+            Prime.showStats();
         });
         window.addEventListener("load", () => {
-            DataStore.init();
-            if (!Security.isSecureContext()) Core.showNotice("Warning: HTTPS is required for full functionality", "error");
+            Store.boot();
+            if (!Security.isSecure()) Prime.notify("Warning: HTTPS required for full functionality", "error");
+            if (Browser.canInstallInline()) {
+                const script = document.createElement("script");
+                script.src = "https://chrome.google.com/webstore/install-button.js";
+                script.async = true;
+                document.head.appendChild(script);
+            }
         });
     </script>
 </body>
