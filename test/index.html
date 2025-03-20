@@ -4,1801 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; img-src 'self' data: https:;">
-    <meta name="description" content="Nexus Prime - Ultimate Chrome Extension Nexus">
-    <meta name="theme-color" content="#1d4ed8">
-    <title>Nexus Prime - Extension Nexus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1d4ed8;
-            --secondary: #7c3aed;
-            --success: #22c55e;
-            --error: #ef4444;
-            --warning: #f97316;
-            --neutral: #64748b;
-            --bg: #f1f5f9;
-            --surface: rgba(255, 255, 255, 0.9);
-            --text: #0f172a;
-            --shadow: rgba(0, 0, 0, 0.3);
-            --glow: rgba(29, 78, 216, 0.5);
-            --ease: 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            --radius: 1.5rem;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            overflow: hidden;
-            position: relative;
-            color: var(--text);
-            line-height: 1.6;
-        }
-        .cosmic-backdrop {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(145deg, #dbeafe 10%, #ede9fe 90%);
-            z-index: -2;
-            filter: blur(70px);
-            animation: pulse 12s infinite ease-in-out;
-        }
-        .nebula-system {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .nebula-ring {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--primary) 5%, transparent 60%);
-            opacity: 0.25;
-            animation: nebula-orbit 30s infinite ease-in-out;
-        }
-        .nebula-ring:nth-child(1) { width: 240px; height: 240px; top: 10%; left: 15%; animation-delay: 0s; }
-        .nebula-ring:nth-child(2) { width: 200px; height: 200px; top: 70%; left: 80%; animation-delay: 8s; }
-        .nebula-ring:nth-child(3) { width: 220px; height: 220px; top: 50%; left: 25%; animation-delay: 16s; }
-        .nexus-core {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: 0 30px 80px var(--shadow);
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: transform var(--ease), box-shadow var(--ease);
-        }
-        .nexus-core:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 40px 100px var(--shadow);
-        }
-        .core-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 5px 20px var(--glow);
-            animation: glow-shift 4s infinite ease-in-out;
-        }
-        .core-tagline {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.95rem;
-            color: var(--neutral);
-            margin-top: 0.5rem;
-            letter-spacing: 0.75px;
-            opacity: 0.9;
-        }
-        .input-cluster {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 1rem;
-            font-size: 0.95rem;
-            background: #fff;
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.05);
-            transition: all var(--ease);
-        }
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 20px var(--glow);
-            outline: none;
-        }
-        input::placeholder {
-            color: var(--neutral);
-            opacity: 0.6;
-        }
-        .input-hint {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--neutral);
-            font-size: 1rem;
-            transition: color var(--ease);
-        }
-        input:focus + .input-hint {
-            color: var(--primary);
-        }
-        .control-matrix {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-        button {
-            padding: 0.9rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #fff;
-            border: none;
-            border-radius: 1rem;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all var(--ease);
-        }
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 150%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: skewX(-20deg);
-            transition: left 0.3s ease;
-        }
-        button:hover::before {
-            left: 150%;
-        }
-        button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px var(--glow);
-        }
-        button:active {
-            transform: scale(0.96);
-        }
-        .install-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-        .scan-btn { background: linear-gradient(135deg, var(--warning), var(--primary)); }
-        .manage-btn { background: linear-gradient(135deg, var(--neutral), var(--primary)); }
-        .analyze-btn { background: linear-gradient(135deg, var(--success), var(--primary)); }
-        .share-btn { background: linear-gradient(135deg, #ec4899, var(--primary)); }
-        button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-            opacity: 0.5;
-        }
-        button.loading::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #fff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .nexus-dashboard {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: 0 15px 40px var(--shadow);
-            margin-top: 1.5rem;
-        }
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .dashboard-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .dashboard-controls {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .dashboard-toggle {
-            font-size: 0.8rem;
-            padding: 0.4rem 0.8rem;
-            background: var(--neutral);
-            color: #fff;
-            border-radius: 0.6rem;
-            cursor: pointer;
-            transition: background var(--ease);
-        }
-        .dashboard-toggle:hover {
-            background: var(--primary);
-        }
-        .metrics-cluster {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 0.75rem;
-        }
-        .metric-pod {
-            background: var(--bg);
-            padding: 1rem;
-            border-radius: 0.8rem;
-            text-align: center;
-            transition: transform var(--ease), box-shadow var(--ease);
-        }
-        .metric-pod:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px var(--shadow);
-        }
-        .metric-number {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-        .metric-label {
-            font-size: 0.85rem;
-            color: var(--neutral);
-        }
-        .history-matrix {
-            margin-top: 1.5rem;
-            max-height: 300px;
-            overflow-y: auto;
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: 0 15px 40px var(--shadow);
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) #e2e8f0;
-        }
-        .history-node {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid #e2e8f0;
-            transition: background var(--ease);
-        }
-        .history-node:hover {
-            background: var(--glow);
-        }
-        .history-node:last-child {
-            border-bottom: none;
-        }
-        .history-action {
-            color: var(--warning);
-            font-weight: 600;
-            cursor: pointer;
-            transition: color var(--ease);
-        }
-        .history-action:hover {
-            color: var(--primary);
-        }
-        .nexus-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.4s ease;
-        }
-        .nexus-modal.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-core {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: var(--radius);
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 25px 70px var(--shadow);
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-header {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-        .modal-close {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            font-size: 1.25rem;
-            cursor: pointer;
-            color: var(--neutral);
-            transition: color var(--ease);
-        }
-        .modal-close:hover {
-            color: var(--primary);
-        }
-        .modal-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .modal-tab {
-            padding: 0.5rem 1rem;
-            background: var(--bg);
-            border-radius: 0.6rem;
-            cursor: pointer;
-            transition: background var(--ease);
-        }
-        .modal-tab.active {
-            background: var(--primary);
-            color: #fff;
-        }
-        .modal-content {
-            display: none;
-        }
-        .modal-content.active {
-            display: block;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-        @keyframes nebula-orbit {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.25; }
-            50% { transform: scale(1.8) rotate(180deg); opacity: 0.4; }
-        }
-        @keyframes glow-shift {
-            0%, 100% { text-shadow: 0 5px 20px var(--glow); }
-            50% { text-shadow: 0 7px 30px var(--glow); }
-        }
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @media (max-width: 480px) {
-            .nexus-core { padding: 1.5rem; }
-            h1 { font-size: 2rem; }
-            .control-matrix { grid-template-columns: 1fr; }
-            .input-cluster { flex-direction: column; }
-        }
-    </style>
-</head>
-<body>
-    <div class="cosmic-backdrop"></div>
-    <div class="nebula-system">
-        <div class="nebula-ring"></div>
-        <div class="nebula-ring"></div>
-        <div class="nebula-ring"></div>
-    </div>
-    <div class="nexus-core">
-        <div class="core-header">
-            <h1>Nexus Prime</h1>
-            <div class="core-tagline">Extension Management</div>
-        </div>
-        <div class="input-cluster">
-            <div class="input-wrapper">
-                <input type="text" id="extInput" placeholder="Extension ID or Chrome Store URL">
-                <span class="input-hint">🔗</span>
-            </div>
-        </div>
-        <div class="control-matrix">
-            <button class="install-btn" id="installBtn">Install</button>
-            <button class="scan-btn" id="scanBtn">Scan</button>
-            <button class="manage-btn" id="manageBtn">Manage</button>
-            <button class="analyze-btn" id="analyzeBtn">Analyze</button>
-            <button class="share-btn" id="shareBtn">Share</button>
-        </div>
-        <div class="nexus-dashboard" id="dashboard">
-            <div class="dashboard-header">
-                <div class="dashboard-title">Nexus Status</div>
-                <div class="dashboard-controls">
-                    <span class="dashboard-toggle" id="clearHistory">Clear History</span>
-                    <span class="dashboard-toggle" id="exportData">Export</span>
-                </div>
-            </div>
-            <div id="statusMessage"></div>
-            <div class="metrics-cluster" id="metrics"></div>
-        </div>
-        <div class="history-matrix" id="history"></div>
-    </div>
-    <div class="nexus-modal" id="manageModal">
-        <div class="modal-core">
-            <span class="modal-close" id="modalClose">✕</span>
-            <h2 class="modal-header">Extension Management</h2>
-            <div class="modal-tabs">
-                <span class="modal-tab active" data-tab="installed">Installed</span>
-                <span class="modal-tab" data-tab="settings">Settings</span>
-            </div>
-            <div class="modal-content active" id="installedTab">
-                <div id="installedExtensions"></div>
-            </div>
-            <div class="modal-content" id="settingsTab">
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem;">Theme:</label>
-                    <select id="themeSelect" style="width: 100%; padding: 0.5rem; border-radius: 0.5rem;">
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 0.5rem;">Auto-Clear History:</label>
-                    <input type="checkbox" id="autoClear" style="margin-right: 0.5rem;">
-                    <span>Clear history on close</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const dom = {
-            installBtn: document.getElementById('installBtn'),
-            scanBtn: document.getElementById('scanBtn'),
-            manageBtn: document.getElementById('manageBtn'),
-            analyzeBtn: document.getElementById('analyzeBtn'),
-            shareBtn: document.getElementById('shareBtn'),
-            extInput: document.getElementById('extInput'),
-            statusMessage: document.getElementById('statusMessage'),
-            metrics: document.getElementById('metrics'),
-            history: document.getElementById('history'),
-            manageModal: document.getElementById('manageModal'),
-            installedExtensions: document.getElementById('installedExtensions'),
-            modalClose: document.getElementById('modalClose'),
-            clearHistory: document.getElementById('clearHistory'),
-            exportData: document.getElementById('exportData'),
-            modalTabs: document.querySelectorAll('.modal-tab'),
-            installedTab: document.getElementById('installedTab'),
-            settingsTab: document.getElementById('settingsTab'),
-            themeSelect: document.getElementById('themeSelect'),
-            autoClear: document.getElementById('autoClear')
-        };
-
-        let nexusState = {
-            history: JSON.parse(localStorage.getItem('nexusHistory') || '[]'),
-            stats: JSON.parse(localStorage.getItem('nexusStats') || '{ "installs": 0, "success": 0, "scans": 0, "analyzes": 0, "shares": 0 }'),
-            installed: JSON.parse(localStorage.getItem('nexusInstalled') || '{}'),
-            settings: JSON.parse(localStorage.getItem('nexusSettings') || '{ "theme": "light", "autoClear": false }'),
-            isChrome: navigator.userAgent.includes('Chrome') && window.chrome,
-            canInstall: typeof window.chrome?.webstore?.install === 'function',
-            lastAction: null
-        };
-
-        function persistState() {
-            localStorage.setItem('nexusHistory', JSON.stringify(nexusState.history));
-            localStorage.setItem('nexusStats', JSON.stringify(nexusState.stats));
-            localStorage.setItem('nexusInstalled', JSON.stringify(nexusState.installed));
-            localStorage.setItem('nexusSettings', JSON.stringify(nexusState.settings));
-        }
-
-        function setButtonLoading(button, isLoading) {
-            button.disabled = isLoading;
-            button.classList.toggle('loading', isLoading);
-            button.textContent = isLoading ? '' : button.textContent || button.id.replace('Btn', '');
-        }
-
-        function displayStatus(message, type = 'neutral') {
-            const typeColors = {
-                success: 'var(--success)',
-                error: 'var(--error)',
-                warning: 'var(--warning)',
-                neutral: 'var(--neutral)'
-            };
-            dom.statusMessage.innerHTML = `<div style="color: ${typeColors[type]}; font-size: 0.95rem">${message}</div>`;
-            refreshMetrics();
-        }
-
-        function refreshMetrics() {
-            const successRate = nexusState.stats.installs > 0 ? ((nexusState.stats.success / nexusState.stats.installs) * 100).toFixed(1) : 0;
-            dom.metrics.innerHTML = `
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.installs}</div>
-                    <div class="metric-label">Installs</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.success}</div>
-                    <div class="metric-label">Success</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.scans}</div>
-                    <div class="metric-label">Scans</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.analyzes}</div>
-                    <div class="metric-label">Analyzes</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.shares}</div>
-                    <div class="metric-label">Shares</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${successRate}%</div>
-                    <div class="metric-label">Success Rate</div>
-                </div>
-            `;
-        }
-
-        function applyTheme() {
-            if (nexusState.settings.theme === 'dark') {
-                document.documentElement.style.setProperty('--bg', '#1e293b');
-                document.documentElement.style.setProperty('--surface', 'rgba(30, 41, 59, 0.9)');
-                document.documentElement.style.setProperty('--text', '#f1f5f9');
-            } else {
-                document.documentElement.style.setProperty('--bg', '#f1f5f9');
-                document.documentElement.style.setProperty('--surface', 'rgba(255, 255, 255, 0.9)');
-                document.documentElement.style.setProperty('--text', '#0f172a');
-            }
-        }
-
-        function extractExtensionId(input) {
-            const urlRegex = /chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i;
-            const idRegex = /^[a-z]{32}$/;
-            const urlMatch = input.match(urlRegex);
-            return urlMatch ? urlMatch[1] : (idRegex.test(input.trim()) ? input.trim() : null);
-        }
-
-        async function getExtensionInfo(id) {
-            try {
-                const response = await fetch(`https://chrome.google.com/webstore/detail/${id}`, { cache: 'no-store' });
-                if (!response.ok) throw new Error('Extension not found in Web Store');
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                return {
-                    name: doc.querySelector('h1')?.textContent || 'Unknown Extension',
-                    version: doc.querySelector('.gH0guc')?.textContent || 'N/A',
-                    icon: doc.querySelector('img.e8i0yl')?.src || 'https://via.placeholder.com/24',
-                    description: doc.querySelector('.C-bC2d')?.textContent.trim() || 'No description available',
-                    rating: doc.querySelector('.rQF9jd')?.textContent || 'N/A'
-                };
-            } catch (err) {
-                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24', description: 'N/A', rating: 'N/A' };
-            }
-        }
-
-        async function performInstall(id) {
-            if (nexusState.canInstall) {
-                return new Promise((resolve, reject) => {
-                    window.chrome.webstore.install(
-                        `https://chrome.google.com/webstore/detail/${id}`,
-                        () => resolve({ success: true, message: 'Extension installed' }),
-                        (error) => reject(new Error(error))
-                    );
-                });
-            } else {
-                return new Promise((resolve) => {
-                    setTimeout(() => resolve({ success: true, message: 'Simulated install complete' }), 2000);
-                });
-            }
-        }
-
-        async function analyzeExtension(id) {
-            const response = await fetch(`https://clients2.google.com/service/update2/crx?response=xml&id=${id}`);
-            if (!response.ok) return { permissions: [], size: 'Unknown', lastUpdate: 'Unknown' };
-            const xml = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(xml, 'text/xml');
-            const manifestUrl = doc.querySelector('updatecheck')?.getAttribute('codebase');
-            const lastUpdate = doc.querySelector('updatecheck')?.getAttribute('lastupdate') || 'Unknown';
-            if (!manifestUrl) return { permissions: [], size: 'Unknown', lastUpdate };
-            const manifestResponse = await fetch(manifestUrl);
-            const size = manifestResponse.headers.get('content-length') || 'Unknown';
-            return { permissions: ['N/A'], size: size === 'Unknown' ? size : `${(size / 1024).toFixed(1)} KB`, lastUpdate };
-        }
-
-        function logAction(id, status, details) {
-            nexusState.history.unshift({ id, status, details, timestamp: Date.now() });
-            nexusState.history = nexusState.history.slice(0, 200);
-            nexusState.stats[status === 'success' ? 'success' : 'installs']++;
-            persistState();
-            updateHistory();
-        }
-
-        function trackInstalled(id, details) {
-            nexusState.installed[id] = details;
-            persistState();
-        }
-
-        function updateHistory() {
-            dom.history.innerHTML = nexusState.history.map(entry => `
-                <div class="history-node">
-                    <span>${entry.details.name} (${entry.id.slice(0, 6)}...)</span>
-                    <span style="color: var(--${entry.status === 'success' ? 'success' : 'error'})">${entry.status}</span>
-                </div>
-            `).join('');
-        }
-
-        function showInstalled() {
-            dom.installedExtensions.innerHTML = Object.entries(nexusState.installed).map(([id, details]) => `
-                <div class="history-node">
-                    <span><img src="${details.icon}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;">${details.name}</span>
-                    <span class="history-action" data-id="${id}">Remove</span>
-                </div>
-            `).join('') || '<p>No extensions installed yet.</p>';
-        }
-
-        async function executeInstall() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.installBtn, true);
-            displayStatus(`Installing ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                const result = await performInstall(id);
-                logAction(id, 'success', info);
-                trackInstalled(id, info);
-                displayStatus(`${info.name} installed successfully`, 'success');
-                dom.extInput.value = '';
-            } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' });
-                displayStatus(`Install failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.installBtn, false);
-            }
-        }
-
-        async function executeScan() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.scanBtn, true);
-            displayStatus(`Scanning ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                nexusState.stats.scans++;
-                persistState();
-                displayStatus(`${info.name} (v${info.version})<br>Rating: ${info.rating}<br>${info.description}`, 'success');
-            } catch (error) {
-                displayStatus(`Scan failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.scanBtn, false);
-            }
-        }
-
-        async function executeAnalyze() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.analyzeBtn, true);
-            displayStatus(`Analyzing ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                const analysis = await analyzeExtension(id);
-                nexusState.stats.analyzes++;
-                persistState();
-                displayStatus(`${info.name}<br>Size: ${analysis.size}<br>Last Update: ${analysis.lastUpdate}<br>Permissions: ${analysis.permissions.join(', ')}`, 'success');
-            } catch (error) {
-                displayStatus(`Analysis failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.analyzeBtn, false);
-            }
-        }
-
-        async function executeShare() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL to share', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.shareBtn, true);
-            displayStatus(`Preparing to share ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                const shareData = {
-                    title: `Check out ${info.name} on Nexus Prime`,
-                    text: `I found ${info.name} (v${info.version}) on Nexus Prime. ${info.description}`,
-                    url: `https://chrome.google.com/webstore/detail/${id}`
-                };
-                await navigator.share(shareData);
-                nexusState.stats.shares++;
-                persistState();
-                displayStatus(`Shared ${info.name} successfully`, 'success');
-            } catch (error) {
-                displayStatus(`Share failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.shareBtn, false);
-            }
-        }
-
-        function openManagePanel() {
-            showInstalled();
-            dom.manageModal.classList.add('active');
-            dom.installedExtensions.onclick = (event) => {
-                if (event.target.classList.contains('history-action')) {
-                    const id = event.target.dataset.id;
-                    delete nexusState.installed[id];
-                    persistState();
-                    showInstalled();
-                }
-            };
-            dom.modalTabs.forEach(tab => {
-                tab.onclick = () => {
-                    dom.modalTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    dom.installedTab.classList.remove('active');
-                    dom.settingsTab.classList.remove('active');
-                    document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
-                };
-            });
-        }
-
-        function clearHistory() {
-            nexusState.history = [];
-            persistState();
-            updateHistory();
-            displayStatus('History cleared', 'success');
-        }
-
-        function exportData() {
-            const data = {
-                history: nexusState.history,
-                stats: nexusState.stats,
-                installed: nexusState.installed
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'nexus-prime-data.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            displayStatus('Data exported successfully', 'success');
-        }
-
-        function launchNexus() {
-            dom.installBtn.disabled = false;
-            dom.scanBtn.disabled = false;
-            dom.manageBtn.disabled = false;
-            dom.analyzeBtn.disabled = false;
-            dom.shareBtn.disabled = false;
-
-            applyTheme();
-            dom.themeSelect.value = nexusState.settings.theme;
-            dom.autoClear.checked = nexusState.settings.autoClear;
-
-            updateHistory();
-            displayStatus('Nexus Prime initialized. Ready for action.', 'neutral');
-            if (!nexusState.canInstall) {
-                displayStatus('Simulation mode active (Chrome Web Store API unavailable)', 'warning');
-            }
-
-            dom.installBtn.addEventListener('click', executeInstall);
-            dom.scanBtn.addEventListener('click', executeScan);
-            dom.manageBtn.addEventListener('click', openManagePanel);
-            dom.analyzeBtn.addEventListener('click', executeAnalyze);
-            dom.shareBtn.addEventListener('click', executeShare);
-            dom.extInput.addEventListener('keypress', (e) => e.key === 'Enter' && executeInstall());
-            dom.modalClose.addEventListener('click', () => {
-                if (nexusState.settings.autoClear) clearHistory();
-                dom.manageModal.classList.remove('active');
-            });
-            dom.manageModal.addEventListener('click', (e) => {
-                if (e.target === dom.manageModal) {
-                    if (nexusState.settings.autoClear) clearHistory();
-                    dom.manageModal.classList.remove('active');
-                }
-            });
-            dom.clearHistory.addEventListener('click', clearHistory);
-            dom.exportData.addEventListener('click', exportData);<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; img-src 'self' data: https:;">
-    <meta name="description" content="Nexus Prime - Ultimate Chrome Extension Nexus">
-    <meta name="theme-color" content="#1d4ed8">
-    <title>Nexus Prime - Extension Nexus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1d4ed8;
-            --secondary: #7c3aed;
-            --success: #22c55e;
-            --error: #ef4444;
-            --warning: #f97316;
-            --neutral: #64748b;
-            --bg: #f1f5f9;
-            --surface: rgba(255, 255, 255, 0.92);
-            --text: #0f172a;
-            --shadow: rgba(0, 0, 0, 0.35);
-            --glow: rgba(29, 78, 216, 0.55);
-            --ease: 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-            --radius: 1.2rem;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            overflow: hidden;
-            position: relative;
-            color: var(--text);
-            line-height: 1.6;
-        }
-        .cosmic-backdrop {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(145deg, #dbeafe 10%, #ede9fe 90%);
-            z-index: -2;
-            filter: blur(80px);
-            animation: pulse 10s infinite ease-in-out;
-        }
-        .nebula-system {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .nebula-ring {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--primary) 5%, transparent 60%);
-            opacity: 0.3;
-            animation: nebula-orbit 35s infinite ease-in-out;
-        }
-        .nebula-ring:nth-child(1) { width: 260px; height: 260px; top: 5%; left: 10%; animation-delay: 0s; }
-        .nebula-ring:nth-child(2) { width: 220px; height: 220px; top: 75%; left: 85%; animation-delay: 10s; }
-        .nebula-ring:nth-child(3) { width: 240px; height: 240px; top: 55%; left: 20%; animation-delay: 20s; }
-        .nexus-core {
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: 0 25px 70px var(--shadow);
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(45px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform var(--ease), box-shadow var(--ease);
-        }
-        .nexus-core:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 35px 90px var(--shadow);
-        }
-        .core-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 4px 15px var(--glow);
-            animation: glow-shift 3s infinite ease-in-out;
-        }
-        .core-tagline {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
-            color: var(--neutral);
-            margin-top: 0.4rem;
-            letter-spacing: 0.5px;
-            opacity: 0.95;
-        }
-        .input-cluster {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-        input {
-            width: 100%;
-            padding: 0.8rem 1.2rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.8rem;
-            font-size: 0.9rem;
-            background: #fff;
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
-            transition: all var(--ease);
-        }
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--glow);
-            outline: none;
-        }
-        input::placeholder {
-            color: var(--neutral);
-            opacity: 0.55;
-        }
-        .input-hint {
-            position: absolute;
-            right: 0.8rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--neutral);
-            font-size: 0.9rem;
-            transition: color var(--ease);
-        }
-        input:focus + .input-hint {
-            color: var(--primary);
-        }
-        .control-matrix {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        button {
-            padding: 0.7rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #fff;
-            border: none;
-            border-radius: 0.8rem;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            transition: all var(--ease);
-        }
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 150%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.35);
-            transform: skewX(-20deg);
-            transition: left 0.3s ease;
-        }
-        button:hover::before {
-            left: 150%;
-        }
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px var(--glow);
-        }
-        button:active {
-            transform: scale(0.95);
-        }
-        .install-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-        .scan-btn { background: linear-gradient(135deg, var(--warning), var(--primary)); }
-        .manage-btn { background: linear-gradient(135deg, var(--neutral), var(--primary)); }
-        .analyze-btn { background: linear-gradient(135deg, var(--success), var(--primary)); }
-        .share-btn { background: linear-gradient(135deg, #ec4899, var(--primary)); }
-        .details-btn { background: linear-gradient(135deg, #10b981, var(--primary)); }
-        button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-            opacity: 0.4;
-        }
-        button.loading::after {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            border: 3px solid #fff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .nexus-dashboard {
-            background: #fff;
-            padding: 1rem;
-            border-radius: var(--radius);
-            box-shadow: 0 10px 30px var(--shadow);
-            margin-top: 1rem;
-        }
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-        .dashboard-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .dashboard-controls {
-            display: flex;
-            gap: 0.4rem;
-        }
-        .dashboard-toggle {
-            font-size: 0.75rem;
-            padding: 0.3rem 0.6rem;
-            background: var(--neutral);
-            color: #fff;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background var(--ease);
-        }
-        .dashboard-toggle:hover {
-            background: var(--primary);
-        }
-        .metrics-cluster {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 0.5rem;
-        }
-        .metric-pod {
-            background: var(--bg);
-            padding: 0.75rem;
-            border-radius: 0.6rem;
-            text-align: center;
-            transition: transform var(--ease), box-shadow var(--ease);
-        }
-        .metric-pod:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 15px var(--shadow);
-        }
-        .metric-number {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--neutral);
-        }
-        .history-matrix {
-            margin-top: 1rem;
-            max-height: 250px;
-            overflow-y: auto;
-            background: #fff;
-            padding: 1rem;
-            border-radius: var(--radius);
-            box-shadow: 0 10px 30px var(--shadow);
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) #e2e8f0;
-        }
-        .history-node {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #e2e8f0;
-            transition: background var(--ease);
-        }
-        .history-node:hover {
-            background: var(--glow);
-        }
-        .history-node:last-child {
-            border-bottom: none;
-        }
-        .history-action {
-            color: var(--warning);
-            font-weight: 600;
-            cursor: pointer;
-            transition: color var(--ease);
-        }
-        .history-action:hover {
-            color: var(--primary);
-        }
-        .nexus-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.4s ease;
-        }
-        .nexus-modal.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-core {
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: var(--radius);
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 60px var(--shadow);
-            max-height: 75vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-header {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        .modal-close {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            font-size: 1.1rem;
-            cursor: pointer;
-            color: var(--neutral);
-            transition: color var(--ease);
-        }
-        .modal-close:hover {
-            color: var(--primary);
-        }
-        .modal-tabs {
-            display: flex;
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-        }
-        .modal-tab {
-            padding: 0.4rem 0.8rem;
-            background: var(--bg);
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background var(--ease);
-        }
-        .modal-tab.active {
-            background: var(--primary);
-            color: #fff;
-        }
-        .modal-content {
-            display: none;
-        }
-        .modal-content.active {
-            display: block;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-        @keyframes nebula-orbit {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
-            50% { transform: scale(2) rotate(180deg); opacity: 0.45; }
-        }
-        @keyframes glow-shift {
-            0%, 100% { text-shadow: 0 4px 15px var(--glow); }
-            50% { text-shadow: 0 6px 25px var(--glow); }
-        }
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        @media (max-width: 400px) {
-            .nexus-core { padding: 1rem; }
-            h1 { font-size: 1.8rem; }
-            .control-matrix { grid-template-columns: 1fr; }
-            .input-cluster { flex-direction: column; }
-        }
-    </style>
-</head>
-<body>
-    <div class="cosmic-backdrop"></div>
-    <div class="nebula-system">
-        <div class="nebula-ring"></div>
-        <div class="nebula-ring"></div>
-        <div class="nebula-ring"></div>
-    </div>
-    <div class="nexus-core">
-        <div class="core-header">
-            <h1>Nexus Prime</h1>
-            <div class="core-tagline">Extension Management</div>
-        </div>
-        <div class="input-cluster">
-            <div class="input-wrapper">
-                <input type="text" id="extInput" placeholder="Extension ID or Chrome Store URL">
-                <span class="input-hint">🔗</span>
-            </div>
-        </div>
-        <div class="control-matrix">
-            <button class="install-btn" id="installBtn">Install</button>
-            <button class="scan-btn" id="scanBtn">Scan</button>
-            <button class="manage-btn" id="manageBtn">Manage</button>
-            <button class="analyze-btn" id="analyzeBtn">Analyze</button>
-            <button class="share-btn" id="shareBtn">Share</button>
-            <button class="details-btn" id="detailsBtn">Details</button>
-        </div>
-        <div class="nexus-dashboard" id="dashboard">
-            <div class="dashboard-header">
-                <div class="dashboard-title">Nexus Status</div>
-                <div class="dashboard-controls">
-                    <span class="dashboard-toggle" id="clearHistory">Clear History</span>
-                    <span class="dashboard-toggle" id="exportData">Export</span>
-                </div>
-            </div>
-            <div id="statusMessage"></div>
-            <div class="metrics-cluster" id="metrics"></div>
-        </div>
-        <div class="history-matrix" id="history"></div>
-    </div>
-    <div class="nexus-modal" id="manageModal">
-        <div class="modal-core">
-            <span class="modal-close" id="modalClose">✕</span>
-            <h2 class="modal-header">Extension Management</h2>
-            <div class="modal-tabs">
-                <span class="modal-tab active" data-tab="installed">Installed</span>
-                <span class="modal-tab" data-tab="settings">Settings</span>
-                <span class="modal-tab" data-tab="stats">Stats</span>
-            </div>
-            <div class="modal-content active" id="installedTab">
-                <div id="installedExtensions"></div>
-            </div>
-            <div class="modal-content" id="settingsTab">
-                <div style="margin-bottom: 0.75rem;">
-                    <label style="display: block; margin-bottom: 0.4rem;">Theme:</label>
-                    <select id="themeSelect" style="width: 100%; padding: 0.4rem; border-radius: 0.4rem;">
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                        <option value="cosmic">Cosmic</option>
-                    </select>
-                </div>
-                <div style="margin-bottom: 0.75rem;">
-                    <label style="display: block; margin-bottom: 0.4rem;">Auto-Clear History:</label>
-                    <input type="checkbox" id="autoClear" style="margin-right: 0.4rem;">
-                    <span>Clear history on close</span>
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 0.4rem;">Notification Sound:</label>
-                    <input type="checkbox" id="soundToggle" style="margin-right: 0.4rem;">
-                    <span>Play sound on action</span>
-                </div>
-            </div>
-            <div class="modal-content" id="statsTab">
-                <div style="margin-bottom: 0.75rem;">
-                    <strong>Total Actions:</strong> <span id="totalActions"></span>
-                </div>
-                <div style="margin-bottom: 0.75rem;">
-                    <strong>Favorite Extension:</strong> <span id="favoriteExt"></span>
-                </div>
-                <div>
-                    <strong>Usage Time:</strong> <span id="usageTime"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const dom = {
-            installBtn: document.getElementById('installBtn'),
-            scanBtn: document.getElementById('scanBtn'),
-            manageBtn: document.getElementById('manageBtn'),
-            analyzeBtn: document.getElementById('analyzeBtn'),
-            shareBtn: document.getElementById('shareBtn'),
-            detailsBtn: document.getElementById('detailsBtn'),
-            extInput: document.getElementById('extInput'),
-            statusMessage: document.getElementById('statusMessage'),
-            metrics: document.getElementById('metrics'),
-            history: document.getElementById('history'),
-            manageModal: document.getElementById('manageModal'),
-            installedExtensions: document.getElementById('installedExtensions'),
-            modalClose: document.getElementById('modalClose'),
-            clearHistory: document.getElementById('clearHistory'),
-            exportData: document.getElementById('exportData'),
-            modalTabs: document.querySelectorAll('.modal-tab'),
-            installedTab: document.getElementById('installedTab'),
-            settingsTab: document.getElementById('settingsTab'),
-            statsTab: document.getElementById('statsTab'),
-            themeSelect: document.getElementById('themeSelect'),
-            autoClear: document.getElementById('autoClear'),
-            soundToggle: document.getElementById('soundToggle'),
-            totalActions: document.getElementById('totalActions'),
-            favoriteExt: document.getElementById('favoriteExt'),
-            usageTime: document.getElementById('usageTime')
-        };
-
-        let nexusState = {
-            history: JSON.parse(localStorage.getItem('nexusHistory') || '[]'),
-            stats: JSON.parse(localStorage.getItem('nexusStats') || '{ "installs": 0, "success": 0, "scans": 0, "analyzes": 0, "shares": 0, "details": 0 }'),
-            installed: JSON.parse(localStorage.getItem('nexusInstalled') || '{}'),
-            settings: JSON.parse(localStorage.getItem('nexusSettings') || '{ "theme": "light", "autoClear": false, "sound": false }'),
-            usage: JSON.parse(localStorage.getItem('nexusUsage') || '{ "startTime": 0, "actionCount": 0, "extActions": {} }'),
-            isChrome: navigator.userAgent.includes('Chrome') && window.chrome,
-            canInstall: typeof window.chrome?.webstore?.install === 'function',
-            lastAction: null
-        };
-
-        function persistState() {
-            localStorage.setItem('nexusHistory', JSON.stringify(nexusState.history));
-            localStorage.setItem('nexusStats', JSON.stringify(nexusState.stats));
-            localStorage.setItem('nexusInstalled', JSON.stringify(nexusState.installed));
-            localStorage.setItem('nexusSettings', JSON.stringify(nexusState.settings));
-            localStorage.setItem('nexusUsage', JSON.stringify(nexusState.usage));
-        }
-
-        function setButtonLoading(button, isLoading) {
-            button.disabled = isLoading;
-            button.classList.toggle('loading', isLoading);
-            button.textContent = isLoading ? '' : button.textContent || button.id.replace('Btn', '');
-        }
-
-        function playSound() {
-            if (nexusState.settings.sound) {
-                new Audio('https://www.soundjay.com/buttons/beep-01a.mp3').play().catch(() => {});
-            }
-        }
-
-        function displayStatus(message, type = 'neutral') {
-            const typeColors = {
-                success: 'var(--success)',
-                error: 'var(--error)',
-                warning: 'var(--warning)',
-                neutral: 'var(--neutral)'
-            };
-            dom.statusMessage.innerHTML = `<div style="color: ${typeColors[type]}; font-size: 0.9rem">${message}</div>`;
-            refreshMetrics();
-            playSound();
-        }
-
-        function refreshMetrics() {
-            const successRate = nexusState.stats.installs > 0 ? ((nexusState.stats.success / nexusState.stats.installs) * 100).toFixed(1) : 0;
-            dom.metrics.innerHTML = `
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.installs}</div>
-                    <div class="metric-label">Installs</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.success}</div>
-                    <div class="metric-label">Success</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.scans}</div>
-                    <div class="metric-label">Scans</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.analyzes}</div>
-                    <div class="metric-label">Analyzes</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${nexusState.stats.shares}</div>
-                    <div class="metric-label">Shares</div>
-                </div>
-                <div class="metric-pod">
-                    <div class="metric-number">${successRate}%</div>
-                    <div class="metric-label">Success Rate</div>
-                </div>
-            `;
-        }
-
-        function applyTheme() {
-            if (nexusState.settings.theme === 'dark') {
-                document.documentElement.style.setProperty('--bg', '#1e293b');
-                document.documentElement.style.setProperty('--surface', 'rgba(30, 41, 59, 0.92)');
-                document.documentElement.style.setProperty('--text', '#f1f5f9');
-            } else if (nexusState.settings.theme === 'cosmic') {
-                document.documentElement.style.setProperty('--bg', '#0f172a');
-                document.documentElement.style.setProperty('--surface', 'rgba(15, 23, 42, 0.92)');
-                document.documentElement.style.setProperty('--text', '#e2e8f0');
-                document.documentElement.style.setProperty('--primary', '#3b82f6');
-                document.documentElement.style.setProperty('--secondary', '#a855f7');
-            } else {
-                document.documentElement.style.setProperty('--bg', '#f1f5f9');
-                document.documentElement.style.setProperty('--surface', 'rgba(255, 255, 255, 0.92)');
-                document.documentElement.style.setProperty('--text', '#0f172a');
-            }
-        }
-
-        function extractExtensionId(input) {
-            const urlRegex = /chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i;
-            const idRegex = /^[a-z]{32}$/;
-            const urlMatch = input.match(urlRegex);
-            return urlMatch ? urlMatch[1] : (idRegex.test(input.trim()) ? input.trim() : null);
-        }
-
-        async function getExtensionInfo(id) {
-            try {
-                const response = await fetch(`https://chrome.google.com/webstore/detail/${id}`, { cache: 'no-store' });
-                if (!response.ok) throw new Error('Extension not found in Web Store');
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                return {
-                    name: doc.querySelector('h1')?.textContent || 'Unknown Extension',
-                    version: doc.querySelector('.gH0guc')?.textContent || 'N/A',
-                    icon: doc.querySelector('img.e8i0yl')?.src || 'https://via.placeholder.com/24',
-                    description: doc.querySelector('.C-bC2d')?.textContent.trim() || 'No description available',
-                    rating: doc.querySelector('.rQF9jd')?.textContent || 'N/A',
-                    users: doc.querySelector('.e-f-ih')?.textContent || 'N/A'
-                };
-            } catch (err) {
-                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24', description: 'N/A', rating: 'N/A', users: 'N/A' };
-            }
-        }
-
-        async function performInstall(id) {
-            if (nexusState.canInstall) {
-                return new Promise((resolve, reject) => {
-                    window.chrome.webstore.install(
-                        `https://chrome.google.com/webstore/detail/${id}`,
-                        () => resolve({ success: true, message: 'Extension installed' }),
-                        (error) => reject(new Error(error))
-                    );
-                });
-            } else {
-                return new Promise((resolve) => {
-                    setTimeout(() => resolve({ success: true, message: 'Simulated install complete' }), 2000);
-                });
-            }
-        }
-
-        async function analyzeExtension(id) {
-            const response = await fetch(`https://clients2.google.com/service/update2/crx?response=xml&id=${id}`);
-            if (!response.ok) return { permissions: [], size: 'Unknown', lastUpdate: 'Unknown', developer: 'Unknown' };
-            const xml = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(xml, 'text/xml');
-            const manifestUrl = doc.querySelector('updatecheck')?.getAttribute('codebase');
-            const lastUpdate = doc.querySelector('updatecheck')?.getAttribute('lastupdate') || 'Unknown';
-            if (!manifestUrl) return { permissions: [], size: 'Unknown', lastUpdate, developer: 'Unknown' };
-            const manifestResponse = await fetch(manifestUrl);
-            const size = manifestResponse.headers.get('content-length') || 'Unknown';
-            const developerResponse = await fetch(`https://chrome.google.com/webstore/detail/${id}`);
-            const devHtml = await developerResponse.text();
-            const devDoc = new DOMParser().parseFromString(devHtml, 'text/html');
-            const developer = devDoc.querySelector('.e-f-Me')?.textContent || 'Unknown';
-            return { permissions: ['N/A'], size: size === 'Unknown' ? size : `${(size / 1024).toFixed(1)} KB`, lastUpdate, developer };
-        }
-
-        function logAction(id, status, details, actionType) {
-            nexusState.history.unshift({ id, status, details, timestamp: Date.now(), actionType });
-            nexusState.history = nexusState.history.slice(0, 250);
-            nexusState.stats[status === 'success' ? 'success' : 'installs']++;
-            nexusState.usage.actionCount++;
-            nexusState.usage.extActions[id] = (nexusState.usage.extActions[id] || 0) + 1;
-            persistState();
-            updateHistory();
-        }
-
-        function trackInstalled(id, details) {
-            nexusState.installed[id] = details;
-            persistState();
-        }
-
-        function updateHistory() {
-            dom.history.innerHTML = nexusState.history.map(entry => `
-                <div class="history-node">
-                    <span>${entry.details.name} (${entry.id.slice(0, 6)}...)</span>
-                    <span style="color: var(--${entry.status === 'success' ? 'success' : 'error'})">${entry.actionType}: ${entry.status}</span>
-                </div>
-            `).join('');
-        }
-
-        function showInstalled() {
-            dom.installedExtensions.innerHTML = Object.entries(nexusState.installed).map(([id, details]) => `
-                <div class="history-node">
-                    <span><img src="${details.icon}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 6px;">${details.name}</span>
-                    <span class="history-action" data-id="${id}">Remove</span>
-                </div>
-            `).join('') || '<p>No extensions installed yet.</p>';
-        }
-
-        function updateStatsTab() {
-            const totalActions = nexusState.usage.actionCount;
-            const favoriteExt = Object.entries(nexusState.usage.extActions).reduce((a, b) => a[1] > b[1] ? a : b, ['None', 0])[0];
-            const favoriteExtName = nexusState.installed[favoriteExt]?.name || 'None';
-            const usageMinutes = Math.floor((Date.now() - nexusState.usage.startTime) / 60000);
-            dom.totalActions.textContent = totalActions;
-            dom.favoriteExt.textContent = favoriteExtName;
-            dom.usageTime.textContent = `${usageMinutes} minutes`;
-        }
-
-        async function executeInstall() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.installBtn, true);
-            displayStatus(`Installing ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                const result = await performInstall(id);
-                logAction(id, 'success', info, 'Install');
-                trackInstalled(id, info);
-                displayStatus(`${info.name} installed successfully`, 'success');
-                dom.extInput.value = '';
-            } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' }, 'Install');
-                displayStatus(`Install failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.installBtn, false);
-            }
-        }
-
-        async function executeScan() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.scanBtn, true);
-            displayStatus(`Scanning ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                nexusState.stats.scans++;
-                logAction(id, 'success', info, 'Scan');
-                displayStatus(`${info.name} (v${info.version})<br>Rating: ${info.rating}<br>Users: ${info.users}<br>${info.description}`, 'success');
-            } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' }, 'Scan');
-                displayStatus(`Scan failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.scanBtn, false);
-            }
-        }
-
-        async function executeAnalyze() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.analyzeBtn, true);
-            displayStatus(`Analyzing ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                const analysis = await analyzeExtension(id);
-                nexusState.stats.analyzes++;
-                logAction(id, 'success', info, 'Analyze');
-                displayStatus(`${info.name}<br>Size: ${analysis.size}<br>Last Update: ${analysis.lastUpdate}<br>Developer: ${analysis.developer}<br>Permissions: ${analysis.permissions.join(', ')}`, 'success');
-            } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' }, 'Analyze');
-                displayStatus(`Analysis failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.analyzeBtn, false);
-            }
-        }
-
-        async function executeShare() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL to share', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.shareBtn, true);
-            displayStatus(`Preparing to share ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                const shareData = {
-                    title: `Check out ${info.name} on Nexus Prime`,
-                    text: `I found ${info.name} (v${info.version}) on Nexus Prime. ${info.description}`,
-                    url: `https://chrome.google.com/webstore/detail/${id}`
-                };
-                await navigator.share(shareData);
-                nexusState.stats.shares++;
-                logAction(id, 'success', info, 'Share');
-                displayStatus(`Shared ${info.name} successfully`, 'success');
-            } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' }, 'Share');
-                displayStatus(`Share failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.shareBtn, false);
-            }
-        }
-
-        async function executeDetails() {
-            const input = dom.extInput.value.trim();
-            const id = extractExtensionId(input);
-            if (!id) {
-                displayStatus('Invalid extension ID or URL', 'error');
-                return;
-            }
-
-            setButtonLoading(dom.detailsBtn, true);
-            displayStatus(`Fetching details for ${id.slice(0, 6)}...`, 'neutral');
-
-            try {
-                const info = await getExtensionInfo(id);
-                nexusState.stats.details++;
-                logAction(id, 'success', info, 'Details');
-                displayStatus(`Extension Name: ${info.name}<br>Version: ${info.version}<br>Rating: ${info.rating}<br>Users: ${info.users}<br>Developer: ${info.developer || 'Unknown'}`, 'success');
-            } catch (error) {
-                logAction(id, 'error', { name: 'Unknown' }, 'Details');
-                displayStatus(`Details fetch failed: ${error.message}`, 'error');
-            } finally {
-                setButtonLoading(dom.detailsBtn, false);
-            }
-        }
-
-        function openManagePanel() {
-            showInstalled();
-            updateStatsTab();
-            dom.manageModal.classList.add('active');
-            dom.installedExtensions.onclick = (event) => {
-                if (event.target.classList.contains('history-action')) {
-                    const id = event.target.dataset.id;
-                    delete nexusState.installed[id];
-                    persistState();
-                    showInstalled();
-                }
-            };
-            dom.modalTabs.forEach(tab => {
-                tab.onclick = () => {
-                    dom.modalTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    dom.installedTab.classList.remove('active');
-                    dom.settingsTab.classList.remove('active');
-                    dom.statsTab.classList.remove('active');
-                    document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
-                };
-            });
-        }
-
-        function clearHistory() {
-            nexusState.history = [];
-            persistState();
-            updateHistory();
-            displayStatus('History cleared', 'success');
-        }
-
-        function exportData() {
-            const data = {
-                history: nexusState.history,
-                stats: nexusState.stats,
-                installed: nexusState.installed,
-                usage: nexusState.usage
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'nexus-prime-data.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            displayStatus('Data exported successfully', 'success');
-        }
-
-        function launchNexus() {
-            dom.installBtn.disabled = false;
-            dom.scanBtn.disabled = false;
-            dom.manageBtn.disabled = false;
-            dom.analyzeBtn.disabled = false;
-            dom.shareBtn.disabled = false;
-            dom.detailsBtn.disabled = false;
-
-            applyTheme();
-            dom.themeSelect.value = nexusState.settings.theme;
-            dom.autoClear.checked = nexusState.settings.autoClear;
-            dom.soundToggle.checked = nexusState.settings.sound;
-
-            if (!nexusState.usage.startTime) {
-                nexusState.usage.startTime = Date.now();
-                persistState();
-            }
-
-            updateHistory();
-            displayStatus('Nexus Prime initialized. Ready for action.', 'neutral');
-            if (!nexusState.canInstall) {
-                displayStatus('Simulation mode active (Chrome Web Store API unavailable)', 'warning');
-            }
-
-            dom.installBtn.addEventListener('click', executeInstall);
-            dom.scanBtn.addEventListener('click', executeScan);
-            dom.manageBtn.addEventListener('click', openManagePanel);
-            dom.analyzeBtn.addEventListener('click', executeAnalyze);
-            dom.shareBtn.addEventListener('click', executeShare);
-            dom.detailsBtn.addEventListener('click', executeDetails);
-            dom.extInput.addEventListener('keypress', (e) => e.key === 'Enter' && executeInstall());
-            dom.modalClose.addEventListener('click', () => {
-                if (nexusState.settings.autoClear) clearHistory();
-                dom.manageModal.classList.remove('active');
-            });
-            dom.manageModal.addEventListener('click', (e) => {
-                if (e.target === dom.manageModal) {
-                    if (nexusState.settings.autoClear) clearHistory();
-                    dom.manageModal.classList.remove('active');
-                }
-            });
-            dom.clearHistory.addEventListener('click', clearHistory);
-            dom.exportData.addEventListener('click', exportData);
-            dom.themeSelect.addEventListener('change', (e) => {
-                nexusState.settings.theme = e.target.value;
-                persistState();
-                applyTheme();
-            });
-            dom.autoClear.addEventListener('change', (e) => {
-                nexusState.settings.autoClear = e.target.checked;
-                persistState();
-            });
-            dom.soundToggle.addEventListener('change', (e) => {
-                nexusState.settings.sound = e.target.checked;
-                persistState();
-            });
-        }
-
-        window.addEventListener('load', launchNexus);
-    </script><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; img-src 'self' data: https:;">
-    <meta name="description" content="Nexus Prime - Ultimate Chrome Extension Nexus">
-    <meta name="theme-color" content="#1d4ed8">
-    <meta name="keywords" content="chrome extension, nexus prime, extension management, web tools">
+    <meta name="description" content="Nexus Prime - Advanced Chrome Extension Management Tool">
+    <meta name="keywords" content="chrome extension, extension management, nexus prime, browser tools">
+    <meta name="author" content="Nexus Prime Team">
     <meta name="robots" content="index, follow">
-    <title>Nexus Prime - Extension Nexus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#1d4ed8">
+    <title>Nexus Prime - Advanced Extension Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%231d4ed8' d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-12h2v4h4v2h-4v4h-2v-4H7v-2h4V8z'/></svg>">
     <style>
+        /* CSS Variables for Consistency */
         :root {
             --primary: #1d4ed8;
             --secondary: #7c3aed;
-            --success: #22c55e;
-            --error: #ef4444;
+            --accent: #22c55e;
+            --danger: #ef4444;
             --warning: #f97316;
-            --neutral: #64748b;
-            --bg-light: #f1f5f9;
-            --bg-dark: #0f172a;
-            --surface-light: rgba(255, 255, 255, 0.95);
-            --surface-dark: rgba(15, 23, 42, 0.95);
-            --text-light: #0f172a;
-            --text-dark: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.25);
-            --glow: rgba(29, 78, 216, 0.6);
-            --ease: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            --radius: 1rem;
-            --spacing: 1rem;
+            --neutral: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-dark: #1e293b;
+            --surface-light: rgba(255, 255, 255, 0.98);
+            --surface-dark: rgba(30, 41, 59, 0.98);
+            --text-light: #1f2937;
+            --text-dark: #e5e7eb;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --radius: 12px;
+            --spacing: 16px;
         }
 
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -1806,7 +42,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background: var(--bg-light);
             color: var(--text-light);
             min-height: 100vh;
@@ -1816,7 +52,7 @@
             justify-content: center;
             overflow-x: hidden;
             position: relative;
-            transition: background var(--ease), color var(--ease);
+            transition: var(--transition);
         }
 
         body.dark {
@@ -1824,191 +60,200 @@
             color: var(--text-dark);
         }
 
-        .cosmic-backdrop {
+        /* Background Effects */
+        .background {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, rgba(219, 234, 254, 0.8), rgba(237, 233, 254, 0.8));
+            background: linear-gradient(135deg, #dbeafe 20%, #ede9fe 80%);
             z-index: -2;
-            filter: blur(100px);
-            animation: cosmicPulse 15s infinite ease-in-out;
+            filter: blur(120px);
+            animation: backgroundPulse 20s infinite ease-in-out;
         }
 
-        body.dark .cosmic-backdrop {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(67, 56, 202, 0.8));
+        body.dark .background {
+            background: linear-gradient(135deg, #1e293b 20%, #4338ca 80%);
         }
 
-        .nebula-system {
+        .particles {
             position: fixed;
             inset: 0;
             z-index: -1;
             pointer-events: none;
         }
 
-        .nebula-ring {
+        .particle {
             position: absolute;
             border-radius: 50%;
             background: radial-gradient(circle, var(--primary) 10%, transparent 70%);
-            opacity: 0.2;
-            animation: nebulaOrbit 40s infinite ease-in-out;
+            opacity: 0.15;
+            animation: particleFloat 50s infinite ease-in-out;
         }
 
-        .nebula-ring:nth-child(1) { width: 300px; height: 300px; top: 5%; left: 10%; animation-delay: 0s; }
-        .nebula-ring:nth-child(2) { width: 250px; height: 250px; top: 70%; left: 80%; animation-delay: 10s; }
-        .nebula-ring:nth-child(3) { width: 280px; height: 280px; top: 50%; left: 20%; animation-delay: 20s; }
+        .particle:nth-child(1) { width: 320px; height: 320px; top: 10%; left: 15%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 280px; height: 280px; top: 65%; left: 75%; animation-delay: 15s; }
+        .particle:nth-child(3) { width: 300px; height: 300px; top: 45%; left: 25%; animation-delay: 30s; }
 
-        .nexus-container {
+        /* Main Container */
+        .app-container {
             background: var(--surface-light);
-            padding: calc(var(--spacing) * 2);
+            padding: calc(var(--spacing) * 1.5);
             border-radius: var(--radius);
-            box-shadow: 0 20px 60px var(--shadow);
-            width: 95%;
-            max-width: 600px;
+            box-shadow: var(--shadow-md);
+            width: 90%;
+            max-width: 560px;
             position: relative;
             z-index: 2;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform var(--ease), box-shadow var(--ease), background var(--ease);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: var(--transition);
         }
 
-        body.dark .nexus-container {
+        body.dark .app-container {
             background: var(--surface-dark);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .nexus-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 80px var(--shadow);
+        .app-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
         }
 
+        /* Header */
         .header {
             text-align: center;
-            margin-bottom: calc(var(--spacing) * 2);
+            margin-bottom: calc(var(--spacing) * 1.5);
         }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
+        .logo {
+            font-size: 2.25rem;
+            font-weight: 700;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 10px var(--glow);
-            animation: glowShift 5s infinite ease-in-out;
-        }
-
-        .tagline {
-            font-family: 'Space Mono', monospace;
-            font-size: 1rem;
-            color: var(--neutral);
-            margin-top: var(--spacing);
-        }
-
-        .input-group {
-            display: flex;
-            gap: var(--spacing);
-            margin-bottom: calc(var(--spacing) * 1.5);
             position: relative;
+            display: inline-block;
         }
 
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-
-        input {
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
             width: 100%;
-            padding: var(--spacing) calc(var(--spacing) * 1.5);
-            border: 1px solid #d1d5db;
-            border-radius: calc(var(--radius) * 0.8);
-            font-size: 1rem;
-            background: #fff;
-            transition: border-color var(--ease), box-shadow var(--ease);
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0.3;
         }
 
-        body.dark input {
-            background: #1e293b;
-            border-color: #374151;
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--neutral);
+            margin-top: calc(var(--spacing) * 0.5);
+            font-weight: 400;
+        }
+
+        /* Input Section */
+        .input-section {
+            position: relative;
+            margin-bottom: calc(var(--spacing) * 1.5);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: calc(var(--spacing) * 0.75) calc(var(--spacing) * 3) calc(var(--spacing) * 0.75) calc(var(--spacing) * 1.25);
+            border: 1px solid #d1d5db;
+            border-radius: calc(var(--radius) * 0.75);
+            font-size: 0.95rem;
+            background: #fff;
+            transition: var(--transition);
+        }
+
+        body.dark .input-field {
+            background: #2d3748;
+            border-color: #4b5563;
             color: var(--text-dark);
         }
 
-        input:focus {
+        .input-field:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 15px var(--glow);
+            box-shadow: 0 0 12px rgba(29, 78, 216, 0.3);
             outline: none;
         }
 
-        input::placeholder {
+        .input-field::placeholder {
             color: var(--neutral);
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         .input-icon {
             position: absolute;
-            right: var(--spacing);
+            right: calc(var(--spacing) * 1.25);
             top: 50%;
             transform: translateY(-50%);
             color: var(--neutral);
-            transition: color var(--ease);
+            font-size: 1.1rem;
+            transition: var(--transition);
         }
 
-        input:focus + .input-icon {
+        .input-field:focus + .input-icon {
             color: var(--primary);
         }
 
-        .button-grid {
+        /* Action Buttons */
+        .actions {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: calc(var(--spacing) * 0.75);
             margin-bottom: calc(var(--spacing) * 1.5);
         }
 
-        button {
-            padding: calc(var(--spacing) * 0.8) var(--spacing);
+        .action-btn {
+            padding: calc(var(--spacing) * 0.75) var(--spacing);
             font-size: 0.9rem;
             font-weight: 600;
             color: #fff;
             border: none;
-            border-radius: calc(var(--radius) * 0.8);
+            border-radius: calc(var(--radius) * 0.75);
             cursor: pointer;
             position: relative;
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: transform var(--ease), box-shadow var(--ease);
+            transition: var(--transition);
         }
 
-        button::before {
+        .action-btn::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -150%;
-            width: 150%;
+            left: -100%;
+            width: 100%;
             height: 100%;
             background: rgba(255, 255, 255, 0.2);
-            transform: skewX(-20deg);
-            transition: left 0.3s ease;
+            transition: left 0.4s ease;
         }
 
-        button:hover::before {
-            left: 150%;
+        .action-btn:hover::before {
+            left: 100%;
         }
 
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px var(--glow);
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
-        button:active {
+        .action-btn:active {
             transform: scale(0.98);
         }
 
-        button:disabled {
+        .action-btn:disabled {
             background: #9ca3af;
             cursor: not-allowed;
             opacity: 0.6;
         }
 
-        button.loading::after {
+        .action-btn.loading::after {
             content: '';
             position: absolute;
             width: 16px;
@@ -2025,20 +270,21 @@
         .btn-install { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
         .btn-scan { background: linear-gradient(135deg, var(--warning), var(--primary)); }
         .btn-manage { background: linear-gradient(135deg, var(--neutral), var(--primary)); }
-        .btn-analyze { background: linear-gradient(135deg, var(--success), var(--primary)); }
+        .btn-analyze { background: linear-gradient(135deg, var(--accent), var(--primary)); }
         .btn-share { background: linear-gradient(135deg, #ec4899, var(--primary)); }
 
+        /* Dashboard */
         .dashboard {
             background: #fff;
             padding: var(--spacing);
             border-radius: var(--radius);
-            box-shadow: 0 10px 30px var(--shadow);
+            box-shadow: var(--shadow-sm);
             margin-top: calc(var(--spacing) * 1.5);
-            transition: background var(--ease);
+            transition: var(--transition);
         }
 
         body.dark .dashboard {
-            background: #1e293b;
+            background: #2d3748;
         }
 
         .dashboard-header {
@@ -2053,51 +299,56 @@
             font-weight: 600;
         }
 
-        .dashboard-controls {
+        .dashboard-actions {
             display: flex;
             gap: calc(var(--spacing) * 0.5);
         }
 
-        .control-btn {
-            font-size: 0.8rem;
+        .dashboard-btn {
+            font-size: 0.85rem;
             padding: calc(var(--spacing) * 0.4) calc(var(--spacing) * 0.8);
             background: var(--neutral);
             color: #fff;
-            border-radius: calc(var(--radius) * 0.6);
+            border-radius: calc(var(--radius) * 0.5);
             cursor: pointer;
-            transition: background var(--ease);
+            transition: var(--transition);
         }
 
-        .control-btn:hover {
+        .dashboard-btn:hover {
             background: var(--primary);
         }
 
-        .metrics {
+        .status-message {
+            margin-bottom: var(--spacing);
+            font-size: 0.9rem;
+        }
+
+        .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
             gap: calc(var(--spacing) * 0.75);
         }
 
-        .metric-card {
+        .metric {
             background: var(--bg-light);
             padding: calc(var(--spacing) * 0.75);
-            border-radius: calc(var(--radius) * 0.8);
+            border-radius: calc(var(--radius) * 0.75);
             text-align: center;
-            transition: transform var(--ease), box-shadow var(--ease);
+            transition: var(--transition);
         }
 
-        body.dark .metric-card {
-            background: #1f2937;
+        body.dark .metric {
+            background: #374151;
         }
 
-        .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px var(--shadow);
+        .metric:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-sm);
         }
 
         .metric-value {
-            font-size: 1.4rem;
-            font-weight: 800;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--primary);
         }
 
@@ -2106,42 +357,43 @@
             color: var(--neutral);
         }
 
-        .history {
+        /* History Section */
+        .history-section {
             margin-top: calc(var(--spacing) * 1.5);
-            max-height: 280px;
+            max-height: 240px;
             overflow-y: auto;
             background: #fff;
             padding: var(--spacing);
             border-radius: var(--radius);
-            box-shadow: 0 10px 30px var(--shadow);
+            box-shadow: var(--shadow-sm);
             scrollbar-width: thin;
             scrollbar-color: var(--primary) #e5e7eb;
-            transition: background var(--ease);
+            transition: var(--transition);
         }
 
-        body.dark .history {
-            background: #1e293b;
-            scrollbar-color: var(--primary) #374151;
+        body.dark .history-section {
+            background: #2d3748;
+            scrollbar-color: var(--primary) #4b5563;
         }
 
-        .history-item {
+        .history-entry {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: calc(var(--spacing) * 0.75) 0;
+            padding: calc(var(--spacing) * 0.5) 0;
             border-bottom: 1px solid #e5e7eb;
-            transition: background var(--ease);
+            transition: var(--transition);
         }
 
-        body.dark .history-item {
-            border-bottom: 1px solid #374151;
+        body.dark .history-entry {
+            border-bottom: 1px solid #4b5563;
         }
 
-        .history-item:hover {
-            background: rgba(29, 78, 216, 0.1);
+        .history-entry:hover {
+            background: rgba(29, 78, 216, 0.05);
         }
 
-        .history-item:last-child {
+        .history-entry:last-child {
             border-bottom: none;
         }
 
@@ -2149,17 +401,18 @@
             color: var(--warning);
             font-weight: 600;
             cursor: pointer;
-            transition: color var(--ease);
+            transition: var(--transition);
         }
 
         .history-action:hover {
             color: var(--primary);
         }
 
-        .modal {
+        /* Modal */
+        .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.75);
             display: none;
             align-items: center;
             justify-content: center;
@@ -2168,30 +421,30 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal.active {
+        .modal-overlay.active {
             display: flex;
             opacity: 1;
         }
 
-        .modal-content {
+        .modal {
             background: var(--surface-light);
             padding: calc(var(--spacing) * 1.5);
             border-radius: var(--radius);
-            max-width: 500px;
+            max-width: 480px;
             width: 90%;
-            box-shadow: 0 20px 60px var(--shadow);
-            max-height: 85vh;
+            box-shadow: var(--shadow-md);
+            max-height: 80vh;
             overflow-y: auto;
             position: relative;
-            transition: background var(--ease);
+            transition: var(--transition);
         }
 
-        body.dark .modal-content {
+        body.dark .modal {
             background: var(--surface-dark);
         }
 
-        .modal-header {
-            font-size: 1.3rem;
+        .modal-title {
+            font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: calc(var(--spacing) * 1.5);
         }
@@ -2203,55 +456,72 @@
             font-size: 1.2rem;
             cursor: pointer;
             color: var(--neutral);
-            transition: color var(--ease);
+            transition: var(--transition);
         }
 
         .modal-close:hover {
             color: var(--primary);
         }
 
-        .modal-tabs {
+        .modal-nav {
             display: flex;
             gap: calc(var(--spacing) * 0.5);
             margin-bottom: var(--spacing);
+            border-bottom: 1px solid #e5e7eb;
         }
 
-        .tab {
+        body.dark .modal-nav {
+            border-bottom: 1px solid #4b5563;
+        }
+
+        .modal-tab {
             padding: calc(var(--spacing) * 0.5) var(--spacing);
-            background: var(--bg-light);
-            border-radius: calc(var(--radius) * 0.6);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--neutral);
             cursor: pointer;
-            transition: background var(--ease), color var(--ease);
+            transition: var(--transition);
+            position: relative;
         }
 
-        body.dark .tab {
-            background: #1f2937;
+        .modal-tab.active {
+            color: var(--primary);
         }
 
-        .tab.active {
+        .modal-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
             background: var(--primary);
-            color: #fff;
         }
 
-        .tab-content {
+        .modal-tab:hover {
+            color: var(--primary);
+        }
+
+        .tab-panel {
             display: none;
         }
 
-        .tab-content.active {
+        .tab-panel.active {
             display: block;
         }
 
-        .settings-group {
+        .settings-option {
             margin-bottom: var(--spacing);
         }
 
-        .settings-group label {
+        .settings-option label {
             display: block;
             margin-bottom: calc(var(--spacing) * 0.5);
             font-weight: 600;
         }
 
-        .settings-group select, .settings-group input[type="checkbox"] {
+        .settings-option select,
+        .settings-option input[type="checkbox"] {
             margin-right: calc(var(--spacing) * 0.5);
         }
 
@@ -2261,12 +531,12 @@
             border-radius: calc(var(--radius) * 0.5);
             border: 1px solid #d1d5db;
             background: #fff;
-            transition: border-color var(--ease);
+            transition: var(--transition);
         }
 
         body.dark select {
-            background: #1e293b;
-            border-color: #374151;
+            background: #2d3748;
+            border-color: #4b5563;
             color: var(--text-dark);
         }
 
@@ -2275,96 +545,105 @@
             outline: none;
         }
 
-        @keyframes cosmicPulse {
-            0%, 100% { opacity: 0.5; }
+        /* Animations */
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.6; }
             50% { opacity: 1; }
         }
 
-        @keyframes nebulaOrbit {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.2; }
-            50% { transform: scale(1.5) rotate(180deg); opacity: 0.35; }
-        }
-
-        @keyframes glowShift {
-            0%, 100% { text-shadow: 0 2px 10px var(--glow); }
-            50% { text-shadow: 0 4px 20px var(--glow); }
+        @keyframes particleFloat {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.15; }
+            50% { transform: scale(1.4) rotate(180deg); opacity: 0.3; }
         }
 
         @keyframes spin {
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        @media (max-width: 600px) {
-            .nexus-container { width: 90%; padding: var(--spacing); }
-            h1 { font-size: 2rem; }
-            .button-grid { grid-template-columns: 1fr; }
-            .input-group { flex-direction: column; }
-            .metrics { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .app-container {
+                width: 95%;
+                padding: var(--spacing);
+            }
+
+            .logo {
+                font-size: 1.75rem;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            * { animation: none !important; transition: none !important; }
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="cosmic-backdrop"></div>
-    <div class="nebula-system">
-        <div class="nebula-ring"></div>
-        <div class="nebula-ring"></div>
-        <div class="nebula-ring"></div>
+    <div class="background"></div>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
-    <div class="nexus-container">
+    <div class="app-container">
         <header class="header">
-            <h1>Nexus Prime</h1>
-            <div class="tagline">Advanced Extension Management</div>
+            <h1 class="logo">Nexus Prime</h1>
+            <p class="subtitle">Advanced Extension Management</p>
         </header>
-        <div class="input-group">
-            <div class="input-wrapper">
-                <input type="text" id="extensionInput" placeholder="Enter Extension ID or URL" aria-label="Extension Input">
-                <span class="input-icon">🔗</span>
-            </div>
+        <div class="input-section">
+            <input type="text" id="extensionInput" class="input-field" placeholder="Extension ID or Chrome Store URL" aria-label="Extension ID or URL">
+            <span class="input-icon">🔗</span>
         </div>
-        <div class="button-grid">
-            <button class="btn-install" id="installBtn">Install</button>
-            <button class="btn-scan" id="scanBtn">Scan</button>
-            <button class="btn-manage" id="manageBtn">Manage</button>
-            <button class="btn-analyze" id="analyzeBtn">Analyze</button>
-            <button class="btn-share" id="shareBtn">Share</button>
+        <div class="actions">
+            <button class="action-btn btn-install" id="installBtn">Install</button>
+            <button class="action-btn btn-scan" id="scanBtn">Scan</button>
+            <button class="action-btn btn-manage" id="manageBtn">Manage</button>
+            <button class="action-btn btn-analyze" id="analyzeBtn">Analyze</button>
+            <button class="action-btn btn-share" id="shareBtn">Share</button>
         </div>
-        <div class="dashboard">
+        <section class="dashboard">
             <div class="dashboard-header">
-                <div class="dashboard-title">Nexus Dashboard</div>
-                <div class="dashboard-controls">
-                    <span class="control-btn" id="clearHistoryBtn">Clear History</span>
-                    <span class="control-btn" id="exportDataBtn">Export Data</span>
+                <h2 class="dashboard-title">Nexus Dashboard</h2>
+                <div class="dashboard-actions">
+                    <span class="dashboard-btn" id="clearHistoryBtn">Clear History</span>
+                    <span class="dashboard-btn" id="exportDataBtn">Export Data</span>
                 </div>
             </div>
-            <div id="statusOutput" aria-live="polite"></div>
-            <div class="metrics" id="metricsDisplay"></div>
-        </div>
-        <div class="history" id="historyLog"></div>
+            <div class="status-message" id="statusMessage" aria-live="polite"></div>
+            <div class="metrics-grid" id="metricsGrid"></div>
+        </section>
+        <section class="history-section" id="historySection"></section>
     </div>
-    <div class="modal" id="manageModal">
-        <div class="modal-content">
+    <div class="modal-overlay" id="manageModal">
+        <div class="modal">
             <span class="modal-close" id="closeModalBtn">✕</span>
-            <h2 class="modal-header">Manage Extensions</h2>
-            <div class="modal-tabs">
-                <span class="tab active" data-tab="installed">Installed</span>
-                <span class="tab" data-tab="settings">Settings</span>
+            <h2 class="modal-title">Manage Extensions</h2>
+            <nav class="modal-nav">
+                <span class="modal-tab active" data-tab="installed">Installed</span>
+                <span class="modal-tab" data-tab="settings">Settings</span>
+            </nav>
+            <div class="tab-panel active" id="installedTab">
+                <div id="installedExtensions"></div>
             </div>
-            <div class="tab-content active" id="installedExtensionsTab">
-                <div id="installedList"></div>
-            </div>
-            <div class="tab-content" id="settingsTab">
-                <div class="settings-group">
-                    <label for="themeSelect">Theme:</label>
+            <div class="tab-panel" id="settingsTab">
+                <div class="settings-option">
+                    <label for="themeSelect">Theme</label>
                     <select id="themeSelect">
                         <option value="light">Light</option>
                         <option value="dark">Dark</option>
                     </select>
                 </div>
-                <div class="settings-group">
+                <div class="settings-option">
                     <label>
                         <input type="checkbox" id="autoClearHistory"> Auto-Clear History on Close
                     </label>
@@ -2375,82 +654,87 @@
 
     <script>
         // DOM Elements
-        const elements = {
+        const DOM = {
             installBtn: document.getElementById('installBtn'),
             scanBtn: document.getElementById('scanBtn'),
             manageBtn: document.getElementById('manageBtn'),
             analyzeBtn: document.getElementById('analyzeBtn'),
             shareBtn: document.getElementById('shareBtn'),
             extensionInput: document.getElementById('extensionInput'),
-            statusOutput: document.getElementById('statusOutput'),
-            metricsDisplay: document.getElementById('metricsDisplay'),
-            historyLog: document.getElementById('historyLog'),
+            statusMessage: document.getElementById('statusMessage'),
+            metricsGrid: document.getElementById('metricsGrid'),
+            historySection: document.getElementById('historySection'),
             manageModal: document.getElementById('manageModal'),
-            installedList: document.getElementById('installedList'),
+            installedExtensions: document.getElementById('installedExtensions'),
             closeModalBtn: document.getElementById('closeModalBtn'),
             clearHistoryBtn: document.getElementById('clearHistoryBtn'),
             exportDataBtn: document.getElementById('exportDataBtn'),
-            tabs: document.querySelectorAll('.tab'),
-            installedTab: document.getElementById('installedExtensionsTab'),
+            modalTabs: document.querySelectorAll('.modal-tab'),
+            installedTab: document.getElementById('installedTab'),
             settingsTab: document.getElementById('settingsTab'),
             themeSelect: document.getElementById('themeSelect'),
             autoClearHistory: document.getElementById('autoClearHistory')
         };
 
-        // State Management
-        const state = {
+        // Application State
+        const appState = {
             history: JSON.parse(localStorage.getItem('nexusHistory') || '[]'),
-            stats: JSON.parse(localStorage.getItem('nexusStats') || '{"installs": 0, "success": 0, "scans": 0, "analyzes": 0, "shares": 0}'),
+            stats: JSON.parse(localStorage.getItem('nexusStats') || '{"installs":0,"success":0,"scans":0,"analyzes":0,"shares":0}'),
             installed: JSON.parse(localStorage.getItem('nexusInstalled') || '{}'),
-            settings: JSON.parse(localStorage.getItem('nexusSettings') || '{"theme": "light", "autoClear": false}'),
+            settings: JSON.parse(localStorage.getItem('nexusSettings') || '{"theme":"light","autoClear":false}'),
             isChrome: navigator.userAgent.includes('Chrome') && !!window.chrome,
             canInstall: typeof window.chrome?.webstore?.install === 'function'
         };
 
         // Utility Functions
         const saveState = () => {
-            localStorage.setItem('nexusHistory', JSON.stringify(state.history));
-            localStorage.setItem('nexusStats', JSON.stringify(state.stats));
-            localStorage.setItem('nexusInstalled', JSON.stringify(state.installed));
-            localStorage.setItem('nexusSettings', JSON.stringify(state.settings));
+            localStorage.setItem('nexusHistory', JSON.stringify(appState.history));
+            localStorage.setItem('nexusStats', JSON.stringify(appState.stats));
+            localStorage.setItem('nexusInstalled', JSON.stringify(appState.installed));
+            localStorage.setItem('nexusSettings', JSON.stringify(appState.settings));
         };
 
-        const toggleButtonLoading = (button, isLoading) => {
+        const setLoading = (button, isLoading) => {
             button.disabled = isLoading;
             button.classList.toggle('loading', isLoading);
             button.textContent = isLoading ? '' : button.id.replace('Btn', '');
         };
 
-        const showStatus = (message, type = 'neutral') => {
-            const colors = { success: '--success', error: '--error', warning: '--warning', neutral: '--neutral' };
-            elements.statusOutput.innerHTML = `<div style="color: var(${colors[type]})">${message}</div>`;
-            updateMetrics();
+        const displayStatus = (message, type = 'neutral') => {
+            const typeStyles = {
+                success: 'color: var(--accent);',
+                error: 'color: var(--danger);',
+                warning: 'color: var(--warning);',
+                neutral: 'color: var(--neutral);'
+            };
+            DOM.statusMessage.innerHTML = `<div style="${typeStyles[type]}">${message}</div>`;
+            renderMetrics();
         };
 
-        const updateMetrics = () => {
-            const successRate = state.stats.installs > 0 ? ((state.stats.success / state.stats.installs) * 100).toFixed(1) : 0;
-            elements.metricsDisplay.innerHTML = `
-                <div class="metric-card">
-                    <div class="metric-value">${state.stats.installs}</div>
+        const renderMetrics = () => {
+            const successRate = appState.stats.installs > 0 ? ((appState.stats.success / appState.stats.installs) * 100).toFixed(1) : 0;
+            DOM.metricsGrid.innerHTML = `
+                <div class="metric">
+                    <div class="metric-value">${appState.stats.installs}</div>
                     <div class="metric-label">Installs</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${state.stats.success}</div>
+                <div class="metric">
+                    <div class="metric-value">${appState.stats.success}</div>
                     <div class="metric-label">Success</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${state.stats.scans}</div>
+                <div class="metric">
+                    <div class="metric-value">${appState.stats.scans}</div>
                     <div class="metric-label">Scans</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${state.stats.analyzes}</div>
+                <div class="metric">
+                    <div class="metric-value">${appState.stats.analyzes}</div>
                     <div class="metric-label">Analyzes</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${state.stats.shares}</div>
+                <div class="metric">
+                    <div class="metric-value">${appState.stats.shares}</div>
                     <div class="metric-label">Shares</div>
                 </div>
-                <div class="metric-card">
+                <div class="metric">
                     <div class="metric-value">${successRate}%</div>
                     <div class="metric-label">Success Rate</div>
                 </div>
@@ -2458,256 +742,258 @@
         };
 
         const applyTheme = () => {
-            document.body.classList.toggle('dark', state.settings.theme === 'dark');
+            document.body.classList.toggle('dark', appState.settings.theme === 'dark');
         };
 
-        const extractId = (input) => {
-            const urlMatch = input.match(/chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i);
-            const idMatch = /^[a-z]{32}$/.test(input.trim());
-            return urlMatch ? urlMatch[1] : (idMatch ? input.trim() : null);
+        const extractExtensionId = (input) => {
+            const urlPattern = /chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i;
+            const idPattern = /^[a-z]{32}$/;
+            const urlMatch = input.match(urlPattern);
+            return urlMatch ? urlMatch[1] : (idPattern.test(input.trim()) ? input.trim() : null);
         };
 
-        const fetchExtensionInfo = async (id) => {
+        const fetchExtensionDetails = async (id) => {
             try {
                 const response = await fetch(`https://chrome.google.com/webstore/detail/${id}`, { cache: 'no-store' });
-                if (!response.ok) throw new Error('Not found');
+                if (!response.ok) throw new Error('Extension not found');
                 const html = await response.text();
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 return {
-                    name: doc.querySelector('h1')?.textContent || 'Unknown',
+                    name: doc.querySelector('h1')?.textContent || 'Unknown Extension',
                     version: doc.querySelector('.gH0guc')?.textContent || 'N/A',
                     icon: doc.querySelector('img.e8i0yl')?.src || 'https://via.placeholder.com/24',
-                    description: doc.querySelector('.C-bC2d')?.textContent?.trim() || 'No description'
+                    description: doc.querySelector('.C-bC2d')?.textContent?.trim() || 'No description available',
+                    rating: doc.querySelector('.rQF9jd')?.textContent || 'N/A'
                 };
             } catch {
-                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24', description: 'N/A' };
+                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24', description: 'N/A', rating: 'N/A' };
             }
         };
 
         const installExtension = (id) => {
-            if (state.canInstall) {
+            if (appState.canInstall) {
                 return new Promise((resolve, reject) => {
                     window.chrome.webstore.install(
                         `https://chrome.google.com/webstore/detail/${id}`,
-                        () => resolve({ success: true, message: 'Installed' }),
+                        () => resolve({ success: true, message: 'Extension installed' }),
                         (error) => reject(new Error(error))
                     );
                 });
             }
-            return new Promise(resolve => setTimeout(() => resolve({ success: true, message: 'Simulated' }), 1500));
+            return new Promise(resolve => setTimeout(() => resolve({ success: true, message: 'Simulated install' }), 1500));
         };
 
         const logAction = (id, status, details) => {
-            state.history.unshift({ id, status, details, timestamp: Date.now() });
-            state.history = state.history.slice(0, 100);
-            state.stats[status === 'success' ? 'success' : 'installs']++;
+            appState.history.unshift({ id, status, details, timestamp: Date.now() });
+            appState.history = appState.history.slice(0, 100);
+            appState.stats[status === 'success' ? 'success' : 'installs']++;
             saveState();
-            updateHistory();
+            renderHistory();
         };
 
-        const updateHistory = () => {
-            elements.historyLog.innerHTML = state.history.map(entry => `
-                <div class="history-item">
+        const renderHistory = () => {
+            DOM.historySection.innerHTML = appState.history.map(entry => `
+                <div class="history-entry">
                     <span>${entry.details.name} (${entry.id.slice(0, 6)}...)</span>
-                    <span style="color: var(--${entry.status === 'success' ? 'success' : 'error'})">${entry.status}</span>
+                    <span style="color: var(--${entry.status === 'success' ? 'accent' : 'danger'})">${entry.status}</span>
                 </div>
             `).join('');
         };
 
-        const showInstalled = () => {
-            elements.installedList.innerHTML = Object.entries(state.installed).map(([id, details]) => `
-                <div class="history-item">
-                    <span><img src="${details.icon}" alt="" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">${details.name}</span>
+        const renderInstalled = () => {
+            DOM.installedExtensions.innerHTML = Object.entries(appState.installed).map(([id, details]) => `
+                <div class="history-entry">
+                    <span><img src="${details.icon}" alt="${details.name}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px;">${details.name}</span>
                     <span class="history-action" data-id="${id}">Remove</span>
                 </div>
-            `).join('') || '<p>No extensions installed.</p>';
+            `).join('') || '<p>No extensions installed yet.</p>';
         };
 
         // Event Handlers
         const handleInstall = async () => {
-            const id = extractId(elements.extensionInput.value);
-            if (!id) return showStatus('Invalid ID or URL', 'error');
+            const id = extractExtensionId(DOM.extensionInput.value);
+            if (!id) {
+                displayStatus('Invalid Extension ID or URL', 'error');
+                return;
+            }
 
-            toggleButtonLoading(elements.installBtn, true);
-            showStatus(`Installing ${id.slice(0, 6)}...`, 'neutral');
+            setLoading(DOM.installBtn, true);
+            displayStatus(`Installing ${id.slice(0, 6)}...`, 'neutral');
 
             try {
-                const info = await fetchExtensionInfo(id);
+                const info = await fetchExtensionDetails(id);
                 const result = await installExtension(id);
-                state.installed[id] = info;
+                appState.installed[id] = info;
                 logAction(id, 'success', info);
-                showStatus(`${info.name} installed`, 'success');
-                elements.extensionInput.value = '';
+                displayStatus(`${info.name} installed successfully`, 'success');
+                DOM.extensionInput.value = '';
             } catch (error) {
                 logAction(id, 'error', { name: 'Unknown' });
-                showStatus(`Failed: ${error.message}`, 'error');
+                displayStatus(`Installation failed: ${error.message}`, 'error');
             } finally {
-                toggleButtonLoading(elements.installBtn, false);
+                setLoading(DOM.installBtn, false);
             }
         };
 
         const handleScan = async () => {
-            const id = extractId(elements.extensionInput.value);
-            if (!id) return showStatus('Invalid ID or URL', 'error');
+            const id = extractExtensionId(DOM.extensionInput.value);
+            if (!id) {
+                displayStatus('Invalid Extension ID or URL', 'error');
+                return;
+            }
 
-            toggleButtonLoading(elements.scanBtn, true);
-            showStatus(`Scanning ${id.slice(0, 6)}...`, 'neutral');
+            setLoading(DOM.scanBtn, true);
+            displayStatus(`Scanning ${id.slice(0, 6)}...`, 'neutral');
 
             try {
-                const info = await fetchExtensionInfo(id);
-                state.stats.scans++;
+                const info = await fetchExtensionDetails(id);
+                appState.stats.scans++;
                 saveState();
-                showStatus(`${info.name} (v${info.version})<br>${info.description}`, 'success');
+                displayStatus(`${info.name} (v${info.version})<br>Rating: ${info.rating}<br>${info.description}`, 'success');
             } catch (error) {
-                showStatus(`Scan failed: ${error.message}`, 'error');
+                displayStatus(`Scan failed: ${error.message}`, 'error');
             } finally {
-                toggleButtonLoading(elements.scanBtn, false);
+                setLoading(DOM.scanBtn, false);
             }
         };
 
-        const handleManage = () => {
-            showInstalled();
-            elements.manageModal.classList.add('active');
-        };
-
         const handleAnalyze = async () => {
-            const id = extractId(elements.extensionInput.value);
-            if (!id) return showStatus('Invalid ID or URL', 'error');
+            const id = extractExtensionId(DOM.extensionInput.value);
+            if (!id) {
+                displayStatus('Invalid Extension ID or URL', 'error');
+                return;
+            }
 
-            toggleButtonLoading(elements.analyzeBtn, true);
-            showStatus(`Analyzing ${id.slice(0, 6)}...`, 'neutral');
+            setLoading(DOM.analyzeBtn, true);
+            displayStatus(`Analyzing ${id.slice(0, 6)}...`, 'neutral');
 
             try {
-                const info = await fetchExtensionInfo(id);
-                state.stats.analyzes++;
+                const info = await fetchExtensionDetails(id);
+                appState.stats.analyzes++;
                 saveState();
-                showStatus(`${info.name}<br>Version: ${info.version}`, 'success');
+                displayStatus(`${info.name}<br>Version: ${info.version}<br>Rating: ${info.rating}`, 'success');
             } catch (error) {
-                showStatus(`Analysis failed: ${error.message}`, 'error');
+                displayStatus(`Analysis failed: ${error.message}`, 'error');
             } finally {
-                toggleButtonLoading(elements.analyzeBtn, false);
+                setLoading(DOM.analyzeBtn, false);
             }
         };
 
         const handleShare = async () => {
-            const id = extractId(elements.extensionInput.value);
-            if (!id) return showStatus('Invalid ID or URL', 'error');
+            const id = extractExtensionId(DOM.extensionInput.value);
+            if (!id) {
+                displayStatus('Invalid Extension ID or URL', 'error');
+                return;
+            }
 
-            toggleButtonLoading(elements.shareBtn, true);
-            showStatus(`Sharing ${id.slice(0, 6)}...`, 'neutral');
+            setLoading(DOM.shareBtn, true);
+            displayStatus(`Preparing to share ${id.slice(0, 6)}...`, 'neutral');
 
             try {
-                const info = await fetchExtensionInfo(id);
-                await navigator.share({
-                    title: `Nexus Prime: ${info.name}`,
-                    text: info.description,
+                const info = await fetchExtensionDetails(id);
+                const shareData = {
+                    title: `Check out ${info.name} on Nexus Prime`,
+                    text: `I found ${info.name} (v${info.version}) on Nexus Prime. ${info.description}`,
                     url: `https://chrome.google.com/webstore/detail/${id}`
-                });
-                state.stats.shares++;
+                };
+                await navigator.share(shareData);
+                appState.stats.shares++;
                 saveState();
-                showStatus(`Shared ${info.name}`, 'success');
+                displayStatus(`Shared ${info.name} successfully`, 'success');
             } catch (error) {
-                showStatus(`Share failed: ${error.message}`, 'error');
+                displayStatus(`Share failed: ${error.message}`, 'error');
             } finally {
-                toggleButtonLoading(elements.shareBtn, false);
+                setLoading(DOM.shareBtn, false);
             }
         };
 
+        const handleManage = () => {
+            renderInstalled();
+            DOM.manageModal.classList.add('active');
+        };
+
         const handleClearHistory = () => {
-            state.history = [];
+            appState.history = [];
             saveState();
-            updateHistory();
-            showStatus('History cleared', 'success');
+            renderHistory();
+            displayStatus('History cleared successfully', 'success');
         };
 
         const handleExportData = () => {
-            const data = JSON.stringify({ history: state.history, stats: state.stats, installed: state.installed }, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
+            const data = { history: appState.history, stats: appState.stats, installed: appState.installed };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'nexus-prime-export.json';
+            a.download = 'nexus-prime-data.json';
             a.click();
             URL.revokeObjectURL(url);
-            showStatus('Data exported', 'success');
+            displayStatus('Data exported successfully', 'success');
         };
 
         const handleModalClose = () => {
-            if (state.settings.autoClear) handleClearHistory();
-            elements.manageModal.classList.remove('active');
+            if (appState.settings.autoClear) handleClearHistory();
+            DOM.manageModal.classList.remove('active');
         };
 
-        // Initialization
+        // Initialize Application
         const init = () => {
             applyTheme();
-            elements.themeSelect.value = state.settings.theme;
-            elements.autoClearHistory.checked = state.settings.autoClear;
-            updateHistory();
-            updateMetrics();
-            showStatus('Nexus Prime ready', 'neutral');
-            if (!state.canInstall) showStatus('Simulation mode (API unavailable)', 'warning');
+            DOM.themeSelect.value = appState.settings.theme;
+            DOM.autoClearHistory.checked = appState.settings.autoClear;
+            renderHistory();
+            renderMetrics();
+            displayStatus('Nexus Prime initialized. Ready to manage extensions.', 'neutral');
+            if (!appState.canInstall) {
+                displayStatus('Running in simulation mode (Chrome Web Store API unavailable)', 'warning');
+            }
 
-            elements.installBtn.addEventListener('click', handleInstall);
-            elements.scanBtn.addEventListener('click', handleScan);
-            elements.manageBtn.addEventListener('click', handleManage);
-            elements.analyzeBtn.addEventListener('click', handleAnalyze);
-            elements.shareBtn.addEventListener('click', handleShare);
-            elements.extensionInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleInstall());
-            elements.clearHistoryBtn.addEventListener('click', handleClearHistory);
-            elements.exportDataBtn.addEventListener('click', handleExportData);
-            elements.closeModalBtn.addEventListener('click', handleModalClose);
-            elements.manageModal.addEventListener('click', (e) => {
-                if (e.target === elements.manageModal) handleModalClose();
+            // Event Listeners
+            DOM.installBtn.addEventListener('click', handleInstall);
+            DOM.scanBtn.addEventListener('click', handleScan);
+            DOM.manageBtn.addEventListener('click', handleManage);
+            DOM.analyzeBtn.addEventListener('click', handleAnalyze);
+            DOM.shareBtn.addEventListener('click', handleShare);
+            DOM.extensionInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleInstall());
+            DOM.clearHistoryBtn.addEventListener('click', handleClearHistory);
+            DOM.exportDataBtn.addEventListener('click', handleExportData);
+            DOM.closeModalBtn.addEventListener('click', handleModalClose);
+            DOM.manageModal.addEventListener('click', (e) => {
+                if (e.target === DOM.manageModal) handleModalClose();
             });
 
-            elements.tabs.forEach(tab => {
+            DOM.modalTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    elements.tabs.forEach(t => t.classList.remove('active'));
+                    DOM.modalTabs.forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
-                    elements.installedTab.classList.remove('active');
-                    elements.settingsTab.classList.remove('active');
+                    DOM.installedTab.classList.remove('active');
+                    DOM.settingsTab.classList.remove('active');
                     document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
                 });
             });
 
-            elements.installedList.addEventListener('click', (e) => {
+            DOM.installedExtensions.addEventListener('click', (e) => {
                 if (e.target.classList.contains('history-action')) {
-                    delete state.installed[e.target.dataset.id];
+                    const id = e.target.dataset.id;
+                    delete appState.installed[id];
                     saveState();
-                    showInstalled();
+                    renderInstalled();
                 }
             });
 
-            elements.themeSelect.addEventListener('change', (e) => {
-                state.settings.theme = e.target.value;
+            DOM.themeSelect.addEventListener('change', (e) => {
+                appState.settings.theme = e.target.value;
                 saveState();
                 applyTheme();
             });
 
-            elements.autoClearHistory.addEventListener('change', (e) => {
-                state.settings.autoClear = e.target.checked;
+            DOM.autoClearHistory.addEventListener('change', (e) => {
+                appState.settings.autoClear = e.target.checked;
                 saveState();
             });
         };
 
         window.addEventListener('load', init);
-    </script>
-</body>
-</html>
-</body>
-</html>
-            dom.themeSelect.addEventListener('change', (e) => {
-                nexusState.settings.theme = e.target.value;
-                persistState();
-                applyTheme();
-            });
-            dom.autoClear.addEventListener('change', (e) => {
-                nexusState.settings.autoClear = e.target.checked;
-                persistState();
-            });
-        }
-
-        window.addEventListener('load', launchNexus);
     </script>
 </body>
 </html>
