@@ -825,7 +825,949 @@
                 }
             });
             dom.clearHistory.addEventListener('click', clearHistory);
+            dom.exportData.addEventListener('click', exportData);<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com https://www.googleapis.com; img-src 'self' data: https:;">
+    <meta name="description" content="Nexus Prime - Ultimate Chrome Extension Nexus">
+    <meta name="theme-color" content="#1d4ed8">
+    <title>Nexus Prime - Extension Nexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #f97316;
+            --neutral: #64748b;
+            --bg: #f1f5f9;
+            --surface: rgba(255, 255, 255, 0.92);
+            --text: #0f172a;
+            --shadow: rgba(0, 0, 0, 0.35);
+            --glow: rgba(29, 78, 216, 0.55);
+            --ease: 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --radius: 1.2rem;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            position: relative;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .cosmic-backdrop {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(145deg, #dbeafe 10%, #ede9fe 90%);
+            z-index: -2;
+            filter: blur(80px);
+            animation: pulse 10s infinite ease-in-out;
+        }
+        .nebula-system {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .nebula-ring {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary) 5%, transparent 60%);
+            opacity: 0.3;
+            animation: nebula-orbit 35s infinite ease-in-out;
+        }
+        .nebula-ring:nth-child(1) { width: 260px; height: 260px; top: 5%; left: 10%; animation-delay: 0s; }
+        .nebula-ring:nth-child(2) { width: 220px; height: 220px; top: 75%; left: 85%; animation-delay: 10s; }
+        .nebula-ring:nth-child(3) { width: 240px; height: 240px; top: 55%; left: 20%; animation-delay: 20s; }
+        .nexus-core {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 25px 70px var(--shadow);
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(45px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform var(--ease), box-shadow var(--ease);
+        }
+        .nexus-core:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 90px var(--shadow);
+        }
+        .core-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 4px 15px var(--glow);
+            animation: glow-shift 3s infinite ease-in-out;
+        }
+        .core-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--neutral);
+            margin-top: 0.4rem;
+            letter-spacing: 0.5px;
+            opacity: 0.95;
+        }
+        .input-cluster {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.8rem;
+            font-size: 0.9rem;
+            background: #fff;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+            transition: all var(--ease);
+        }
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--glow);
+            outline: none;
+        }
+        input::placeholder {
+            color: var(--neutral);
+            opacity: 0.55;
+        }
+        .input-hint {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral);
+            font-size: 0.9rem;
+            transition: color var(--ease);
+        }
+        input:focus + .input-hint {
+            color: var(--primary);
+        }
+        .control-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        button {
+            padding: 0.7rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+            border: none;
+            border-radius: 0.8rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            transition: all var(--ease);
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.35);
+            transform: skewX(-20deg);
+            transition: left 0.3s ease;
+        }
+        button:hover::before {
+            left: 150%;
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--glow);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .install-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .scan-btn { background: linear-gradient(135deg, var(--warning), var(--primary)); }
+        .manage-btn { background: linear-gradient(135deg, var(--neutral), var(--primary)); }
+        .analyze-btn { background: linear-gradient(135deg, var(--success), var(--primary)); }
+        .share-btn { background: linear-gradient(135deg, #ec4899, var(--primary)); }
+        .details-btn { background: linear-gradient(135deg, #10b981, var(--primary)); }
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.4;
+        }
+        button.loading::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 3px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .nexus-dashboard {
+            background: #fff;
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-top: 1rem;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .dashboard-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .dashboard-controls {
+            display: flex;
+            gap: 0.4rem;
+        }
+        .dashboard-toggle {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            background: var(--neutral);
+            color: #fff;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background var(--ease);
+        }
+        .dashboard-toggle:hover {
+            background: var(--primary);
+        }
+        .metrics-cluster {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+        }
+        .metric-pod {
+            background: var(--bg);
+            padding: 0.75rem;
+            border-radius: 0.6rem;
+            text-align: center;
+            transition: transform var(--ease), box-shadow var(--ease);
+        }
+        .metric-pod:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px var(--shadow);
+        }
+        .metric-number {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--neutral);
+        }
+        .history-matrix {
+            margin-top: 1rem;
+            max-height: 250px;
+            overflow-y: auto;
+            background: #fff;
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: 0 10px 30px var(--shadow);
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) #e2e8f0;
+        }
+        .history-node {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background var(--ease);
+        }
+        .history-node:hover {
+            background: var(--glow);
+        }
+        .history-node:last-child {
+            border-bottom: none;
+        }
+        .history-action {
+            color: var(--warning);
+            font-weight: 600;
+            cursor: pointer;
+            transition: color var(--ease);
+        }
+        .history-action:hover {
+            color: var(--primary);
+        }
+        .nexus-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.4s ease;
+        }
+        .nexus-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-core {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px var(--shadow);
+            max-height: 75vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: var(--neutral);
+            transition: color var(--ease);
+        }
+        .modal-close:hover {
+            color: var(--primary);
+        }
+        .modal-tabs {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+        .modal-tab {
+            padding: 0.4rem 0.8rem;
+            background: var(--bg);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background var(--ease);
+        }
+        .modal-tab.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        .modal-content {
+            display: none;
+        }
+        .modal-content.active {
+            display: block;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        @keyframes nebula-orbit {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            50% { transform: scale(2) rotate(180deg); opacity: 0.45; }
+        }
+        @keyframes glow-shift {
+            0%, 100% { text-shadow: 0 4px 15px var(--glow); }
+            50% { text-shadow: 0 6px 25px var(--glow); }
+        }
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @media (max-width: 400px) {
+            .nexus-core { padding: 1rem; }
+            h1 { font-size: 1.8rem; }
+            .control-matrix { grid-template-columns: 1fr; }
+            .input-cluster { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-backdrop"></div>
+    <div class="nebula-system">
+        <div class="nebula-ring"></div>
+        <div class="nebula-ring"></div>
+        <div class="nebula-ring"></div>
+    </div>
+    <div class="nexus-core">
+        <div class="core-header">
+            <h1>Nexus Prime</h1>
+            <div class="core-tagline">Extension Management</div>
+        </div>
+        <div class="input-cluster">
+            <div class="input-wrapper">
+                <input type="text" id="extInput" placeholder="Extension ID or Chrome Store URL">
+                <span class="input-hint">🔗</span>
+            </div>
+        </div>
+        <div class="control-matrix">
+            <button class="install-btn" id="installBtn">Install</button>
+            <button class="scan-btn" id="scanBtn">Scan</button>
+            <button class="manage-btn" id="manageBtn">Manage</button>
+            <button class="analyze-btn" id="analyzeBtn">Analyze</button>
+            <button class="share-btn" id="shareBtn">Share</button>
+            <button class="details-btn" id="detailsBtn">Details</button>
+        </div>
+        <div class="nexus-dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-title">Nexus Status</div>
+                <div class="dashboard-controls">
+                    <span class="dashboard-toggle" id="clearHistory">Clear History</span>
+                    <span class="dashboard-toggle" id="exportData">Export</span>
+                </div>
+            </div>
+            <div id="statusMessage"></div>
+            <div class="metrics-cluster" id="metrics"></div>
+        </div>
+        <div class="history-matrix" id="history"></div>
+    </div>
+    <div class="nexus-modal" id="manageModal">
+        <div class="modal-core">
+            <span class="modal-close" id="modalClose">✕</span>
+            <h2 class="modal-header">Extension Management</h2>
+            <div class="modal-tabs">
+                <span class="modal-tab active" data-tab="installed">Installed</span>
+                <span class="modal-tab" data-tab="settings">Settings</span>
+                <span class="modal-tab" data-tab="stats">Stats</span>
+            </div>
+            <div class="modal-content active" id="installedTab">
+                <div id="installedExtensions"></div>
+            </div>
+            <div class="modal-content" id="settingsTab">
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; margin-bottom: 0.4rem;">Theme:</label>
+                    <select id="themeSelect" style="width: 100%; padding: 0.4rem; border-radius: 0.4rem;">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="cosmic">Cosmic</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <label style="display: block; margin-bottom: 0.4rem;">Auto-Clear History:</label>
+                    <input type="checkbox" id="autoClear" style="margin-right: 0.4rem;">
+                    <span>Clear history on close</span>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 0.4rem;">Notification Sound:</label>
+                    <input type="checkbox" id="soundToggle" style="margin-right: 0.4rem;">
+                    <span>Play sound on action</span>
+                </div>
+            </div>
+            <div class="modal-content" id="statsTab">
+                <div style="margin-bottom: 0.75rem;">
+                    <strong>Total Actions:</strong> <span id="totalActions"></span>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <strong>Favorite Extension:</strong> <span id="favoriteExt"></span>
+                </div>
+                <div>
+                    <strong>Usage Time:</strong> <span id="usageTime"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dom = {
+            installBtn: document.getElementById('installBtn'),
+            scanBtn: document.getElementById('scanBtn'),
+            manageBtn: document.getElementById('manageBtn'),
+            analyzeBtn: document.getElementById('analyzeBtn'),
+            shareBtn: document.getElementById('shareBtn'),
+            detailsBtn: document.getElementById('detailsBtn'),
+            extInput: document.getElementById('extInput'),
+            statusMessage: document.getElementById('statusMessage'),
+            metrics: document.getElementById('metrics'),
+            history: document.getElementById('history'),
+            manageModal: document.getElementById('manageModal'),
+            installedExtensions: document.getElementById('installedExtensions'),
+            modalClose: document.getElementById('modalClose'),
+            clearHistory: document.getElementById('clearHistory'),
+            exportData: document.getElementById('exportData'),
+            modalTabs: document.querySelectorAll('.modal-tab'),
+            installedTab: document.getElementById('installedTab'),
+            settingsTab: document.getElementById('settingsTab'),
+            statsTab: document.getElementById('statsTab'),
+            themeSelect: document.getElementById('themeSelect'),
+            autoClear: document.getElementById('autoClear'),
+            soundToggle: document.getElementById('soundToggle'),
+            totalActions: document.getElementById('totalActions'),
+            favoriteExt: document.getElementById('favoriteExt'),
+            usageTime: document.getElementById('usageTime')
+        };
+
+        let nexusState = {
+            history: JSON.parse(localStorage.getItem('nexusHistory') || '[]'),
+            stats: JSON.parse(localStorage.getItem('nexusStats') || '{ "installs": 0, "success": 0, "scans": 0, "analyzes": 0, "shares": 0, "details": 0 }'),
+            installed: JSON.parse(localStorage.getItem('nexusInstalled') || '{}'),
+            settings: JSON.parse(localStorage.getItem('nexusSettings') || '{ "theme": "light", "autoClear": false, "sound": false }'),
+            usage: JSON.parse(localStorage.getItem('nexusUsage') || '{ "startTime": 0, "actionCount": 0, "extActions": {} }'),
+            isChrome: navigator.userAgent.includes('Chrome') && window.chrome,
+            canInstall: typeof window.chrome?.webstore?.install === 'function',
+            lastAction: null
+        };
+
+        function persistState() {
+            localStorage.setItem('nexusHistory', JSON.stringify(nexusState.history));
+            localStorage.setItem('nexusStats', JSON.stringify(nexusState.stats));
+            localStorage.setItem('nexusInstalled', JSON.stringify(nexusState.installed));
+            localStorage.setItem('nexusSettings', JSON.stringify(nexusState.settings));
+            localStorage.setItem('nexusUsage', JSON.stringify(nexusState.usage));
+        }
+
+        function setButtonLoading(button, isLoading) {
+            button.disabled = isLoading;
+            button.classList.toggle('loading', isLoading);
+            button.textContent = isLoading ? '' : button.textContent || button.id.replace('Btn', '');
+        }
+
+        function playSound() {
+            if (nexusState.settings.sound) {
+                new Audio('https://www.soundjay.com/buttons/beep-01a.mp3').play().catch(() => {});
+            }
+        }
+
+        function displayStatus(message, type = 'neutral') {
+            const typeColors = {
+                success: 'var(--success)',
+                error: 'var(--error)',
+                warning: 'var(--warning)',
+                neutral: 'var(--neutral)'
+            };
+            dom.statusMessage.innerHTML = `<div style="color: ${typeColors[type]}; font-size: 0.9rem">${message}</div>`;
+            refreshMetrics();
+            playSound();
+        }
+
+        function refreshMetrics() {
+            const successRate = nexusState.stats.installs > 0 ? ((nexusState.stats.success / nexusState.stats.installs) * 100).toFixed(1) : 0;
+            dom.metrics.innerHTML = `
+                <div class="metric-pod">
+                    <div class="metric-number">${nexusState.stats.installs}</div>
+                    <div class="metric-label">Installs</div>
+                </div>
+                <div class="metric-pod">
+                    <div class="metric-number">${nexusState.stats.success}</div>
+                    <div class="metric-label">Success</div>
+                </div>
+                <div class="metric-pod">
+                    <div class="metric-number">${nexusState.stats.scans}</div>
+                    <div class="metric-label">Scans</div>
+                </div>
+                <div class="metric-pod">
+                    <div class="metric-number">${nexusState.stats.analyzes}</div>
+                    <div class="metric-label">Analyzes</div>
+                </div>
+                <div class="metric-pod">
+                    <div class="metric-number">${nexusState.stats.shares}</div>
+                    <div class="metric-label">Shares</div>
+                </div>
+                <div class="metric-pod">
+                    <div class="metric-number">${successRate}%</div>
+                    <div class="metric-label">Success Rate</div>
+                </div>
+            `;
+        }
+
+        function applyTheme() {
+            if (nexusState.settings.theme === 'dark') {
+                document.documentElement.style.setProperty('--bg', '#1e293b');
+                document.documentElement.style.setProperty('--surface', 'rgba(30, 41, 59, 0.92)');
+                document.documentElement.style.setProperty('--text', '#f1f5f9');
+            } else if (nexusState.settings.theme === 'cosmic') {
+                document.documentElement.style.setProperty('--bg', '#0f172a');
+                document.documentElement.style.setProperty('--surface', 'rgba(15, 23, 42, 0.92)');
+                document.documentElement.style.setProperty('--text', '#e2e8f0');
+                document.documentElement.style.setProperty('--primary', '#3b82f6');
+                document.documentElement.style.setProperty('--secondary', '#a855f7');
+            } else {
+                document.documentElement.style.setProperty('--bg', '#f1f5f9');
+                document.documentElement.style.setProperty('--surface', 'rgba(255, 255, 255, 0.92)');
+                document.documentElement.style.setProperty('--text', '#0f172a');
+            }
+        }
+
+        function extractExtensionId(input) {
+            const urlRegex = /chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i;
+            const idRegex = /^[a-z]{32}$/;
+            const urlMatch = input.match(urlRegex);
+            return urlMatch ? urlMatch[1] : (idRegex.test(input.trim()) ? input.trim() : null);
+        }
+
+        async function getExtensionInfo(id) {
+            try {
+                const response = await fetch(`https://chrome.google.com/webstore/detail/${id}`, { cache: 'no-store' });
+                if (!response.ok) throw new Error('Extension not found in Web Store');
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                return {
+                    name: doc.querySelector('h1')?.textContent || 'Unknown Extension',
+                    version: doc.querySelector('.gH0guc')?.textContent || 'N/A',
+                    icon: doc.querySelector('img.e8i0yl')?.src || 'https://via.placeholder.com/24',
+                    description: doc.querySelector('.C-bC2d')?.textContent.trim() || 'No description available',
+                    rating: doc.querySelector('.rQF9jd')?.textContent || 'N/A',
+                    users: doc.querySelector('.e-f-ih')?.textContent || 'N/A'
+                };
+            } catch (err) {
+                return { name: 'Unknown', version: 'N/A', icon: 'https://via.placeholder.com/24', description: 'N/A', rating: 'N/A', users: 'N/A' };
+            }
+        }
+
+        async function performInstall(id) {
+            if (nexusState.canInstall) {
+                return new Promise((resolve, reject) => {
+                    window.chrome.webstore.install(
+                        `https://chrome.google.com/webstore/detail/${id}`,
+                        () => resolve({ success: true, message: 'Extension installed' }),
+                        (error) => reject(new Error(error))
+                    );
+                });
+            } else {
+                return new Promise((resolve) => {
+                    setTimeout(() => resolve({ success: true, message: 'Simulated install complete' }), 2000);
+                });
+            }
+        }
+
+        async function analyzeExtension(id) {
+            const response = await fetch(`https://clients2.google.com/service/update2/crx?response=xml&id=${id}`);
+            if (!response.ok) return { permissions: [], size: 'Unknown', lastUpdate: 'Unknown', developer: 'Unknown' };
+            const xml = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(xml, 'text/xml');
+            const manifestUrl = doc.querySelector('updatecheck')?.getAttribute('codebase');
+            const lastUpdate = doc.querySelector('updatecheck')?.getAttribute('lastupdate') || 'Unknown';
+            if (!manifestUrl) return { permissions: [], size: 'Unknown', lastUpdate, developer: 'Unknown' };
+            const manifestResponse = await fetch(manifestUrl);
+            const size = manifestResponse.headers.get('content-length') || 'Unknown';
+            const developerResponse = await fetch(`https://chrome.google.com/webstore/detail/${id}`);
+            const devHtml = await developerResponse.text();
+            const devDoc = new DOMParser().parseFromString(devHtml, 'text/html');
+            const developer = devDoc.querySelector('.e-f-Me')?.textContent || 'Unknown';
+            return { permissions: ['N/A'], size: size === 'Unknown' ? size : `${(size / 1024).toFixed(1)} KB`, lastUpdate, developer };
+        }
+
+        function logAction(id, status, details, actionType) {
+            nexusState.history.unshift({ id, status, details, timestamp: Date.now(), actionType });
+            nexusState.history = nexusState.history.slice(0, 250);
+            nexusState.stats[status === 'success' ? 'success' : 'installs']++;
+            nexusState.usage.actionCount++;
+            nexusState.usage.extActions[id] = (nexusState.usage.extActions[id] || 0) + 1;
+            persistState();
+            updateHistory();
+        }
+
+        function trackInstalled(id, details) {
+            nexusState.installed[id] = details;
+            persistState();
+        }
+
+        function updateHistory() {
+            dom.history.innerHTML = nexusState.history.map(entry => `
+                <div class="history-node">
+                    <span>${entry.details.name} (${entry.id.slice(0, 6)}...)</span>
+                    <span style="color: var(--${entry.status === 'success' ? 'success' : 'error'})">${entry.actionType}: ${entry.status}</span>
+                </div>
+            `).join('');
+        }
+
+        function showInstalled() {
+            dom.installedExtensions.innerHTML = Object.entries(nexusState.installed).map(([id, details]) => `
+                <div class="history-node">
+                    <span><img src="${details.icon}" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 6px;">${details.name}</span>
+                    <span class="history-action" data-id="${id}">Remove</span>
+                </div>
+            `).join('') || '<p>No extensions installed yet.</p>';
+        }
+
+        function updateStatsTab() {
+            const totalActions = nexusState.usage.actionCount;
+            const favoriteExt = Object.entries(nexusState.usage.extActions).reduce((a, b) => a[1] > b[1] ? a : b, ['None', 0])[0];
+            const favoriteExtName = nexusState.installed[favoriteExt]?.name || 'None';
+            const usageMinutes = Math.floor((Date.now() - nexusState.usage.startTime) / 60000);
+            dom.totalActions.textContent = totalActions;
+            dom.favoriteExt.textContent = favoriteExtName;
+            dom.usageTime.textContent = `${usageMinutes} minutes`;
+        }
+
+        async function executeInstall() {
+            const input = dom.extInput.value.trim();
+            const id = extractExtensionId(input);
+            if (!id) {
+                displayStatus('Invalid extension ID or URL', 'error');
+                return;
+            }
+
+            setButtonLoading(dom.installBtn, true);
+            displayStatus(`Installing ${id.slice(0, 6)}...`, 'neutral');
+
+            try {
+                const info = await getExtensionInfo(id);
+                const result = await performInstall(id);
+                logAction(id, 'success', info, 'Install');
+                trackInstalled(id, info);
+                displayStatus(`${info.name} installed successfully`, 'success');
+                dom.extInput.value = '';
+            } catch (error) {
+                logAction(id, 'error', { name: 'Unknown' }, 'Install');
+                displayStatus(`Install failed: ${error.message}`, 'error');
+            } finally {
+                setButtonLoading(dom.installBtn, false);
+            }
+        }
+
+        async function executeScan() {
+            const input = dom.extInput.value.trim();
+            const id = extractExtensionId(input);
+            if (!id) {
+                displayStatus('Invalid extension ID or URL', 'error');
+                return;
+            }
+
+            setButtonLoading(dom.scanBtn, true);
+            displayStatus(`Scanning ${id.slice(0, 6)}...`, 'neutral');
+
+            try {
+                const info = await getExtensionInfo(id);
+                nexusState.stats.scans++;
+                logAction(id, 'success', info, 'Scan');
+                displayStatus(`${info.name} (v${info.version})<br>Rating: ${info.rating}<br>Users: ${info.users}<br>${info.description}`, 'success');
+            } catch (error) {
+                logAction(id, 'error', { name: 'Unknown' }, 'Scan');
+                displayStatus(`Scan failed: ${error.message}`, 'error');
+            } finally {
+                setButtonLoading(dom.scanBtn, false);
+            }
+        }
+
+        async function executeAnalyze() {
+            const input = dom.extInput.value.trim();
+            const id = extractExtensionId(input);
+            if (!id) {
+                displayStatus('Invalid extension ID or URL', 'error');
+                return;
+            }
+
+            setButtonLoading(dom.analyzeBtn, true);
+            displayStatus(`Analyzing ${id.slice(0, 6)}...`, 'neutral');
+
+            try {
+                const info = await getExtensionInfo(id);
+                const analysis = await analyzeExtension(id);
+                nexusState.stats.analyzes++;
+                logAction(id, 'success', info, 'Analyze');
+                displayStatus(`${info.name}<br>Size: ${analysis.size}<br>Last Update: ${analysis.lastUpdate}<br>Developer: ${analysis.developer}<br>Permissions: ${analysis.permissions.join(', ')}`, 'success');
+            } catch (error) {
+                logAction(id, 'error', { name: 'Unknown' }, 'Analyze');
+                displayStatus(`Analysis failed: ${error.message}`, 'error');
+            } finally {
+                setButtonLoading(dom.analyzeBtn, false);
+            }
+        }
+
+        async function executeShare() {
+            const input = dom.extInput.value.trim();
+            const id = extractExtensionId(input);
+            if (!id) {
+                displayStatus('Invalid extension ID or URL to share', 'error');
+                return;
+            }
+
+            setButtonLoading(dom.shareBtn, true);
+            displayStatus(`Preparing to share ${id.slice(0, 6)}...`, 'neutral');
+
+            try {
+                const info = await getExtensionInfo(id);
+                const shareData = {
+                    title: `Check out ${info.name} on Nexus Prime`,
+                    text: `I found ${info.name} (v${info.version}) on Nexus Prime. ${info.description}`,
+                    url: `https://chrome.google.com/webstore/detail/${id}`
+                };
+                await navigator.share(shareData);
+                nexusState.stats.shares++;
+                logAction(id, 'success', info, 'Share');
+                displayStatus(`Shared ${info.name} successfully`, 'success');
+            } catch (error) {
+                logAction(id, 'error', { name: 'Unknown' }, 'Share');
+                displayStatus(`Share failed: ${error.message}`, 'error');
+            } finally {
+                setButtonLoading(dom.shareBtn, false);
+            }
+        }
+
+        async function executeDetails() {
+            const input = dom.extInput.value.trim();
+            const id = extractExtensionId(input);
+            if (!id) {
+                displayStatus('Invalid extension ID or URL', 'error');
+                return;
+            }
+
+            setButtonLoading(dom.detailsBtn, true);
+            displayStatus(`Fetching details for ${id.slice(0, 6)}...`, 'neutral');
+
+            try {
+                const info = await getExtensionInfo(id);
+                nexusState.stats.details++;
+                logAction(id, 'success', info, 'Details');
+                displayStatus(`Extension Name: ${info.name}<br>Version: ${info.version}<br>Rating: ${info.rating}<br>Users: ${info.users}<br>Developer: ${info.developer || 'Unknown'}`, 'success');
+            } catch (error) {
+                logAction(id, 'error', { name: 'Unknown' }, 'Details');
+                displayStatus(`Details fetch failed: ${error.message}`, 'error');
+            } finally {
+                setButtonLoading(dom.detailsBtn, false);
+            }
+        }
+
+        function openManagePanel() {
+            showInstalled();
+            updateStatsTab();
+            dom.manageModal.classList.add('active');
+            dom.installedExtensions.onclick = (event) => {
+                if (event.target.classList.contains('history-action')) {
+                    const id = event.target.dataset.id;
+                    delete nexusState.installed[id];
+                    persistState();
+                    showInstalled();
+                }
+            };
+            dom.modalTabs.forEach(tab => {
+                tab.onclick = () => {
+                    dom.modalTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    dom.installedTab.classList.remove('active');
+                    dom.settingsTab.classList.remove('active');
+                    dom.statsTab.classList.remove('active');
+                    document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
+                };
+            });
+        }
+
+        function clearHistory() {
+            nexusState.history = [];
+            persistState();
+            updateHistory();
+            displayStatus('History cleared', 'success');
+        }
+
+        function exportData() {
+            const data = {
+                history: nexusState.history,
+                stats: nexusState.stats,
+                installed: nexusState.installed,
+                usage: nexusState.usage
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nexus-prime-data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            displayStatus('Data exported successfully', 'success');
+        }
+
+        function launchNexus() {
+            dom.installBtn.disabled = false;
+            dom.scanBtn.disabled = false;
+            dom.manageBtn.disabled = false;
+            dom.analyzeBtn.disabled = false;
+            dom.shareBtn.disabled = false;
+            dom.detailsBtn.disabled = false;
+
+            applyTheme();
+            dom.themeSelect.value = nexusState.settings.theme;
+            dom.autoClear.checked = nexusState.settings.autoClear;
+            dom.soundToggle.checked = nexusState.settings.sound;
+
+            if (!nexusState.usage.startTime) {
+                nexusState.usage.startTime = Date.now();
+                persistState();
+            }
+
+            updateHistory();
+            displayStatus('Nexus Prime initialized. Ready for action.', 'neutral');
+            if (!nexusState.canInstall) {
+                displayStatus('Simulation mode active (Chrome Web Store API unavailable)', 'warning');
+            }
+
+            dom.installBtn.addEventListener('click', executeInstall);
+            dom.scanBtn.addEventListener('click', executeScan);
+            dom.manageBtn.addEventListener('click', openManagePanel);
+            dom.analyzeBtn.addEventListener('click', executeAnalyze);
+            dom.shareBtn.addEventListener('click', executeShare);
+            dom.detailsBtn.addEventListener('click', executeDetails);
+            dom.extInput.addEventListener('keypress', (e) => e.key === 'Enter' && executeInstall());
+            dom.modalClose.addEventListener('click', () => {
+                if (nexusState.settings.autoClear) clearHistory();
+                dom.manageModal.classList.remove('active');
+            });
+            dom.manageModal.addEventListener('click', (e) => {
+                if (e.target === dom.manageModal) {
+                    if (nexusState.settings.autoClear) clearHistory();
+                    dom.manageModal.classList.remove('active');
+                }
+            });
+            dom.clearHistory.addEventListener('click', clearHistory);
             dom.exportData.addEventListener('click', exportData);
+            dom.themeSelect.addEventListener('change', (e) => {
+                nexusState.settings.theme = e.target.value;
+                persistState();
+                applyTheme();
+            });
+            dom.autoClear.addEventListener('change', (e) => {
+                nexusState.settings.autoClear = e.target.checked;
+                persistState();
+            });
+            dom.soundToggle.addEventListener('change', (e) => {
+                nexusState.settings.sound = e.target.checked;
+                persistState();
+            });
+        }
+
+        window.addEventListener('load', launchNexus);
+    </script>
+</body>
+</html>
             dom.themeSelect.addEventListener('change', (e) => {
                 nexusState.settings.theme = e.target.value;
                 persistState();
