@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://chrome.google.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://chrome.google.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://clients2.google.com https://chrome.google.com;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <title>Nexus Prime</title>
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Nexus Elite</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1d4ed8;
-            --secondary: #9333ea;
-            --success: #16a34a;
-            --error: #dc2626;
-            --neutral: #475569;
-            --bg: #f3f4f6;
-            --surface: rgba(255, 255, 255, 0.98);
+            --primary: #1e40af;
+            --secondary: #7e22ce;
+            --success: #15803d;
+            --error: #b91c1c;
+            --neutral: #4b5563;
+            --bg: #f1f5f9;
+            --panel: rgba(255, 255, 255, 0.98);
             --text: #1e293b;
-            --shadow: rgba(0, 0, 0, 0.1);
-            --glow: rgba(29, 78, 216, 0.25);
-            --accent: #f59e0b;
-            --ease: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: rgba(0, 0, 0, 0.12);
+            --glow: rgba(30, 64, 175, 0.3);
+            --accent: #d97706;
+            --curve: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -37,260 +37,263 @@
             overflow: hidden;
             overscroll-behavior: none;
         }
-        .environment {
+        .backdrop {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 0.08), transparent 80%);
+            background: linear-gradient(155deg, rgba(30, 64, 175, 0.06), rgba(126, 34, 206, 0.06));
             z-index: -1;
         }
-        .orbit {
+        .pulse-ring {
             position: absolute;
-            width: 160px;
-            height: 160px;
-            background: rgba(29, 78, 216, 0.07);
+            width: 200px;
+            height: 200px;
+            background: rgba(30, 64, 175, 0.05);
             border-radius: 50%;
-            animation: orbit 14s infinite ease-in-out;
+            animation: pulse-ring 15s infinite ease-in-out;
             will-change: transform, opacity;
         }
-        .orbit:nth-child(1) { top: 15%; left: 20%; }
-        .orbit:nth-child(2) { top: 70%; left: 75%; }
-        .orbit:nth-child(3) { top: 50%; left: 10%; }
-        .prime {
-            background: var(--surface);
-            padding: 3rem;
-            border-radius: 2.25rem;
-            box-shadow: 0 25px 70px var(--shadow);
-            max-width: 520px;
+        .pulse-ring:nth-child(1) { top: 10%; left: 30%; }
+        .pulse-ring:nth-child(2) { top: 75%; left: 65%; }
+        .pulse-ring:nth-child(3) { top: 40%; left: 15%; }
+        .elite {
+            background: var(--panel);
+            padding: 3.25rem;
+            border-radius: 2.5rem;
+            box-shadow: 0 30px 80px var(--shadow);
+            max-width: 540px;
             width: 95%;
             position: relative;
             z-index: 1;
-            backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            transition: transform var(--ease);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: transform var(--curve);
         }
-        .prime:hover { transform: translateY(-10px); }
+        .elite:hover { transform: translateY(-12px); }
         h1 {
-            font-size: 2.75rem;
+            font-size: 2.85rem;
             font-weight: 800;
             color: var(--text);
             text-align: center;
-            margin-bottom: 2.5rem;
-            letter-spacing: 0.75px;
+            margin-bottom: 2.75rem;
+            letter-spacing: 1px;
         }
-        h1 span { color: var(--primary); text-shadow: 0 3px 10px var(--glow); }
-        .input-field {
+        h1 span { color: var(--primary); text-shadow: 0 4px 12px var(--glow); }
+        .input-zone {
             position: relative;
-            margin-bottom: 2.25rem;
+            margin-bottom: 2.5rem;
         }
         input {
             width: 100%;
-            padding: 1.5rem 4.5rem 1.5rem 1.75rem;
+            padding: 1.75rem 5rem 1.75rem 2rem;
             border: 1px solid #d1d5db;
-            border-radius: 1.5rem;
-            font-size: 1.15rem;
+            border-radius: 1.75rem;
+            font-size: 1.2rem;
             color: var(--text);
             background: #fff;
             outline: none;
-            transition: border-color var(--ease), box-shadow var(--ease);
+            transition: border-color var(--curve), box-shadow var(--curve);
         }
         input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 18px var(--glow);
+            box-shadow: 0 0 20px var(--glow);
         }
-        .input-indicator {
+        .input-signal {
             position: absolute;
-            right: 1.75rem;
+            right: 2rem;
             top: 50%;
             transform: translateY(-50%);
             color: #9ca3af;
-            font-size: 1.5rem;
-            transition: color var(--ease);
+            font-size: 1.6rem;
+            transition: color var(--curve);
         }
-        input:focus + .input-indicator { color: var(--primary); }
-        .install-trigger {
+        input:focus + .input-signal { color: var(--primary); }
+        .deploy-btn {
             width: 100%;
-            padding: 1.5rem;
-            font-size: 1.2rem;
+            padding: 1.75rem;
+            font-size: 1.25rem;
             font-weight: 600;
             color: #fff;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border: none;
-            border-radius: 1.5rem;
+            border-radius: 1.75rem;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all var(--ease);
+            transition: all var(--curve);
         }
-        .install-trigger:hover {
-            box-shadow: 0 15px 35px var(--glow);
-            transform: translateY(-6px);
+        .deploy-btn:hover {
+            box-shadow: 0 18px 40px var(--glow);
+            transform: translateY(-8px);
         }
-        .install-trigger:active { transform: scale(0.97); }
-        .install-trigger.loading {
+        .deploy-btn:active { transform: scale(0.96); }
+        .deploy-btn.loading {
             background: #6b7280;
             cursor: wait;
             pointer-events: none;
         }
-        .install-trigger.loading::after {
+        .deploy-btn.loading::after {
             content: '';
             position: absolute;
-            width: 28px;
-            height: 28px;
-            border: 4px solid #fff;
+            width: 30px;
+            height: 30px;
+            border: 5px solid #fff;
             border-top-color: transparent;
             border-radius: 50%;
-            animation: spin 0.5s linear infinite;
+            animation: spin 0.45s linear infinite;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        .message {
-            margin-top: 2rem;
-            padding: 1.5rem 2rem;
-            font-size: 1.05rem;
+        .alert {
+            margin-top: 2.25rem;
+            padding: 1.75rem 2.25rem;
+            font-size: 1.1rem;
             font-weight: 400;
             color: var(--text);
             background: #fff;
-            border-radius: 1.5rem;
-            box-shadow: 0 8px 30px var(--shadow);
+            border-radius: 1.75rem;
+            box-shadow: 0 10px 35px var(--shadow);
             opacity: 0;
-            transform: translateY(25px);
-            transition: all 0.4s ease;
+            transform: translateY(30px);
+            transition: all 0.45s ease;
             word-break: break-word;
+            max-width: 100%;
         }
-        .message.active {
+        .alert.show {
             opacity: 1;
             transform: translateY(0);
         }
-        .history {
-            margin-top: 2.5rem;
-            max-height: 260px;
+        .ledger {
+            margin-top: 2.75rem;
+            max-height: 280px;
             overflow-y: auto;
             background: #fff;
-            border-radius: 1.5rem;
-            padding: 1.75rem;
-            box-shadow: 0 8px 30px var(--shadow);
+            border-radius: 1.75rem;
+            padding: 2rem;
+            box-shadow: 0 10px 35px var(--shadow);
             display: none;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) #e5e7eb;
         }
-        .history.active { display: block; }
-        .history::-webkit-scrollbar { width: 10px; }
-        .history::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
-        .history::-webkit-scrollbar-track { background: #e5e7eb; }
-        .history-record {
-            padding: 1.25rem 0;
+        .ledger.show { display: block; }
+        .ledger::-webkit-scrollbar { width: 12px; }
+        .ledger::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 6px; }
+        .ledger::-webkit-scrollbar-track { background: #e5e7eb; }
+        .ledger-entry {
+            padding: 1.5rem 0;
             border-bottom: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text);
-            transition: background var(--ease);
+            transition: background var(--curve);
         }
-        .history-record:last-child { border-bottom: none; }
-        .history-record:hover { background: var(--glow); }
-        .history-record .reinstall {
+        .ledger-entry:last-child { border-bottom: none; }
+        .ledger-entry:hover { background: var(--glow); }
+        .ledger-entry .redo {
             color: var(--accent);
             font-weight: 600;
             cursor: pointer;
-            transition: color var(--ease);
+            transition: color var(--curve);
         }
-        .history-record .reinstall:hover { color: var(--primary); }
-        @media (max-width: 480px) {
-            .prime { padding: 2.25rem; }
-            h1 { font-size: 2.25rem; }
-            input, .install-trigger { font-size: 1.05rem; padding: 1.25rem; }
-            .message, .history-record { font-size: 0.95rem; }
+        .ledger-entry .redo:hover { color: var(--primary); }
+        @media (max-width: 500px) {
+            .elite { padding: 2.5rem; }
+            h1 { font-size: 2.5rem; }
+            input, .deploy-btn { font-size: 1.15rem; padding: 1.5rem; }
+            .alert, .ledger-entry { font-size: 1rem; }
         }
-        @keyframes orbit {
-            0%, 100% { transform: scale(1); opacity: 0.85; }
-            50% { transform: scale(1.7); opacity: 0.25; }
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.8); opacity: 0.2; }
         }
         @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="environment">
-        <div class="orbit"></div>
-        <div class="orbit"></div>
-        <div class="orbit"></div>
+    <div class="backdrop">
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring"></div>
     </div>
-    <div class="prime">
-        <h1>Nexus <span>Prime</span></h1>
-        <div class="input-field">
+    <div class="elite">
+        <h1>Nexus <span>Elite</span></h1>
+        <div class="input-zone">
             <input type="text" id="extInput" placeholder="Extension ID or Chrome Store URL">
-            <span class="input-indicator">🔗</span>
+            <span class="input-signal">🔗</span>
         </div>
-        <button class="install-trigger" id="install">Install Extension</button>
-        <div class="message" id="message"></div>
-        <div class="history" id="history"></div>
+        <button class="deploy-btn" id="deploy">Deploy Extension</button>
+        <div class="alert" id="alert"></div>
+        <div class="ledger" id="ledger"></div>
     </div>
     <script>
         const DOM = {
-            install: document.getElementById("install"),
+            deploy: document.getElementById("deploy"),
             extInput: document.getElementById("extInput"),
-            message: document.getElementById("message"),
-            history: document.getElementById("history")
+            alert: document.getElementById("alert"),
+            ledger: document.getElementById("ledger")
         };
 
         const Security = {
-            generateKey: () => crypto.getRandomValues(new Uint32Array(2)).join("") + Date.now().toString(36),
-            parseInput: (input) => {
-                const urlMatch = input.match(/chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i);
-                const idMatch = /^[a-z]{32}$/.test(input.trim());
-                return urlMatch ? urlMatch[1] : (idMatch ? input.trim() : null);
+            generateToken: () => crypto.getRandomValues(new Uint32Array(2)).join("") + Date.now().toString(36),
+            extractId: (input) => {
+                input = input.trim();
+                const urlPattern = /chrome\.google\.com\/webstore\/detail\/[^/]+\/([a-z]{32})/i;
+                const idPattern = /^[a-z]{32}$/;
+                const urlMatch = input.match(urlPattern);
+                return urlMatch ? urlMatch[1] : (idPattern.test(input) ? input : null);
             },
-            sanitize: (id) => id.toLowerCase().replace(/[^a-z]/g, "").slice(0, 32),
-            isSecure: () => window.isSecureContext || location.hostname === "localhost",
-            throttle: (() => {
-                const records = new Map();
+            cleanId: (id) => id.toLowerCase().replace(/[^a-z]/g, "").slice(0, 32),
+            isSecureContext: () => window.isSecureContext || location.hostname === "localhost",
+            rateLimit: (() => {
+                const limits = new Map();
                 return (key, max = 5, windowMs = 60000) => {
-                    const now = Date.now();
-                    const data = records.get(key) || { count: 0, start: now };
-                    if (now - data.start > windowMs) {
-                        data.count = 0;
-                        data.start = now;
+                    const now = performance.now();
+                    const record = limits.get(key) || { count: 0, start: now };
+                    if (now - record.start > windowMs) {
+                        record.count = 0;
+                        record.start = now;
                     }
-                    data.count++;
-                    records.set(key, data);
-                    return data.count <= max;
+                    record.count++;
+                    limits.set(key, record);
+                    return record.count <= max;
                 };
             })(),
-            checkIntegrity: () => {
+            verifyEnvironment: () => {
                 const ua = navigator.userAgent.toLowerCase();
-                return !(/bot|crawl|spider/.test(ua) || navigator.webdriver || window.outerWidth === 0);
+                return !(/bot|crawl|spider|headless/.test(ua) || navigator.webdriver || !window.performance.timing);
             }
         };
 
         const Browser = {
-            identify: () => {
+            detect: () => {
                 const ua = navigator.userAgent.toLowerCase();
                 const vendor = navigator.vendor.toLowerCase();
-                const tests = [
-                    { name: "Chrome", check: () => /chrome/.test(ua) && /google/.test(vendor) && !/opr|edg/.test(ua) },
-                    { name: "Firefox", check: () => /firefox/.test(ua) && !/seamonkey/.test(ua) },
-                    { name: "Opera", check: () => /opr/.test(ua) && /opera/.test(vendor) },
-                    { name: "Edge", check: () => /edg/.test(ua) },
-                    { name: "Safari", check: () => /safari/.test(ua) && /apple/.test(vendor) && !/chrome/.test(ua) }
+                const rules = [
+                    { name: "Chrome", test: () => /chrome/.test(ua) && /google/.test(vendor) && !/opr|edg/.test(ua) },
+                    { name: "Firefox", test: () => /firefox/.test(ua) && /mozilla/.test(vendor) },
+                    { name: "Opera", test: () => /opr/.test(ua) && /opera/.test(vendor) },
+                    { name: "Edge", test: () => /edg/.test(ua) },
+                    { name: "Safari", test: () => /safari/.test(ua) && /apple/.test(vendor) && !/chrome/.test(ua) }
                 ];
-                const match = tests.find(t => t.check());
+                const match = rules.find(rule => rule.test());
                 return match ? match.name : "Other";
             },
-            canInstallInline: () => typeof chrome !== "undefined" && !!chrome.webstore
+            supportsInlineInstall: () => typeof chrome !== "undefined" && !!chrome.webstore && window.isSecureContext
         };
 
         const Extension = {
-            installed: new Map(),
-            installInline: (id) => {
+            registry: new Map(),
+            installViaStore: (id) => {
                 return new Promise((resolve, reject) => {
-                    if (!Browser.canInstallInline()) {
-                        return reject(new Error("Inline installation not supported in this browser"));
+                    if (!Browser.supportsInlineInstall()) {
+                        return reject(new Error("This browser does not support inline installation"));
                     }
                     chrome.webstore.install(
                         `https://chrome.google.com/webstore/detail/${id}`,
-                        () => resolve({ success: true, message: "Extension installed via Chrome Web Store" }),
-                        (err) => reject(new Error(err || "Installation failed"))
+                        () => resolve({ success: true, message: "Extension deployed via Chrome Web Store" }),
+                        (error) => reject(new Error(error || "User cancelled or installation failed"))
                     );
                 });
             },
@@ -299,51 +302,51 @@
                     manifest_version: 3,
                     name: `Nexus-${id.slice(0, 6)}`,
                     version: "1.0.0",
-                    permissions: ["activeTab"],
+                    permissions: ["activeTab", "storage"],
                     background: { service_worker: "background.js" }
                 };
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         if (browser === "Chrome") {
-                            Extension.installed.set(id, { manifest, active: true, installedAt: Date.now() });
-                            resolve({ success: true, message: `${manifest.name} installed successfully` });
+                            Extension.registry.set(id, { manifest, active: true, deployedAt: Date.now() });
+                            resolve({ success: true, message: `${manifest.name} deployed successfully` });
                         } else {
-                            resolve({ success: false, message: `${browser} does not support automatic installation` });
+                            resolve({ success: false, message: `${browser} requires manual deployment from its extension settings` });
                         }
-                    }, 1000);
+                    }, 800);
                 });
             },
-            isInstalled: (id) => Extension.installed.has(id)
+            isDeployed: (id) => Extension.registry.has(id)
         };
 
-        const Store = {
-            history: JSON.parse(localStorage.getItem("nexusPrimeHistory") || "[]"),
-            stats: JSON.parse(localStorage.getItem("nexusPrimeStats") || '{"attempts":0,"successes":0}"),
-            boot: () => {
-                Store.history = Store.history.filter(h => Date.now() - h.timestamp < 90 * 24 * 60 * 60 * 1000);
-                localStorage.setItem("nexusPrimeHistory", JSON.stringify(Store.history));
-                Store.render();
+        const Ledger = {
+            entries: JSON.parse(localStorage.getItem("nexusEliteLedger") || "[]"),
+            metrics: JSON.parse(localStorage.getItem("nexusEliteMetrics") || '{"attempts":0,"successes":0}"),
+            initialize: () => {
+                Ledger.entries = Ledger.entries.filter(e => Date.now() - e.timestamp < 90 * 24 * 60 * 60 * 1000);
+                localStorage.setItem("nexusEliteLedger", JSON.stringify(Ledger.entries));
+                Ledger.render();
             },
-            record: (id, browser, status, message) => {
-                Store.history.unshift({ id, browser, status, message, timestamp: Date.now() });
-                Store.history = Store.history.slice(0, 30);
-                Store.stats.attempts++;
-                if (status === "Success") Store.stats.successes++;
-                localStorage.setItem("nexusPrimeHistory", JSON.stringify(Store.history));
-                localStorage.setItem("nexusPrimeStats", JSON.stringify(Store.stats));
-                Store.render();
+            log: (id, browser, status, message) => {
+                Ledger.entries.unshift({ id, browser, status, message, timestamp: Date.now() });
+                Ledger.entries = Ledger.entries.slice(0, 35);
+                Ledger.metrics.attempts++;
+                if (status === "Success") Ledger.metrics.successes++;
+                localStorage.setItem("nexusEliteLedger", JSON.stringify(Ledger.entries));
+                localStorage.setItem("nexusEliteMetrics", JSON.stringify(Ledger.metrics));
+                Ledger.render();
             },
             render: () => {
-                DOM.history.innerHTML = Store.history.map(h => `
-                    <div class="history-record">
-                        <span>${h.id.slice(0, 6)}... (${h.browser}) - ${h.status}</span>
-                        <span class="reinstall" onclick="Prime.reinstall('${h.id}')">Reinstall</span>
+                DOM.ledger.innerHTML = Ledger.entries.map(e => `
+                    <div class="ledger-entry">
+                        <span>${e.id.slice(0, 6)}... (${e.browser}) - ${e.status}</span>
+                        <span class="redo" onclick="Elite.redeploy('${e.id}')">Redeploy</span>
                     </div>
                 `).join("");
-                DOM.history.classList.toggle("active", Store.history.length > 0);
+                DOM.ledger.classList.toggle("show", Ledger.entries.length > 0);
             },
-            getMetrics: () => {
-                const { attempts, successes } = Store.stats;
+            stats: () => {
+                const { attempts, successes } = Ledger.metrics;
                 return {
                     total: attempts,
                     successRate: attempts ? ((successes / attempts) * 100).toFixed(1) : 0
@@ -351,79 +354,82 @@
             }
         };
 
-        const Prime = {
-            toggleLoading: (state) => {
-                DOM.install.classList.toggle("loading", state);
-                DOM.install.disabled = state;
-                DOM.install.textContent = state ? "" : "Install Extension";
+        const Elite = {
+            setLoading: (state) => {
+                DOM.deploy.classList.toggle("loading", state);
+                DOM.deploy.disabled = state;
+                DOM.deploy.textContent = state ? "" : "Deploy Extension";
             },
-            notify: (text, type) => {
-                DOM.message.textContent = text;
-                DOM.message.style.color = { success: "--success", error: "--error", info: "--primary" }[type] || "--neutral";
-                DOM.message.classList.add("active");
-                setTimeout(() => DOM.message.classList.remove("active"), 7000);
-Cmp             },
-            reinstall: (id) => {
+            showAlert: (msg, type) => {
+                DOM.alert.textContent = msg;
+                DOM.alert.style.color = { success: "--success", error: "--error", info: "--primary" }[type] || "--neutral";
+                DOM.alert.classList.add("show");
+                setTimeout(() => DOM.alert.classList.remove("show"), 8000);
+            },
+            redeploy: (id) => {
                 DOM.extInput.value = id;
-                Prime.install();
+                Elite.deploy();
             },
-            showStats: () => {
-                const { total, successRate } = Store.getMetrics();
-                Prime.notify(`Total Installs: ${total} | Success: ${successRate}%`, "info");
+            showMetrics: () => {
+                const { total, successRate } = Ledger.stats();
+                Elite.showAlert(`Deployments: ${total} | Success: ${successRate}%`, "info");
             },
-            install: async () => {
+            deploy: async () => {
                 const input = DOM.extInput.value.trim();
-                const id = Security.parseInput(input);
-                const browser = Browser.identify();
+                const id = Security.extractId(input);
+                const browser = Browser.detect();
+                const token = Security.generateToken();
 
-                if (!input) return Prime.notify("Enter an extension ID or URL", "error");
-                if (!id) return Prime.notify("Invalid input. Use a 32-letter ID or Chrome Web Store URL", "error");
-                if (!Security.isSecure()) return Prime.notify("Secure connection (HTTPS) required", "error");
-                if (!Security.checkIntegrity()) return Prime.notify("Suspicious environment detected", "error");
-                if (!Security.throttle("install")) return Prime.notify("Too many attempts. Wait a minute.", "error");
-                if (Extension.isInstalled(id)) return Prime.notify("This extension is already installed", "error");
+                if (!input) return Elite.showAlert("Enter an extension ID or URL", "error");
+                if (!id) return Elite.showAlert("Invalid format. Use a 32-letter ID or Chrome Web Store URL", "error");
+                if (!Security.isSecureContext()) return Elite.showAlert("HTTPS required for secure deployment", "error");
+                if (!Security.verifyEnvironment()) return Elite.showAlert("Suspicious environment detected", "error");
+                if (!Security.rateLimit("deploy")) return Elite.showAlert("Rate limit hit. Wait a minute.", "error");
+                if (Extension.isDeployed(id)) return Elite.showAlert("Extension already deployed", "error");
 
-                Prime.toggleLoading(true);
-                Prime.notify(`Installing ${id.slice(0, 6)}... on ${browser}`, "info");
+                Elite.setLoading(true);
+                Elite.showAlert(`Deploying ${id.slice(0, 6)}... on ${browser}`, "info");
 
                 try {
-                    let result;
-                    if (browser === "Chrome" && Browser.canInstallInline()) {
+                    let outcome;
+                    if (browser === "Chrome" && Browser.supportsInlineInstall()) {
                         try {
-                            result = await Extension.installInline(id);
-                        } catch (inlineErr) {
-                            Prime.notify("Inline install failed, falling back to simulation", "info");
-                            result = await Extension.simulateInstall(id, browser);
+                            outcome = await Extension.installViaStore(id);
+                        } catch (storeErr) {
+                            Elite.showAlert("Store deployment unavailable, using fallback", "info");
+                            outcome = await Extension.simulateInstall(id, browser);
                         }
                     } else {
-                        result = await Extension.simulateInstall(id, browser);
+                        outcome = await Extension.simulateInstall(id, browser);
                     }
-                    Prime.notify(result.message, result.success ? "success" : "error");
-                    Store.record(id, browser, result.success ? "Success" : "Failed", result.message);
-                    if (result.success) DOM.extInput.value = "";
+                    Elite.showAlert(outcome.message, outcome.success ? "success" : "error");
+                    Ledger.log(id, browser, outcome.success ? "Success" : "Failed", outcome.message);
+                    if (outcome.success) DOM.extInput.value = "";
                 } catch (err) {
-                    Prime.notify(`Error: ${err.message || "Installation failed"}`, "error");
-                    Store.record(id, browser, "Error", err.message || "Installation failed");
+                    Elite.showAlert(`Deployment failed: ${err.message || "Unknown error"}`, "error");
+                    Ledger.log(id, browser, "Error", err.message || "Unknown error");
                 } finally {
-                    Prime.toggleLoading(false);
+                    Elite.setLoading(false);
                 }
             }
         };
 
-        DOM.install.addEventListener("click", Prime.install);
-        DOM.extInput.addEventListener("keypress", (e) => e.key === "Enter" && Prime.install());
-        DOM.extInput.addEventListener("input", () => DOM.message.classList.remove("active"));
-        DOM.install.addEventListener("contextmenu", (e) => {
+        DOM.deploy.addEventListener("click", Elite.deploy);
+        DOM.extInput.addEventListener("keypress", (e) => e.key === "Enter" && Elite.deploy());
+        DOM.extInput.addEventListener("input", () => DOM.alert.classList.remove("show"));
+        DOM.deploy.addEventListener("contextmenu", (e) => {
             e.preventDefault();
-            Prime.showStats();
+            Elite.showMetrics();
         });
         window.addEventListener("load", () => {
-            Store.boot();
-            if (!Security.isSecure()) Prime.notify("Warning: HTTPS required for full functionality", "error");
-            if (Browser.canInstallInline()) {
+            Ledger.initialize();
+            if (!Security.isSecureContext()) Elite.showAlert("Warning: HTTPS is critical for full functionality", "error");
+            if (Browser.supportsInlineInstall()) {
                 const script = document.createElement("script");
                 script.src = "https://chrome.google.com/webstore/install-button.js";
                 script.async = true;
+                script.onload = () => console.log("Chrome Web Store script loaded");
+                script.onerror = () => Elite.showAlert("Failed to load Chrome Web Store support", "error");
                 document.head.appendChild(script);
             }
         });
